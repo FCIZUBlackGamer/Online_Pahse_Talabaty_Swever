@@ -18,7 +18,9 @@ import com.talabaty.swever.admin.Mabi3at.NewTalabat.NewTalabatFragment;
 import com.talabaty.swever.admin.Mabi3at.NotificationToFriendTalabat.NotificationToFriendTalabat;
 import com.talabaty.swever.admin.Mabi3at.PendedTalabat.PendedTalabatFragment;
 import com.talabaty.swever.admin.Mabi3at.ReadyTalabat.ReadyTalabatFragment;
+import com.talabaty.swever.admin.Mabi3at.RejectedReports.RejectedReports;
 import com.talabaty.swever.admin.Mabi3at.ReturnedTalabat.ReturnedTalabatFragment;
+import com.talabaty.swever.admin.Mabi3at.SailedReports.SailedReports;
 import com.talabaty.swever.admin.R;
 
 public class Mabi3atNavigator extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -53,9 +55,9 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
         } else if (intent.getStringExtra("fragment").equals("done")) {
             fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new DoneTalabat()).commit();
         } else if (intent.getStringExtra("fragment").equals("rejected")) {
-            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new ReadyTalabatFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new RejectedReports()).commit();
         } else if (intent.getStringExtra("fragment").equals("sailed")) {
-            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new ReadyTalabatFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new SailedReports()).commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
