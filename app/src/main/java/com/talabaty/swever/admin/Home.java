@@ -1,7 +1,7 @@
 package com.talabaty.swever.admin;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,7 +18,7 @@ public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     NavigationView navigationView;
-    Fragment fragment;
+//    Fragment fragment;
     FragmentManager fragmentManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +27,9 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fragmentManager = getFragmentManager();
-        fragment = new MainHome();
-        fragmentManager.beginTransaction().replace(R.id.frame_mabi3at,fragment).commit();
+        fragmentManager = getSupportFragmentManager();
+//        fragment = new MainHome();
+        fragmentManager.beginTransaction().replace(R.id.frame_mabi3at,new MainHome()).commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -90,8 +90,8 @@ public class Home extends AppCompatActivity
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
 
-            fragment = new MainHome();
-            fragmentManager.beginTransaction().replace(R.id.frame_mabi3at,fragment).commit();
+//            fragment = new MainHome();
+            fragmentManager.beginTransaction().replace(R.id.frame_mabi3at,new MainHome()).commit();
 
 //            startActivity(new Intent(Home.this, Mabi3atNavigator.class));
         }else if (id == R.id.nav_montagat){

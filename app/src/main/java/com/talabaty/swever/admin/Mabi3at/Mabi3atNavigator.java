@@ -1,6 +1,6 @@
 package com.talabaty.swever.admin.Mabi3at;
 
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.talabaty.swever.admin.Home;
 import com.talabaty.swever.admin.Mabi3at.DoneTalabat.DoneTalabat;
 import com.talabaty.swever.admin.Mabi3at.NewTalabat.NewTalabatFragment;
 import com.talabaty.swever.admin.Mabi3at.NotificationToFriendTalabat.NotificationToFriendTalabat;
@@ -40,7 +41,7 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
         //Get Fragment Name
         intent = getIntent();
 
-        fragmentManager = getFragmentManager();
+        fragmentManager = getSupportFragmentManager();
 
         if (intent.getStringExtra("fragment").equals("new")) {
             fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new NewTalabatFragment()).commit();
@@ -118,6 +119,7 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
 
+            startActivity(new Intent(Mabi3atNavigator.this, Home.class));
         } else if (id == R.id.nav_montagat) {
 
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_off_24dp);
