@@ -294,9 +294,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="0"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Textttttttttttttt"
+                            android:text="182"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -304,9 +304,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
+                            android:text="لا يوجد سبب"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -314,9 +314,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
+                            android:text="مؤمن شاهين"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -324,9 +324,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
+                            android:text="12:30 م"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -334,9 +334,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
+                            android:text="12-11-2018"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -344,421 +344,10 @@
                             android:layout_height="match_parent"
                             android:layout_column="2"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="1"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        android:background="@color/white">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Textttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        android:background="@color/white">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Textttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        android:background="@color/white">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Textttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        android:background="@color/white">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Textttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        android:background="@color/white">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Textttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        android:background="@color/white">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Textttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
 
                     </TableRow>
 
@@ -774,9 +363,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="0"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Textttttttttttttt"
+                            android:text="182"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -784,9 +373,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
+                            android:text="لا يوجد سبب"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -794,9 +383,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
+                            android:text="مؤمن شاهين"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -804,9 +393,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
+                            android:text="12:30 م"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -814,9 +403,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
+                            android:text="12-11-2018"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -824,14 +413,12 @@
                             android:layout_height="match_parent"
                             android:layout_column="2"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="1"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-
                     </TableRow>
-
                     <TableRow
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -843,9 +430,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="0"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Textttttttttttttt"
+                            android:text="182"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -853,9 +440,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
+                            android:text="لا يوجد سبب"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -863,9 +450,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
+                            android:text="مؤمن شاهين"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -873,9 +460,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
+                            android:text="12:30 م"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -883,9 +470,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
+                            android:text="12-11-2018"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -893,13 +480,12 @@
                             android:layout_height="match_parent"
                             android:layout_column="2"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="1"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     </TableRow>
-
                     <TableRow
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -911,9 +497,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="0"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Textttttttttttttt"
+                            android:text="182"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -921,9 +507,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
+                            android:text="لا يوجد سبب"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -931,9 +517,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
+                            android:text="مؤمن شاهين"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -941,9 +527,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
+                            android:text="12:30 م"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -951,9 +537,9 @@
                             android:layout_height="match_parent"
                             android:layout_column="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
+                            android:text="12-11-2018"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
@@ -961,9 +547,411 @@
                             android:layout_height="match_parent"
                             android:layout_column="2"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="1"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/white">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="0"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="182"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="لا يوجد سبب"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="مؤمن شاهين"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="12:30 م"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="12-11-2018"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="1"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/white">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="0"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="182"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="لا يوجد سبب"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="مؤمن شاهين"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="12:30 م"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="12-11-2018"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="1"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/white">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="0"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="182"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="لا يوجد سبب"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="مؤمن شاهين"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="12:30 م"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="12-11-2018"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="1"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/white">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="0"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="182"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="لا يوجد سبب"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="مؤمن شاهين"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="12:30 م"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="12-11-2018"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="1"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/white">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="0"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="182"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="لا يوجد سبب"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="مؤمن شاهين"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="12:30 م"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="12-11-2018"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="1"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                    </TableRow>
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/white">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="0"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="182"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="لا يوجد سبب"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="مؤمن شاهين"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="12:30 م"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="12-11-2018"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="1"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     </TableRow>

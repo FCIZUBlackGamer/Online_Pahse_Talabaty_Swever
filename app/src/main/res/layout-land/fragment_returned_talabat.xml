@@ -176,7 +176,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" إرجاع"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -188,7 +188,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" أبدأ"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -200,7 +200,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -208,73 +208,83 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
                             android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:padding="6dp"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
+                            android:text=" مؤمن شاهين"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="1"
+                            android:layout_span="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="الزقازيق"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_span="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="01020118856"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="2"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="12:30 م"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="0"
+                            android:background="@drawable/cell_shape"
+                            android:layout_margin="1dp"
+                            android:gravity="center"
+                            android:text="12-10-2018"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="5"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="1"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
                     </TableRow>
 
@@ -289,7 +299,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" إرجاع"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -301,7 +311,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" أبدأ"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -313,7 +323,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -321,73 +331,83 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
                             android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:padding="6dp"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
+                            android:text=" مؤمن شاهين"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="1"
+                            android:layout_span="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="الزقازيق"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_span="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="01020118856"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="2"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="12:30 م"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="0"
+                            android:background="@drawable/cell_shape"
+                            android:layout_margin="1dp"
+                            android:gravity="center"
+                            android:text="12-10-2018"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="5"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="1"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
                     </TableRow>
 
@@ -402,7 +422,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" إرجاع"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -414,7 +434,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" أبدأ"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -426,7 +446,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -434,73 +454,83 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
                             android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:padding="6dp"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
+                            android:text=" مؤمن شاهين"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="1"
+                            android:layout_span="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="الزقازيق"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_span="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="01020118856"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="2"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="12:30 م"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="0"
+                            android:background="@drawable/cell_shape"
+                            android:layout_margin="1dp"
+                            android:gravity="center"
+                            android:text="12-10-2018"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="5"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="1"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
                     </TableRow>
 
@@ -515,7 +545,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" إرجاع"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -527,7 +557,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" أبدأ"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -539,7 +569,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -547,73 +577,83 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
                             android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:padding="6dp"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
+                            android:text=" مؤمن شاهين"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="1"
+                            android:layout_span="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="الزقازيق"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_span="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="01020118856"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="2"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="12:30 م"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="0"
+                            android:background="@drawable/cell_shape"
+                            android:layout_margin="1dp"
+                            android:gravity="center"
+                            android:text="12-10-2018"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="5"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="1"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
                     </TableRow>
 
@@ -628,7 +668,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" إرجاع"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -640,7 +680,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" أبدأ"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -652,7 +692,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -660,73 +700,83 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
                             android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:padding="6dp"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
+                            android:text=" مؤمن شاهين"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="1"
+                            android:layout_span="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="الزقازيق"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_span="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="01020118856"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="2"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="12:30 م"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="0"
+                            android:background="@drawable/cell_shape"
+                            android:layout_margin="1dp"
+                            android:gravity="center"
+                            android:text="12-10-2018"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="5"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="1"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
                     </TableRow>
 
@@ -741,7 +791,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" إرجاع"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -753,7 +803,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" أبدأ"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -765,7 +815,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -773,73 +823,83 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
                             android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:padding="6dp"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
+                            android:text=" مؤمن شاهين"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="1"
+                            android:layout_span="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="الزقازيق"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_span="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="01020118856"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="2"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="12:30 م"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="0"
+                            android:background="@drawable/cell_shape"
+                            android:layout_margin="1dp"
+                            android:gravity="center"
+                            android:text="12-10-2018"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="5"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="1"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
                     </TableRow>
 
@@ -854,7 +914,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" إرجاع"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -866,7 +926,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" أبدأ"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -878,7 +938,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -886,73 +946,83 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
                             android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:padding="6dp"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
+                            android:text=" مؤمن شاهين"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="1"
+                            android:layout_span="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="الزقازيق"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_span="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="01020118856"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="2"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="12:30 م"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="0"
+                            android:background="@drawable/cell_shape"
+                            android:layout_margin="1dp"
+                            android:gravity="center"
+                            android:text="12-10-2018"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="5"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="1"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
                     </TableRow>
 
@@ -968,7 +1038,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" إرجاع"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -980,7 +1050,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" أبدأ"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -992,7 +1062,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -1000,73 +1070,83 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
                             android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:padding="6dp"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
+                            android:text=" مؤمن شاهين"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="1"
+                            android:layout_span="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="الزقازيق"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_span="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="01020118856"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="2"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="12:30 م"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="0"
+                            android:background="@drawable/cell_shape"
+                            android:layout_margin="1dp"
+                            android:gravity="center"
+                            android:text="12-10-2018"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="5"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="1"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
                     </TableRow>
 
@@ -1081,7 +1161,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" إرجاع"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -1093,7 +1173,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" أبدأ"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -1105,7 +1185,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -1113,73 +1193,83 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
                             android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:padding="6dp"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
+                            android:text=" مؤمن شاهين"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="1"
+                            android:layout_span="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="الزقازيق"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_span="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="01020118856"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="2"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="12:30 م"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="0"
+                            android:background="@drawable/cell_shape"
+                            android:layout_margin="1dp"
+                            android:gravity="center"
+                            android:text="12-10-2018"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="5"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="1"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
                     </TableRow>
 
@@ -1194,7 +1284,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" إرجاع"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -1206,7 +1296,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" أبدأ"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -1218,7 +1308,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@color/colorPrimaryLight"
+                            android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
                             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -1226,73 +1316,83 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
                             android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:padding="6dp"
                             android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Texttttttttttttttttttttttt"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
+                            android:text=" مؤمن شاهين"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_column="0"
-                            android:layout_margin="1dp"
-                            android:background="#FFFFFF"
-                            android:gravity="center"
-                            android:text=" Text"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="1"
+                            android:layout_span="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="الزقازيق"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_span="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="01020118856"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
                             android:layout_column="2"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
                             android:gravity="center"
-                            android:text=" Text"
+                            android:text="12:30 م"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="0"
+                            android:background="@drawable/cell_shape"
+                            android:layout_margin="1dp"
+                            android:gravity="center"
+                            android:text="12-10-2018"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="5"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="1"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
                     </TableRow>
 

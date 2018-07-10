@@ -6,7 +6,11 @@
     <color name="gray">#eae4e4</color>
     <color name="transgray">#80968b8b</color>
     <color name="white">#fff</color>
-    <color name="colorPrimaryLight" >#1b67ff</color>
+    <color name="colorPrimaryLight" >#007bff</color>
+    <color name="colormosttrend">#375e97</color>
+    <color name="colormabi3at">#283848</color>
+    <color name="colormontagat">#e1a70b</color>
+    <color name="colorcontact">#f77872</color>
     <color name="red">#FF0000</color>
     <color name="yellow">#d2c12a</color>
     <color name="redlight">#b42b21</color>

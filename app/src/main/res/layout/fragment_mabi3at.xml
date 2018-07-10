@@ -40,7 +40,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="20dp"
-                    android:src="@drawable/new_talabat" />
+                    android:src="@drawable/if_recycle" />
 
                 <View
                     android:id="@+id/v1"
@@ -104,7 +104,7 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="200dp"
-                android:background="@color/colorPrimaryLight"
+                android:background="@color/colormosttrend"
                 android:layout_weight="1">
 
                 <Button
@@ -122,7 +122,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="20dp"
-                    android:src="@drawable/new_talabat" />
+                    android:src="@drawable/mog" />
 
                 <View
                     android:id="@+id/v2"
@@ -193,7 +193,7 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="200dp"
-                android:background="@color/colorPrimaryLight"
+                android:background="@color/colormosttrend"
                 android:layout_weight="1">
 
                 <Button
@@ -211,7 +211,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="20dp"
-                    android:src="@drawable/new_talabat" />
+                    android:src="@drawable/pend" />
 
                 <View
                     android:id="@+id/v3"
@@ -293,7 +293,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="20dp"
-                    android:src="@drawable/new_talabat" />
+                    android:src="@drawable/mortag3" />
 
                 <View
                     android:id="@+id/v4"
@@ -382,7 +382,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="20dp"
-                    android:src="@drawable/new_talabat" />
+                    android:src="@drawable/done" />
 
                 <View
                     android:id="@+id/v5"
@@ -446,7 +446,7 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="200dp"
-                android:background="@color/colorPrimaryLight"
+                android:background="@color/colormosttrend"
                 android:layout_weight="1">
 
                 <Button
@@ -464,7 +464,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="20dp"
-                    android:src="@drawable/new_talabat" />
+                    android:src="@drawable/bell" />
 
                 <View
                     android:id="@+id/v6"
@@ -534,7 +534,7 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="200dp"
-                android:background="@color/colorPrimaryLight"
+                android:background="@color/colormosttrend"
                 android:layout_weight="1">
 
                 <Button
@@ -552,7 +552,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="20dp"
-                    android:src="@drawable/new_talabat" />
+                    android:src="@drawable/if_error__problem__alert__warning" />
 
                 <View
                     android:id="@+id/v7"
@@ -633,7 +633,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="20dp"
-                    android:src="@drawable/new_talabat" />
+                    android:src="@drawable/if_bug" />
 
                 <View
                     android:id="@+id/v8"
