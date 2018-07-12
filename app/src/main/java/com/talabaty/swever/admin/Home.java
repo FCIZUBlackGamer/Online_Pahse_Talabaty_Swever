@@ -1,9 +1,9 @@
 package com.talabaty.swever.admin;
 
-import android.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,8 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.talabaty.swever.admin.AgentReports.Fragment_agent_report;
+import com.talabaty.swever.admin.Mabi3at.DoneTalabat.DoneTalabat;
 import com.talabaty.swever.admin.Mabi3at.MainHome;
+import com.talabaty.swever.admin.Mabi3at.NotificationToFriendTalabat.NotificationToFriendTalabat;
+import com.talabaty.swever.admin.Montagat.FragmentMontag;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -21,6 +26,7 @@ public class Home extends AppCompatActivity
     NavigationView navigationView;
 //    Fragment fragment;
     FragmentManager fragmentManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,9 +88,8 @@ public class Home extends AppCompatActivity
         int id = item.getItemId();
         Menu nav_Menu = navigationView.getMenu();
 
-
         if(id == R.id.nav_mabe3at){
-
+            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_on_24dp);
             nav_Menu.findItem(R.id.nav_montagat).setIcon(R.drawable.ic_shopping_basket_off_24dp);
             nav_Menu.findItem(R.id.nav_trendmontag).setIcon(R.drawable.ic_trending_up_off_24dp);
@@ -97,13 +102,13 @@ public class Home extends AppCompatActivity
             getSupportActionBar().setTitle("المبيعات");
 //            startActivity(new Intent(Home.this, Mabi3atNavigator.class));
         }else if (id == R.id.nav_montagat) {
-
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_off_24dp);
             nav_Menu.findItem(R.id.nav_montagat).setIcon(R.drawable.ic_shopping_basket_on_24dp);
             nav_Menu.findItem(R.id.nav_trendmontag).setIcon(R.drawable.ic_trending_up_off_24dp);
             nav_Menu.findItem(R.id.nav_customer).setIcon(R.drawable.ic_people_off_24dp);
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
+            fragmentManager.beginTransaction().replace(R.id.frame_mabi3at,new FragmentMontag()).commit();
             getSupportActionBar().setTitle("المنتجات");
         } else if (id == R.id.nav_trendmontag) {
 
@@ -113,6 +118,8 @@ public class Home extends AppCompatActivity
             nav_Menu.findItem(R.id.nav_customer).setIcon(R.drawable.ic_people_off_24dp);
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
+            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            fragmentManager.beginTransaction().replace(R.id.frame_mabi3at,new Fragment_agent_report()).commit();
             getSupportActionBar().setTitle("المنتجات الأكثر بيعا");
         } else if (id == R.id.nav_customer) {
 
@@ -122,6 +129,8 @@ public class Home extends AppCompatActivity
             nav_Menu.findItem(R.id.nav_customer).setIcon(R.drawable.ic_people_on_24dp);
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
+            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            fragmentManager.beginTransaction().replace(R.id.frame_mabi3at,new Fragment_agent_report()).commit();
             getSupportActionBar().setTitle("العملاء");
         } else if (id == R.id.nav_contact) {
 

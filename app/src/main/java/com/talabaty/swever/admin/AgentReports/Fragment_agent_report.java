@@ -1,4 +1,4 @@
-package com.talabaty.swever.admin.Mabi3at.DoneTalabat;
+package com.talabaty.swever.admin.AgentReports;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -23,12 +23,12 @@ import android.widget.Toast;
 import com.talabaty.swever.admin.Mabi3at.Mabi3atNavigator;
 import com.talabaty.swever.admin.R;
 
-public class DoneTalabat extends Fragment {
+public class Fragment_agent_report extends Fragment {
 
     Button submit;
     ImageButton close;
-    Button[] show, start;
-    View details, message;
+    Button[] start;
+    View message;
     View view;
 
     Button message_send;
@@ -38,28 +38,18 @@ public class DoneTalabat extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_done_talabat,container,false);
+        view = inflater.inflate(R.layout.fragment_agent_report,container,false);
         start = new Button[10];
-        show = new Button[10];
-        show[0] = view.findViewById(R.id.show1);
+
         start[0] = view.findViewById(R.id.start1);
-        show[1] = view.findViewById(R.id.show2);
         start[1] = view.findViewById(R.id.start2);
-        show[2] = view.findViewById(R.id.show3);
         start[2] = view.findViewById(R.id.start3);
-        show[3] = view.findViewById(R.id.show4);
         start[3] = view.findViewById(R.id.start4);
-        show[4] = view.findViewById(R.id.show5);
         start[4] = view.findViewById(R.id.start5);
-        show[5] = view.findViewById(R.id.show6);
         start[5] = view.findViewById(R.id.start6);
-        show[6] = view.findViewById(R.id.show7);
         start[6] = view.findViewById(R.id.start7);
-        show[7] = view.findViewById(R.id.show8);
         start[7] = view.findViewById(R.id.start8);
-        show[8] = view.findViewById(R.id.show9);
         start[8] = view.findViewById(R.id.start9);
-        show[9] = view.findViewById(R.id.show10);
         start[9] = view.findViewById(R.id.start10);
         return view;
     }
@@ -69,10 +59,9 @@ public class DoneTalabat extends Fragment {
         super.onStart();
 
         ((Mabi3atNavigator) getActivity())
-                .setActionBarTitle("الطلبات التى تم إستلامها");
+                .setActionBarTitle("تقارير العملاء");
 
         try {
-            startDetailsActions();
             startMessageActions();
         } catch (Exception e) {
             Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -92,7 +81,7 @@ public class DoneTalabat extends Fragment {
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onClick(View v) {
-                    final int sdk = android.os.Build.VERSION.SDK_INT;
+                    final int sdk = Build.VERSION.SDK_INT;
                     message_type = message.findViewById(R.id.messagetype);
                     message_title = message.findViewById(R.id.messagetitle);
                     message_content = message.findViewById(R.id.messagecontent);
@@ -107,7 +96,7 @@ public class DoneTalabat extends Fragment {
                                 message_title.setVisibility(View.GONE);
                                 message_content.setVisibility(View.GONE);
                                 message_send.setText("اتصال");
-                                if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                                if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
                                     message_send.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.call_shape));
                                 } else {
                                     message_send.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.call_shape));
@@ -117,7 +106,7 @@ public class DoneTalabat extends Fragment {
                                 message_title.setVisibility(View.GONE);
                                 message_content.setVisibility(View.VISIBLE);
                                 message_send.setText("إرسال");
-                                if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                                if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
                                     message_send.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.button_shape));
                                 } else {
                                     message_send.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.button_shape));
@@ -126,7 +115,7 @@ public class DoneTalabat extends Fragment {
                                 message_title.setVisibility(View.VISIBLE);
                                 message_content.setVisibility(View.VISIBLE);
                                 message_send.setText("إرسال");
-                                if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                                if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
                                     message_send.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.button_shape));
                                 } else {
                                     message_send.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.button_shape));
@@ -186,54 +175,6 @@ public class DoneTalabat extends Fragment {
         }
     }
 
-    private void startDetailsActions() {
-        final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        details = inflater.inflate(R.layout.dialog_details_talabat, null);
-        for (int x = 0; x < 10; x++) {
-            show[x].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    submit = details.findViewById(R.id.done);
-                    close = details.findViewById(R.id.close);
-
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle("التفاصيل")
-                            .setCancelable(false)
-                            .setView(details)
-                            .setNegativeButton("اغلاق", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // Do Nothing
-                                    clearDetailView();
-                                    dialog.dismiss();
-                                }
-                            });
-                    final AlertDialog dialog = builder.create();
-                    dialog.show();
-                    dialog.getWindow().setLayout(1200, 800);
-
-                    closeDetail(dialog);
-                    submitDetail(dialog);
-
-
-                }
-
-            });
-        }
-    }
-
-    private void closeDetail(final Dialog dialog) {
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearDetailView();
-                dialog.dismiss();
-            }
-        });
-    }
-
     private void closeMessage(final Dialog dialog) {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,26 +183,6 @@ public class DoneTalabat extends Fragment {
                 dialog.dismiss();
             }
         });
-    }
-
-    private void submitDetail(final Dialog dialog) {
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearDetailView();
-                dialog.dismiss();
-            }
-        });
-    }
-
-
-    private void clearDetailView() {
-        if (details != null) {
-            ViewGroup parent = (ViewGroup) details.getParent();
-            if (parent != null) {
-                parent.removeAllViews();
-            }
-        }
     }
 
     private void clearMessageView() {
