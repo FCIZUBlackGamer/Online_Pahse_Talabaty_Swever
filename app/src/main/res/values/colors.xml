@@ -13,5 +13,6 @@
     <color name="colorcontact">#f77872</color>
     <color name="red">#FF0000</color>
     <color name="yellow">#d2c12a</color>
+    <color name="green">#0b690b</color>
     <color name="redlight">#b42b21</color>
 </resources>

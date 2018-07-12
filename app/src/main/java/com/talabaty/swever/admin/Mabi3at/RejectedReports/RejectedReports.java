@@ -9,16 +9,18 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.talabaty.swever.admin.Mabi3at.Mabi3atNavigator;
 import com.talabaty.swever.admin.R;
 
 import java.util.Calendar;
 
 public class RejectedReports extends Fragment {
 
-    EditText to_talab, from_talab;
+    Button to_talab, from_talab;
     DatePickerDialog.OnDateSetListener DatePicker1, DatePicker2;
 
     @Nullable
@@ -33,6 +35,9 @@ public class RejectedReports extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        ((Mabi3atNavigator) getActivity())
+                .setActionBarTitle("تقارير الطلبات المرفوضه");
 
         from_talab.setOnClickListener(new View.OnClickListener() {
             @Override

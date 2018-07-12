@@ -84,9 +84,9 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_margin="5dp">
-                    <EditText
+                    <Button
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:layout_weight="2"
                         android:id="@+id/from_talab"
                         android:hint="yyyy/mm/dd"
@@ -114,9 +114,9 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_margin="5dp">
-                    <EditText
+                    <Button
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:layout_weight="2"
                         android:id="@+id/to_talab"
                         android:hint="yyyy/mm/dd"

@@ -187,6 +187,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
+                            android:id="@+id/start1"
                             android:layout_margin="15dp"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
@@ -200,6 +201,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
+                            android:id="@+id/show1"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
@@ -310,6 +312,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
+                            android:id="@+id/start2"
                             android:layout_margin="15dp"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
@@ -323,6 +326,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
+                            android:id="@+id/show2"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
@@ -433,6 +437,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
+                            android:id="@+id/start3"
                             android:layout_margin="15dp"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
@@ -446,6 +451,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
+                            android:id="@+id/show3"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
@@ -556,6 +562,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
+                            android:id="@+id/start4"
                             android:layout_margin="15dp"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
@@ -569,6 +576,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
+                            android:id="@+id/show4"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
@@ -679,6 +687,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
+                            android:id="@+id/start5"
                             android:layout_margin="15dp"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
@@ -692,6 +701,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
+                            android:id="@+id/show5"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
@@ -802,6 +812,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
+                            android:id="@+id/start6"
                             android:layout_margin="15dp"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
@@ -815,6 +826,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
+                            android:id="@+id/show6"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
@@ -925,6 +937,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
+                            android:id="@+id/start7"
                             android:layout_margin="15dp"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
@@ -938,130 +951,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
-                            android:background="@drawable/button_shape"
-                            android:gravity="center"
-                            android:text=" عرض"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textColor="@color/white"
-                            android:textStyle="bold" />
-
-                        <TextView
-
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="1dp"
-                            android:background="@drawable/cell_shape"
-                            android:layout_column="1"
-                            android:padding="6dp"
-                            android:gravity="center"
-                            android:text=" مؤمن شاهين"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="6dp"
-                            android:layout_column="1"
-                            android:layout_span="1"
-                            android:layout_margin="1dp"
-                            android:background="@drawable/cell_shape"
-                            android:gravity="center"
-                            android:text="الزقازيق"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="6dp"
-                            android:layout_column="1"
-                            android:layout_span="1"
-                            android:layout_margin="1dp"
-                            android:background="@drawable/cell_shape"
-                            android:gravity="center"
-                            android:text="01020118856"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="6dp"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="@drawable/cell_shape"
-                            android:gravity="center"
-                            android:text="12:30 م"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="6dp"
-                            android:layout_column="0"
-                            android:background="@drawable/cell_shape"
-                            android:layout_margin="1dp"
-                            android:gravity="center"
-                            android:text="12-10-2018"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="6dp"
-                            android:layout_column="1"
-                            android:layout_margin="1dp"
-                            android:background="@drawable/cell_shape"
-                            android:gravity="center"
-                            android:text="5"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:padding="6dp"
-                            android:layout_column="2"
-                            android:layout_margin="1dp"
-                            android:background="@drawable/cell_shape"
-                            android:gravity="center"
-                            android:text="1"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-                    </TableRow>
-
-
-                    <TableRow
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        android:background="@color/white">
-
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="0"
-                            android:layout_margin="15dp"
-                            android:background="@drawable/button_shape"
-                            android:gravity="center"
-                            android:text=" قبول"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textColor="@color/white"
-                            android:textStyle="bold" />
-
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="0"
-                            android:layout_margin="15dp"
-                            android:background="@drawable/button_shape"
-                            android:gravity="center"
-                            android:text=" أبدأ"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textColor="@color/white"
-                            android:textStyle="bold" />
-
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="0"
-                            android:layout_margin="15dp"
+                            android:id="@+id/show7"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
@@ -1172,6 +1062,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
+                            android:id="@+id/start8"
                             android:layout_margin="15dp"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
@@ -1185,6 +1076,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
+                            android:id="@+id/show8"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
@@ -1295,6 +1187,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="0"
+                            android:id="@+id/start9"
                             android:layout_margin="15dp"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
@@ -1308,6 +1201,7 @@
                             android:layout_height="wrap_content"
                             android:layout_column="0"
                             android:layout_margin="15dp"
+                            android:id="@+id/show9"
                             android:background="@drawable/button_shape"
                             android:gravity="center"
                             android:text=" عرض"
@@ -1316,14 +1210,129 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_column="1"
                             android:layout_margin="1dp"
-                            android:background="#FFFFFF"
+                            android:background="@drawable/cell_shape"
+                            android:layout_column="1"
+                            android:padding="6dp"
                             android:gravity="center"
                             android:text=" مؤمن شاهين"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_span="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="الزقازيق"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_span="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="01020118856"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="12:30 م"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="0"
+                            android:background="@drawable/cell_shape"
+                            android:layout_margin="1dp"
+                            android:gravity="center"
+                            android:text="12-10-2018"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="1"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="5"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="6dp"
+                            android:layout_column="2"
+                            android:layout_margin="1dp"
+                            android:background="@drawable/cell_shape"
+                            android:gravity="center"
+                            android:text="1"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:background="@color/white">
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_margin="15dp"
+                            android:background="@drawable/button_shape"
+                            android:gravity="center"
+                            android:text=" قبول"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:id="@+id/start10"
+                            android:layout_margin="15dp"
+                            android:background="@drawable/button_shape"
+                            android:gravity="center"
+                            android:text=" أبدأ"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:layout_margin="15dp"
+                            android:id="@+id/show10"
+                            android:background="@drawable/button_shape"
+                            android:gravity="center"
+                            android:text=" عرض"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
 
                         <TextView
 

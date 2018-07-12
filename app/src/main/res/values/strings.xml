@@ -14,4 +14,16 @@
         <item>تمر هندى</item>
         <item>=D</item>
     </string-array>
+
+    <string-array name="print">
+        <item>طباعه الحالى</item>
+        <item>من - إلى</item>
+        <item>طباعه الكل</item>
+    </string-array>
+
+    <string-array name="send_message">
+        <item>مكالمه تليفونيه</item>
+        <item>رساله نصيه</item>
+        <item>رساله عبر الإيميل</item>
+    </string-array>
 </resources>

@@ -120,6 +120,7 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
 
             startActivity(new Intent(Mabi3atNavigator.this, Home.class));
+//            getSupportActionBar().setTitle("المبيعات");
         } else if (id == R.id.nav_montagat) {
 
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_off_24dp);
@@ -128,7 +129,7 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
             nav_Menu.findItem(R.id.nav_customer).setIcon(R.drawable.ic_people_off_24dp);
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
-
+//            getSupportActionBar().setTitle("المنتجات");
         } else if (id == R.id.nav_trendmontag) {
 
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_off_24dp);
@@ -137,7 +138,7 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
             nav_Menu.findItem(R.id.nav_customer).setIcon(R.drawable.ic_people_off_24dp);
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
-
+//            getSupportActionBar().setTitle("المنتجات الأكثر بيعا");
         } else if (id == R.id.nav_customer) {
 
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_off_24dp);
@@ -146,7 +147,7 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
             nav_Menu.findItem(R.id.nav_customer).setIcon(R.drawable.ic_people_on_24dp);
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
-
+//            getSupportActionBar().setTitle("العملاء");
         } else if (id == R.id.nav_contact) {
 
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_off_24dp);
@@ -155,7 +156,7 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
             nav_Menu.findItem(R.id.nav_customer).setIcon(R.drawable.ic_people_off_24dp);
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_on_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
-
+//            getSupportActionBar().setTitle("التواصل");
         } else if (id == R.id.nav_management) {
 
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_off_24dp);
@@ -164,7 +165,7 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
             nav_Menu.findItem(R.id.nav_customer).setIcon(R.drawable.ic_people_off_24dp);
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_on_24dp);
-
+//            getSupportActionBar().setTitle("إداره الموظفين");
         } else if (id == R.id.nav_out) {
 
         }
@@ -173,5 +174,9 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
     }
 }

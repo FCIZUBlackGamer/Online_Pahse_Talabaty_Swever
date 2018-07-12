@@ -9,16 +9,18 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.talabaty.swever.admin.Mabi3at.Mabi3atNavigator;
 import com.talabaty.swever.admin.R;
 
 import java.util.Calendar;
 
 public class SailedReports extends Fragment {
 
-    EditText to_talab, from_talab, to_tasleem, from_taslem;
+    Button to_talab, from_talab, to_tasleem, from_taslem;
     DatePickerDialog.OnDateSetListener DatePicker1, DatePicker2, DatePicker3, DatePicker4;
 
     @Nullable
@@ -35,6 +37,9 @@ public class SailedReports extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        ((Mabi3atNavigator) getActivity())
+                .setActionBarTitle("تقارير الطلبات المباعه");
 
         from_talab.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -32,6 +32,7 @@ public class Home extends AppCompatActivity
 //        fragment = new MainHome();
         fragmentManager.beginTransaction().replace(R.id.frame_mabi3at,new MainHome()).commit();
 
+        getSupportActionBar().setTitle("المبيعات");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -93,9 +94,9 @@ public class Home extends AppCompatActivity
 
 //            fragment = new MainHome();
             fragmentManager.beginTransaction().replace(R.id.frame_mabi3at,new MainHome()).commit();
-
+            getSupportActionBar().setTitle("المبيعات");
 //            startActivity(new Intent(Home.this, Mabi3atNavigator.class));
-        }else if (id == R.id.nav_montagat){
+        }else if (id == R.id.nav_montagat) {
 
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_off_24dp);
             nav_Menu.findItem(R.id.nav_montagat).setIcon(R.drawable.ic_shopping_basket_on_24dp);
@@ -103,8 +104,8 @@ public class Home extends AppCompatActivity
             nav_Menu.findItem(R.id.nav_customer).setIcon(R.drawable.ic_people_off_24dp);
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
-
-        }else if (id == R.id.nav_trendmontag){
+            getSupportActionBar().setTitle("المنتجات");
+        } else if (id == R.id.nav_trendmontag) {
 
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_off_24dp);
             nav_Menu.findItem(R.id.nav_montagat).setIcon(R.drawable.ic_shopping_basket_off_24dp);
@@ -112,8 +113,8 @@ public class Home extends AppCompatActivity
             nav_Menu.findItem(R.id.nav_customer).setIcon(R.drawable.ic_people_off_24dp);
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
-
-        }else if (id == R.id.nav_customer){
+            getSupportActionBar().setTitle("المنتجات الأكثر بيعا");
+        } else if (id == R.id.nav_customer) {
 
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_off_24dp);
             nav_Menu.findItem(R.id.nav_montagat).setIcon(R.drawable.ic_shopping_basket_off_24dp);
@@ -121,8 +122,8 @@ public class Home extends AppCompatActivity
             nav_Menu.findItem(R.id.nav_customer).setIcon(R.drawable.ic_people_on_24dp);
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
-
-        }else if (id == R.id.nav_contact){
+            getSupportActionBar().setTitle("العملاء");
+        } else if (id == R.id.nav_contact) {
 
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_off_24dp);
             nav_Menu.findItem(R.id.nav_montagat).setIcon(R.drawable.ic_shopping_basket_off_24dp);
@@ -130,8 +131,8 @@ public class Home extends AppCompatActivity
             nav_Menu.findItem(R.id.nav_customer).setIcon(R.drawable.ic_people_off_24dp);
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_on_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
-
-        }else if (id == R.id.nav_management){
+            getSupportActionBar().setTitle("التواصل");
+        } else if (id == R.id.nav_management) {
 
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_off_24dp);
             nav_Menu.findItem(R.id.nav_montagat).setIcon(R.drawable.ic_shopping_basket_off_24dp);
@@ -139,8 +140,8 @@ public class Home extends AppCompatActivity
             nav_Menu.findItem(R.id.nav_customer).setIcon(R.drawable.ic_people_off_24dp);
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_on_24dp);
-
-        }else if (id == R.id.nav_out){
+            getSupportActionBar().setTitle("إداره الموظفين");
+        } else if (id == R.id.nav_out) {
 
         }
 
