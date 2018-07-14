@@ -1,5 +1,6 @@
 package com.talabaty.swever.admin.Mabi3at;
 
+import android.content.pm.ActivityInfo;
 import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.talabaty.swever.admin.AgentReports.Fragment_agent_report;
 import com.talabaty.swever.admin.Home;
 import com.talabaty.swever.admin.Mabi3at.DoneTalabat.DoneTalabat;
 import com.talabaty.swever.admin.Mabi3at.NewTalabat.NewTalabatFragment;
@@ -22,6 +24,9 @@ import com.talabaty.swever.admin.Mabi3at.ReadyTalabat.ReadyTalabatFragment;
 import com.talabaty.swever.admin.Mabi3at.RejectedReports.RejectedReports;
 import com.talabaty.swever.admin.Mabi3at.ReturnedTalabat.ReturnedTalabatFragment;
 import com.talabaty.swever.admin.Mabi3at.SailedReports.SailedReports;
+import com.talabaty.swever.admin.Mabi3atTrend.Mabi3atTrendReports;
+import com.talabaty.swever.admin.Montagat.ControlMontag.ControlMontag;
+import com.talabaty.swever.admin.Montagat.FragmentMontag;
 import com.talabaty.swever.admin.R;
 
 public class Mabi3atNavigator extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -44,21 +49,27 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
         fragmentManager = getSupportFragmentManager();
 
         if (intent.getStringExtra("fragment").equals("new")) {
-            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new NewTalabatFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new NewTalabatFragment()).addToBackStack("").commit();
         } else if (intent.getStringExtra("fragment").equals("ready")) {
-            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new ReadyTalabatFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new ReadyTalabatFragment()).addToBackStack("ReadyTalabatFragment").commit();
         } else if (intent.getStringExtra("fragment").equals("pend")) {
-            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new PendedTalabatFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new PendedTalabatFragment()).addToBackStack("PendedTalabatFragment").commit();
         } else if (intent.getStringExtra("fragment").equals("returned")) {
-            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new ReturnedTalabatFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new ReturnedTalabatFragment()).addToBackStack("ReturnedTalabatFragment").commit();
         } else if (intent.getStringExtra("fragment").equals("notification")) {
-            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new NotificationToFriendTalabat()).commit();
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new NotificationToFriendTalabat()).addToBackStack("NotificationToFriendTalabat").commit();
         } else if (intent.getStringExtra("fragment").equals("done")) {
-            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new DoneTalabat()).commit();
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new DoneTalabat()).addToBackStack("DoneTalabat").commit();
         } else if (intent.getStringExtra("fragment").equals("rejected")) {
-            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new RejectedReports()).commit();
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new RejectedReports()).addToBackStack("RejectedReports").commit();
         } else if (intent.getStringExtra("fragment").equals("sailed")) {
-            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new SailedReports()).commit();
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new SailedReports()).addToBackStack("SailedReports").commit();
+        } else if (intent.getStringExtra("fragment").equals("control")) {
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new ControlMontag()).commit();
+        } else if (intent.getStringExtra("fragment").equals("trend")) {
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new Mabi3atTrendReports()).commit();
+        } else if (intent.getStringExtra("fragment").equals("report")) {
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new Fragment_agent_report()).commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -111,7 +122,7 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
 
 
         if (id == R.id.nav_mabe3at) {
-
+//            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_on_24dp);
             nav_Menu.findItem(R.id.nav_montagat).setIcon(R.drawable.ic_shopping_basket_off_24dp);
             nav_Menu.findItem(R.id.nav_trendmontag).setIcon(R.drawable.ic_trending_up_off_24dp);
@@ -119,8 +130,12 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
 
-            startActivity(new Intent(Mabi3atNavigator.this, Home.class));
+//            fragmentManager.beginTransaction().replace(R.id.frame_mabi3at,new MainHome()).addToBackStack("MainHome").commit();
 //            getSupportActionBar().setTitle("المبيعات");
+//            getSupportActionBar().setTitle("المبيعات");
+            Intent intent = new Intent(Mabi3atNavigator.this,Home.class);
+            intent.putExtra("fragment","mabi3at");
+            startActivity(intent);
         } else if (id == R.id.nav_montagat) {
 
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_off_24dp);
@@ -130,6 +145,12 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
 //            getSupportActionBar().setTitle("المنتجات");
+//            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//            fragmentManager.beginTransaction().replace(R.id.frame_mabi3at,new FragmentMontag()).addToBackStack("FragmentMontag").commit();
+//            getSupportActionBar().setTitle("المنتجات");
+            Intent intent = new Intent(Mabi3atNavigator.this,Home.class);
+            intent.putExtra("fragment","montag");
+            startActivity(intent);
         } else if (id == R.id.nav_trendmontag) {
 
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_off_24dp);
@@ -139,6 +160,9 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
 //            getSupportActionBar().setTitle("المنتجات الأكثر بيعا");
+//            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame,new Mabi3atTrendReports()).addToBackStack("Mabi3atTrendReports").commit();
+            getSupportActionBar().setTitle("المنتجات الأكثر بيعا");
         } else if (id == R.id.nav_customer) {
 
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_off_24dp);
@@ -148,6 +172,9 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
 //            getSupportActionBar().setTitle("العملاء");
+//            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame,new Fragment_agent_report()).commit();
+            getSupportActionBar().setTitle("العملاء");
         } else if (id == R.id.nav_contact) {
 
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_off_24dp);

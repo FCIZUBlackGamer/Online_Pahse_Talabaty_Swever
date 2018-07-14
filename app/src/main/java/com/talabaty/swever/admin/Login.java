@@ -18,7 +18,9 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Login.this,Home.class));
+                Intent intent = new Intent(Login.this,Home.class);
+                intent.putExtra("fragment","mabi3at");
+                startActivity(intent);
             }
         });
     }

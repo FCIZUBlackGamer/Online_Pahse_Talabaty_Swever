@@ -1,14 +1,15 @@
 package com.talabaty.swever.admin.Mabi3at;
 
-import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.talabaty.swever.admin.Home;
 import com.talabaty.swever.admin.R;
 
 public class MainHome extends Fragment {
@@ -31,6 +32,9 @@ public class MainHome extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        ((Home) getActivity())
+                .setActionBarTitle("المبيعات");
+//        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         final Intent intent = new Intent(getActivity(), Mabi3atNavigator.class);
         new_talabat.setOnClickListener(new View.OnClickListener() {
             @Override
