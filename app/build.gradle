@@ -2,6 +2,11 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
+
+    dataBinding {
+        enabled = true
+    }
+
     defaultConfig {
         applicationId "com.talabaty.swever.admin"
         minSdkVersion 17
@@ -16,6 +21,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {

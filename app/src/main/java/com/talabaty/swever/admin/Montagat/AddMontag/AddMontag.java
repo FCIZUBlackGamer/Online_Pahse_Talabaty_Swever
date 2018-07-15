@@ -102,7 +102,7 @@ public class AddMontag extends Fragment implements CompoundButton.OnCheckedChang
 
     void displayColor(int color) {
         final int size = colorCodes.size();
-//        ColorCode []x = new ColorCode[size];
+//        ContactItem []x = new ContactItem[size];
         if (size > 0) {
 //            temp.add(colorCodes);
             for (int i = 0; i < size; i++) {

@@ -13,8 +13,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.talabaty.swever.admin.Communication.CommunicationHome;
 import com.talabaty.swever.admin.Mabi3at.Mabi3atNavigator;
 import com.talabaty.swever.admin.Mabi3at.MainHome;
+import com.talabaty.swever.admin.Montagat.AddMontag.AddMontag;
 import com.talabaty.swever.admin.Montagat.FragmentMontag;
 
 public class Home extends AppCompatActivity
@@ -41,8 +43,10 @@ public class Home extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.frame_mabi3at, new FragmentMontag()).commit();
         } else if (intent.getStringExtra("fragment").equals("mabi3at")) {
             fragmentManager.beginTransaction().replace(R.id.frame_mabi3at, new MainHome()).commit();
-        }else {
-
+        } else if (intent.getStringExtra("fragment").equals("edit_control")){
+            fragmentManager.beginTransaction().replace(R.id.frame_mabi3at, new AddMontag()).commit();
+        } else if (intent.getStringExtra("fragment").equals("contact")){
+            fragmentManager.beginTransaction().replace(R.id.frame_mabi3at, new CommunicationHome()).commit();
         }
 
 //        getSupportActionBar().setTitle("المبيعات");
@@ -160,6 +164,7 @@ public class Home extends AppCompatActivity
             nav_Menu.findItem(R.id.nav_customer).setIcon(R.drawable.ic_people_off_24dp);
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_on_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
+            fragmentManager.beginTransaction().replace(R.id.frame_mabi3at, new CommunicationHome()).addToBackStack("CommunicationHome").commit();
             getSupportActionBar().setTitle("التواصل");
         } else if (id == R.id.nav_management) {
 

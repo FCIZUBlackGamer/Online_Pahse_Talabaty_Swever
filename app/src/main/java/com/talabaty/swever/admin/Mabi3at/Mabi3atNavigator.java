@@ -184,6 +184,9 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_on_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_off_24dp);
 //            getSupportActionBar().setTitle("التواصل");
+            Intent intent = new Intent(Mabi3atNavigator.this,Home.class);
+            intent.putExtra("fragment","contact");
+            startActivity(intent);
         } else if (id == R.id.nav_management) {
 
             nav_Menu.findItem(R.id.nav_mabe3at).setIcon(R.drawable.ic_shopping_basket_off_24dp);

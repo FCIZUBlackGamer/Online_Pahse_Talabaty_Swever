@@ -1,6 +1,6 @@
 package com.talabaty.swever.admin.Montagat.ControlMontag;
 
-import android.content.pm.ActivityInfo;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.talabaty.swever.admin.Home;
 import com.talabaty.swever.admin.Mabi3at.Mabi3atNavigator;
 import com.talabaty.swever.admin.R;
 
@@ -53,5 +54,20 @@ public class ControlMontag extends Fragment {
         ((Mabi3atNavigator) getActivity())
                 .setActionBarTitle("عمليات المنتجات");
 
+        MakeEditAction();
+
+    }
+
+    private void MakeEditAction() {
+        for (int x=0; x<10; x++){
+            edit[x].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), Home.class);
+                    intent.putExtra("fragment","edit_control");
+                    startActivity(intent);
+                }
+            });
+        }
     }
 }

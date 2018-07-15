@@ -44,7 +44,7 @@ public class FragmentMontag extends Fragment {
             @Override
             public void onClick(View v) {
 //                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                fragmentManager.beginTransaction().replace(R.id.frame_mabi3at,new AddMontag()).addToBackStack("AddMontag").commit();
+                fragmentManager.beginTransaction().replace(R.id.frame_mabi3at,new AddMontag()).addToBackStack("FragmentViewContacts").commit();
 //                Toast.makeText(getActivity(),"Done",Toast.LENGTH_SHORT).show();
             }
         });
