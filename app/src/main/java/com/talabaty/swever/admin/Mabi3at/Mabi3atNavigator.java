@@ -25,6 +25,9 @@ import com.talabaty.swever.admin.Mabi3at.RejectedReports.RejectedReports;
 import com.talabaty.swever.admin.Mabi3at.ReturnedTalabat.ReturnedTalabatFragment;
 import com.talabaty.swever.admin.Mabi3at.SailedReports.SailedReports;
 import com.talabaty.swever.admin.Mabi3atTrend.Mabi3atTrendReports;
+import com.talabaty.swever.admin.Managment.Employees.ControlEmployee.FragmentControlEmployee;
+import com.talabaty.swever.admin.Managment.Privilages.AddPrivilege.FragmentAddPrivilege;
+import com.talabaty.swever.admin.Managment.Privilages.ControlPrivilege.FragmentControlPrivilege;
 import com.talabaty.swever.admin.Montagat.ControlMontag.ControlMontag;
 import com.talabaty.swever.admin.Montagat.FragmentMontag;
 import com.talabaty.swever.admin.R;
@@ -70,6 +73,14 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
             fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new Mabi3atTrendReports()).commit();
         } else if (intent.getStringExtra("fragment").equals("report")) {
             fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new Fragment_agent_report()).commit();
+        } else if (intent.getStringExtra("fragment").equals("priv_add")) {
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new FragmentAddPrivilege()).commit();
+        } else if (intent.getStringExtra("fragment").equals("priv_control")) {
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new FragmentControlPrivilege()).commit();
+        } else if (intent.getStringExtra("fragment").equals("edit_priv")) {
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new FragmentAddPrivilege()).commit();
+        } else if (intent.getStringExtra("fragment").equals("emp_control")) {
+            fragmentManager.beginTransaction().replace(R.id.new_talabat_frame, new FragmentControlEmployee()).commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -196,6 +207,9 @@ public class Mabi3atNavigator extends AppCompatActivity implements NavigationVie
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_on_24dp);
 //            getSupportActionBar().setTitle("إداره الموظفين");
+            Intent intent = new Intent(Mabi3atNavigator.this,Home.class);
+            intent.putExtra("fragment","management");
+            startActivity(intent);
         } else if (id == R.id.nav_out) {
 
         }

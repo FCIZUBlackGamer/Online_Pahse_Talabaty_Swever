@@ -16,6 +16,10 @@ import android.view.MenuItem;
 import com.talabaty.swever.admin.Communication.CommunicationHome;
 import com.talabaty.swever.admin.Mabi3at.Mabi3atNavigator;
 import com.talabaty.swever.admin.Mabi3at.MainHome;
+import com.talabaty.swever.admin.Managment.Employees.AddEmployee.PersonalInfo;
+import com.talabaty.swever.admin.Managment.ManagmentHome;
+import com.talabaty.swever.admin.Managment.Privilages.AddPrivilege.FragmentAddPrivilege;
+import com.talabaty.swever.admin.Managment.Privilages.PrivilagesHome;
 import com.talabaty.swever.admin.Montagat.AddMontag.AddMontag;
 import com.talabaty.swever.admin.Montagat.FragmentMontag;
 
@@ -47,8 +51,15 @@ public class Home extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.frame_mabi3at, new AddMontag()).commit();
         } else if (intent.getStringExtra("fragment").equals("contact")){
             fragmentManager.beginTransaction().replace(R.id.frame_mabi3at, new CommunicationHome()).commit();
+        } else if (intent.getStringExtra("fragment").equals("management")){
+            fragmentManager.beginTransaction().replace(R.id.frame_mabi3at, new ManagmentHome()).commit();
+        } else if (intent.getStringExtra("fragment").equals("save")){
+            fragmentManager.beginTransaction().replace(R.id.frame_mabi3at, new PrivilagesHome()).addToBackStack(null).commit();
+        } else if (intent.getStringExtra("fragment").equals("emp_add")){
+            fragmentManager.beginTransaction().replace(R.id.frame_mabi3at, new PersonalInfo()).commit();
+        } else if (intent.getStringExtra("fragment").equals("edit_emp")){
+            fragmentManager.beginTransaction().replace(R.id.frame_mabi3at, new PersonalInfo()).commit();
         }
-
 //        getSupportActionBar().setTitle("المبيعات");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -175,6 +186,7 @@ public class Home extends AppCompatActivity
             nav_Menu.findItem(R.id.nav_contact).setIcon(R.drawable.ic_message_off_24dp);
             nav_Menu.findItem(R.id.nav_management).setIcon(R.drawable.ic_assistant_photo_on_24dp);
             getSupportActionBar().setTitle("إداره الموظفين");
+            fragmentManager.beginTransaction().replace(R.id.frame_mabi3at, new ManagmentHome()).addToBackStack("ManagmentHome").commit();
         } else if (id == R.id.nav_out) {
 
         }

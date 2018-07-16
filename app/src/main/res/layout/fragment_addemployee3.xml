@@ -1,0 +1,320 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/s"
+            android:background="@color/colorPrimary"
+            android:id="@+id/card"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="false"
+                app:contentPadding="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="55dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/add_employee_fragment_employeenameTxtTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="الصلاحيه"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/add_employee_fragment_employeenameTxt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:drawablePadding="5dp"
+                            android:gravity="right|center_vertical"
+                            style="@style/Base.Widget.AppCompat.DropDownItem.Spinner"
+                            android:padding="7dp"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textColorHint="@color/transgray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/add_employee_fragment_mailTxtTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="الإداره"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/add_employee_fragment_mailTxt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:drawablePadding="5dp"
+                            style="@style/Base.Widget.AppCompat.DropDownItem.Spinner"
+                            android:gravity="right|center_vertical"
+                            android:padding="7dp"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textColorHint="@color/transgray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/add_employee_fragment_employmentNameTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="وقت بدايه العمل"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/add_employee_fragment_employmentName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:drawablePadding="5dp"
+                            android:gravity="right|center_vertical"
+                            android:hint="وقت بدايه العمل"
+                            android:padding="7dp"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textColorHint="@color/transgray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/add_employee_fragment_employeeManagementTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="وقت نهايه العمل"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/add_employee_fragment_employeeManagement"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:drawablePadding="5dp"
+                            android:gravity="right|center_vertical"
+                            android:hint="وقت نهايه العمل"
+                            android:padding="7dp"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textColorHint="@color/transgray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/add_employee_fragment_employeeResponsibilitiesTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="الحد الأئتمانى"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/add_employee_fragment_employeeResponsibilities"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:drawablePadding="5dp"
+                            android:editable="false"
+                            android:gravity="right|center_vertical"
+                            android:hint="الحد الأئتمانى"
+                            android:inputType="numberDecimal"
+                            android:padding="7dp"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textColorHint="@color/transgray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/add_employee_fragment_employeeWorkplaceNameLinear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/add_employee_fragment_employeeWorkplaceNameTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="الرصيد"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/add_employee_fragment_employeeWorkplaceName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:drawablePadding="5dp"
+                            android:editable="false"
+                            android:gravity="right|center_vertical"
+                            android:padding="7dp"
+                            android:inputType="numberDecimal"
+                            android:hint="الرصيد"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textColorHint="@color/transgray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <CheckBox
+                            android:id="@+id/add_employee_fragment_employeeBranchNameTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right|center_vertical"
+                            android:text="عمال التوصيل"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginEnd="10dp">
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="تفريغ"
+                            android:background="@drawable/button_empty"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            android:layout_marginEnd="5dp"
+                            android:id="@+id/ignore"/>
+
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="حفظ"
+                            android:background="@drawable/button_save"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            android:id="@+id/save"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/s"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:text="تخصصات"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/card"
+            android:layout_marginBottom="30dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/first" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/second" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/third"
+                android:text="السابق"
+                android:background="@drawable/button_shape"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>
+

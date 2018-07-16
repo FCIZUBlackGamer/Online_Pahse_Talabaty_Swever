@@ -1,0 +1,369 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/s"
+            android:background="@color/colorPrimary"
+            android:id="@+id/card"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                app:cardBackgroundColor="@color/colorPrimaryDark"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="false"
+                app:contentPadding="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="55dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/add_employee_fragment_employeenameTxtTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="الراتب الأساسى"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/add_employee_fragment_employeenameTxt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:drawablePadding="5dp"
+                            android:gravity="right|center_vertical"
+                            android:hint="الراتب الاساسى"
+                            android:inputType="numberDecimal"
+                            android:padding="7dp"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textColorHint="@color/transgray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/add_employee_fragment_mailTxtTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="الراتب الاضافى"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/add_employee_fragment_mailTxt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:drawablePadding="5dp"
+                            android:inputType="numberDecimal"
+                            android:gravity="right|center_vertical"
+                            android:hint="الراتب الاضافى"
+                            android:padding="7dp"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textColorHint="@color/transgray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/add_employee_fragment_employmentNameTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="بدل تنقل"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/add_employee_fragment_employmentName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:drawablePadding="5dp"
+                            android:gravity="right|center_vertical"
+                            android:hint="بدل تنقل"
+                            android:padding="7dp"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textColorHint="@color/transgray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/add_employee_fragment_employeeManagementTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="بدل سكن"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/add_employee_fragment_employeeManagement"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:drawablePadding="5dp"
+                            android:gravity="right|center_vertical"
+                            android:hint="بدل سكن"
+                            android:padding="7dp"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textColorHint="@color/transgray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/add_employee_fragment_employeeResponsibilitiesTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="بدل تأمينات"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/add_employee_fragment_employeeResponsibilities"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:drawablePadding="5dp"
+                            android:editable="false"
+                            android:gravity="right|center_vertical"
+                            android:hint="بدل تأمينات"
+                            android:inputType="numberDecimal"
+                            android:padding="7dp"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textColorHint="@color/transgray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/add_employee_fragment_employeeWorkplaceNameLinear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/add_employee_fragment_employeeWorkplaceNameTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="رقم التأمينات"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/add_employee_fragment_employeeWorkplaceName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:drawablePadding="5dp"
+                            android:editable="false"
+                            android:gravity="right|center_vertical"
+                            android:padding="7dp"
+                            android:inputType="number"
+                            android:hint="رقم التأمينات"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textColorHint="@color/transgray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/add_employee_fragment_employeeBranchNameTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="بدل عدوى"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/add_employee_fragment_employeeBranchName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:drawablePadding="5dp"
+                            android:gravity="right|center_vertical"
+                            android:hint="بدل عدوى"
+                            android:inputType="numberDecimal"
+                            android:padding="7dp"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textColorHint="@color/transgray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/add_employee_fragment_employeePhoneTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="عدد ساعات العمل"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/add_employee_fragment_employeePhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:drawablePadding="5dp"
+                            android:gravity="right|center_vertical"
+                            android:hint="عدد ساعات العمل"
+                            android:padding="7dp"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textColorHint="@color/transgray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/add_employee_fragment_employeePhoneitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="بدل زياده ساعات العمل"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/add_employee_fragment_emloyeePhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:drawablePadding="5dp"
+                            android:gravity="right|center_vertical"
+                            android:hint="بدل زياده ساعات العمل"
+                            android:padding="7dp"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/colorPrimaryLight"
+                            android:textColorHint="@color/transgray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/s"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:text="الماليه"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/card"
+            android:layout_marginBottom="30dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/first"
+                android:text="التالى"
+                android:background="@drawable/button_shape"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/third"
+                android:text="السابق"
+                android:background="@drawable/button_shape"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>
+
