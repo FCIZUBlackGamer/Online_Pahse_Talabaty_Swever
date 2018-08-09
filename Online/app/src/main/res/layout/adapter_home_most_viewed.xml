@@ -4,16 +4,12 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:id="@+id/company_logo"
-            android:src="@drawable/apple"
-            android:layout_marginBottom="20dp"/>
+            android:src="@drawable/apple"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -23,7 +19,8 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
             android:id="@+id/company_name"
             android:textStyle="italic"
-            android:layout_above="@id/company_rate"/>
+            android:layout_above="@id/company_rate"
+            />
 
         <RatingBar
             android:layout_width="wrap_content"
@@ -41,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/company_logo"
-            android:background="@android:color/black"
+            android:background="@android:color/darker_gray"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -58,7 +55,7 @@
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/ic_home_black_24dp" />
+                        android:src="@drawable/contact_location" />
 
                     <TextView
                         android:id="@+id/company_address"
@@ -81,7 +78,7 @@
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/ic_phone_black_24dp" />
+                        android:src="@drawable/contact_phone" />
 
                     <TextView
                         android:id="@+id/company_phone"
@@ -110,7 +107,7 @@
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:src="@drawable/ic_mail_outline_black_24dp" />
+                        android:src="@drawable/contact_message" />
 
                     <TextView
                         android:id="@+id/company_email"
@@ -126,7 +123,7 @@
 
             </LinearLayout>
         </LinearLayout>
-    </RelativeLayout>
+
 
 
 </LinearLayout>
