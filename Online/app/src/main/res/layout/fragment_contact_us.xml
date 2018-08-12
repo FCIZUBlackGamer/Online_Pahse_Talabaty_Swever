@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            tools:context=".ContactUs.FragmentContactUs" />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/background_button"
+            android:drawableLeft="@drawable/ic_location_on_black_24dp"
+            android:drawablePadding="10dp"
+            android:gravity="end|center"
+            android:fontFamily="@font/changamedium"
+            android:padding="5dp"
+            android:text="العنوان"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/website"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/background_button"
+            android:drawableLeft="@drawable/web"
+            android:drawablePadding="10dp"
+            android:gravity="start|center"
+            android:fontFamily="@font/changamedium"
+            android:padding="5dp"
+            android:text="www.google.com"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:padding="5dp"
+            android:background="@drawable/background_button"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/fb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_button"
+                android:drawableLeft="@drawable/fb"
+                android:drawablePadding="10dp"
+                android:gravity="start|center"
+                android:text="sweverEg"
+                android:fontFamily="@font/changamedium"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/twitter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_button"
+                android:drawableLeft="@drawable/twitter"
+                android:drawablePadding="10dp"
+                android:gravity="start|center"
+                android:fontFamily="@font/changamedium"
+                android:padding="5dp"
+                android:text="sweverEg"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/insta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/changamedium"
+                android:background="@drawable/background_button"
+                android:drawableLeft="@drawable/insta"
+                android:drawablePadding="10dp"
+                android:gravity="start|center"
+                android:padding="5dp"
+                android:text="sweverEg"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            map:cardElevation="15dp"
+            map:cardBackgroundColor="@color/white"
+            map:cardCornerRadius="11dp"
+            android:layout_margin="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/background_edittext"
+                    android:hint="أسمك"
+                    android:fontFamily="@font/changamedium"
+                    android:padding="10dp" />
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/background_edittext"
+                    android:hint="بريدك الإلكترونى"
+                    android:padding="10dp" />
+
+                <EditText
+                    android:id="@+id/message_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:fontFamily="@font/changamedium"
+                    android:background="@drawable/background_edittext"
+                    android:hint="عنوان الرسالة"
+                    android:padding="10dp" />
+
+                <EditText
+                    android:id="@+id/message_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:lines="5"
+                    android:minLines="4"
+                    android:maxLines="6"
+                    android:fontFamily="@font/changamedium"
+                    android:gravity="top"
+                    android:background="@drawable/background_edittext"
+                    android:hint="محتوى الرسالة"
+                    android:padding="10dp" />
+
+                <Button
+                    android:id="@+id/send"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/background_button"
+                    android:padding="10dp"
+                    android:text="حفظ"
+                    android:fontFamily="@font/changamedium"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</ScrollView>

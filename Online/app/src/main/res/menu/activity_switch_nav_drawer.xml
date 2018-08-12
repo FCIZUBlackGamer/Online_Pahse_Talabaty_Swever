@@ -7,34 +7,42 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_camera"
+            android:fontFamily="@font/changamedium"
             android:title="الصفحة الرئيسية" />
         <item
             android:id="@+id/nav_montag"
             android:icon="@drawable/ic_menu_gallery"
+            android:fontFamily="@font/changamedium"
             android:title="منتجات" />
         <item
             android:id="@+id/nav_category"
             android:icon="@drawable/ic_menu_gallery"
+            android:fontFamily="@font/changamedium"
             android:title="مجالات" />
         <item
             android:id="@+id/nav_contact"
             android:icon="@drawable/ic_menu_slideshow"
+            android:fontFamily="@font/changamedium"
             android:title="جهات العمل" />
         <item
             android:id="@+id/nav_work_with_us"
             android:icon="@drawable/ic_menu_manage"
+            android:fontFamily="@font/changamedium"
             android:title="أشترك معنا" />
         <item
             android:id="@+id/nav_call_us"
             android:icon="@drawable/ic_menu_gallery"
+            android:fontFamily="@font/changamedium"
             android:title="أتصل بنا" />
         <item
             android:id="@+id/nav_car_shop"
             android:icon="@drawable/ic_menu_slideshow"
+            android:fontFamily="@font/changamedium"
             android:title="عربه الشراء" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_menu_manage"
+            android:fontFamily="@font/changamedium"
             android:title="تسجيل خروج" />
     </group>
 

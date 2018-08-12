@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:isScrollContainer="true"
+            android:id="@+id/list"
+            android:orientation="horizontal"
+            android:scrollbarSize="3dp"
+            android:scrollbars="horizontal|vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:isScrollContainer="true"
+                    android:scrollbars="horizontal|vertical"
+                    android:stretchColumns="0,1,2,3,4,5,6">
+
+                    <TableRow
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FFFFFF">
+
+                        <TableRow
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="#000000">
+
+
+                        </TableRow>
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:background="@color/colorPrimary">
+
+                        <TextView
+                            android:layout_width="160dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="0"
+                            android:gravity="center"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:layout_width="160dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:gravity="center"
+                            android:text=" الحالة "
+                            android:fontFamily="@font/changamedium"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:layout_width="160dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="2"
+                            android:gravity="center"
+                            android:text=" الكمية "
+                            android:fontFamily="@font/changamedium"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:layout_width="160dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="3"
+                            android:gravity="center"
+                            android:text="اللون"
+                            android:fontFamily="@font/changamedium"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:layout_width="200dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="4"
+                            android:gravity="center"
+                            android:text=" صورة المنتج "
+                            android:fontFamily="@font/changamedium"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:layout_width="160dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="5"
+                            android:gravity="center"
+                            android:text=" أسم المنتج "
+                            android:fontFamily="@font/changamedium"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="6"
+                            android:gravity="center"
+                            android:text="م"
+                            android:fontFamily="@font/changamedium"
+                            android:textColor="@color/white" />
+                    </TableRow>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/rec"/>
+
+
+                </TableLayout>
+
+                <!--<LinearLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_marginEnd="10dp"-->
+                <!--android:layout_marginTop="50dp"-->
+                <!--android:orientation="vertical">-->
+
+                <!--<CheckBox-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:buttonTint="@color/colorPrimaryLight"-->
+                <!--android:text="ترتيب ابجدى"-->
+                <!--android:id="@+id/order_alpha"/>-->
+
+                <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="ترتيب تصاعدى"-->
+                <!--android:textSize="18sp"-->
+                <!--android:textColor="@color/colorPrimaryDark"-->
+                <!--android:padding="2dp"/>-->
+
+                <!--<Spinner-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:buttonTint="@color/colorPrimaryLight"-->
+                <!--android:entries="@array/order"-->
+                <!--android:id="@+id/order_up"/>-->
+
+                <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="ترتيب تنازلى"-->
+                <!--android:textSize="18sp"-->
+                <!--android:textColor="@color/colorPrimaryDark"-->
+                <!--android:padding="2dp"/>-->
+
+                <!--<Spinner-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:buttonTint="@color/colorPrimaryLight"-->
+                <!--android:entries="@array/order"-->
+                <!--android:id="@+id/order_down"/>-->
+                <!--</LinearLayout>-->
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/list"
+            android:gravity="center"
+            android:id="@+id/buy"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/background_button"
+            android:text="شراء"
+            android:fontFamily="@font/changasemibold"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_margin="10dp"/>
+        <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_marginEnd="10dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:layout_marginEnd="3dp"-->
+        <!--android:text="التالى"-->
+        <!--android:fontFamily="@font/changamedium"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:gravity="center"-->
+        <!--android:id="@+id/next"-->
+        <!--android:textColor="@color/colorPrimaryDark"-->
+        <!--android:textSize="18sp"-->
+        <!--android:textStyle="bold" />-->
+
+        <!--<FrameLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_vertical">-->
+
+        <!--<android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--android:layout_width="50dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:elevation="0dp"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--app:backgroundTint="@color/gray"-->
+        <!--app:borderWidth="0dp"-->
+        <!--tools:ignore="UnusedAttribute" />-->
+
+        <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_marginStart="20dp"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:elevation="7dp"-->
+        <!--android:text="2"-->
+        <!--android:fontFamily="@font/changamedium"-->
+        <!--android:id="@+id/item_num"-->
+        <!--android:textAlignment="center"-->
+        <!--android:gravity="top"-->
+        <!--android:layout_gravity="top"-->
+        <!--android:textColor="@color/red"-->
+        <!--android:textSize="25sp"-->
+        <!--tools:ignore="UnusedAttribute" />-->
+
+        <!--</FrameLayout>-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:layout_marginStart="3dp"-->
+        <!--android:text="السابق"-->
+        <!--android:gravity="center"-->
+        <!--android:fontFamily="@font/changamedium"-->
+        <!--android:id="@+id/previous"-->
+        <!--android:textColor="@color/colorPrimaryDark"-->
+        <!--android:textSize="18sp"-->
+        <!--android:textStyle="bold" />-->
+        <!--</LinearLayout>-->
+    </RelativeLayout>
+</ScrollView>

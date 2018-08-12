@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/id_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/background_edittext"
+            android:entries="@array/id_type"
+            android:fontFamily="@font/changamedium"
+            android:padding="20dp" />
+
+        <Button
+            android:id="@+id/id_open"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/background_button"
+            android:fontFamily="@font/changamedium"
+            android:padding="10dp"
+            android:text="صوره البطاقه الشخصيه او جواز السفر"
+            android:textColor="@color/transgray"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/id_image"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/apple" />
+
+        <EditText
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/background_edittext"
+            android:fontFamily="@font/changamedium"
+            android:hint="رقم التليفون"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/national_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/background_edittext"
+            android:fontFamily="@font/changamedium"
+            android:hint="رقم الهويه"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/end_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/background_edittext"
+            android:fontFamily="@font/changamedium"
+            android:hint="تاريخ انتهاء الاشتراك"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/background_button"
+            android:fontFamily="@font/changamedium"
+            android:text="حفظ"
+            android:textColor="@color/transgray"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+</ScrollView>

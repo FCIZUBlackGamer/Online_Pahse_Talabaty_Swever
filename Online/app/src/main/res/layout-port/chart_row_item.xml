@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:isScrollContainer="true"
+            android:scrollbars="horizontal|vertical"
+            android:stretchColumns="0,1,2,3,4,5,6">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:background="@color/white">
+
+                <View android:layout_height="match_parent"
+                    android:layout_width="3dp"
+                    android:background="@color/gray"/>
+
+                <ImageView
+                    android:layout_width="160dp"
+                    android:maxLines="6"
+                    android:maxWidth="160dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/delete"
+                    android:layout_column="0"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:id="@+id/ignore" />
+
+                <View android:layout_height="match_parent"
+                    android:layout_width="3dp"
+                    android:background="@color/gray"/>
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:maxLines="6"
+                    android:maxWidth="160dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="1"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:id="@+id/state"
+                    android:text="Good"
+                    android:fontFamily="@font/changaregular"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:maxLines="6"
+                    android:maxWidth="160dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="1"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:id="@+id/amount"
+                    android:text="3"
+                    android:fontFamily="@font/changasemibold"
+                    android:textSize="16sp"/>
+
+                <View android:layout_height="match_parent"
+                    android:layout_width="3dp"
+                    android:background="@color/gray"/>
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:maxLines="6"
+                    android:maxWidth="160dp"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/changaregular"
+                    android:layout_column="2"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:id="@+id/color"
+                    android:text="اخضر" />
+
+                <View android:layout_height="match_parent"
+                    android:layout_width="3dp"
+                    android:background="@color/gray"/>
+
+                <ImageView
+                    android:layout_width="200dp"
+                    android:maxLines="6"
+                    android:maxWidth="160dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="3"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:id="@+id/image"
+                    android:src="@drawable/apple"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <View android:layout_height="match_parent"
+                    android:layout_width="3dp"
+                    android:background="@color/gray"/>
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:maxLines="6"
+                    android:maxWidth="160dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="4"
+                    android:gravity="center"
+                    android:textSize="17sp"
+                    android:text="موز"
+                    android:fontFamily="@font/changaregular"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:id="@+id/name" />
+
+                <View android:layout_height="match_parent"
+                    android:layout_width="3dp"
+                    android:background="@color/gray"/>
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_column="5"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:text="1"
+                    android:layout_gravity="center"
+                    android:id="@+id/id"
+                    android:fontFamily="@font/changasemibold"
+                    android:textSize="16sp" />
+
+            </TableRow>
+        </TableLayout>
+    </HorizontalScrollView>
+</LinearLayout>

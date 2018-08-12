@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        android:id="@+id/move"/>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,32 +11,33 @@
 
 
         <ImageView
-            android:id="@+id/company_logo"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:src="@drawable/apple" />
+            android:id="@+id/company_logo"
+            android:src="@drawable/apple"/>
 
         <TextView
-            android:id="@+id/company_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/company_rate"
             android:gravity="center"
             android:text="Apple"
             android:fontFamily="@font/changamedium"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Headline"
-            android:textStyle="italic" />
+            android:id="@+id/company_name"
+            android:textStyle="italic"
+            android:layout_above="@id/company_rate"
+            />
 
         <RatingBar
-            android:id="@+id/company_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/details"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
             android:numStars="5"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:id="@+id/company_rate"
+            android:layout_centerHorizontal="true"
             android:progressTint="@color/colormontagat"
-            android:textAlignment="center" />
+            android:layout_above="@id/details"/>
 
         <LinearLayout
             android:id="@+id/details"
@@ -48,6 +45,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/company_logo"
             android:background="@android:color/darker_gray"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -97,8 +96,8 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="5dp"
                         android:text="01020118565"
-                        android:textAlignment="center"
                         android:fontFamily="@font/changamedium"
+                        android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -137,5 +136,18 @@
         </LinearLayout>
 
 
+
     </LinearLayout>
-</RelativeLayout>
+
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:columnWidth="180dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="24dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="spacingWidthUniform"
+        />
+</LinearLayout>

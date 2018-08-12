@@ -20,16 +20,19 @@
         <android.support.design.widget.TabItem
             android:id="@+id/tab1"
             style="@style/tab_item"
+            android:fontFamily="@font/changamedium"
             android:text="أحدث المنتجات" />
 
         <android.support.design.widget.TabItem
             android:id="@+id/tab2"
             style="@style/tab_item"
+            android:fontFamily="@font/changamedium"
             android:text="الأكثر زيارة" />
 
         <android.support.design.widget.TabItem
             android:id="@+id/tab3"
             style="@style/tab_item"
+            android:fontFamily="@font/changamedium"
             android:text="الأكثر طلبا" />
 
     </android.support.design.widget.TabLayout>

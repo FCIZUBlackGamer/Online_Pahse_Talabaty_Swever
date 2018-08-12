@@ -25,4 +25,8 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="NavigationDrawerStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:typeface">monospace</item>
+    </style>
 </resources>

@@ -4,13 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
     android:background="@color/gray"
     tools:context=".Login">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="تسجيل دخول"
+        android:gravity="center_horizontal"
+        android:id="@+id/title"
+        android:textColor="@color/colorPrimary"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        android:fontFamily="@font/changaextrabbold"/>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="15dp"
+        android:layout_below="@id/title"
         app:cardPreventCornerOverlap="true"
         app:cardElevation="15dp"
         android:background="@color/transgray"
@@ -25,8 +40,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@color/white"
+                android:background="@drawable/background_edittext"
                 android:padding="10dp"
+                android:fontFamily="@font/changaregular"
                 android:inputType="textEmailAddress"
                 android:lines="1"
                 android:minLines="1"
@@ -37,8 +53,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@color/white"
+                android:background="@drawable/background_edittext"
                 android:padding="10dp"
+                android:fontFamily="@font/changaregular"
                 android:inputType="textVisiblePassword"
                 android:lines="1"
                 android:minLines="1"
@@ -56,6 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="تذكرنى"
+                    android:fontFamily="@font/changaregular"
                     android:textSize="20sp"/>
 
                 <CheckBox
@@ -69,43 +87,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textColor="@color/colorPrimary"
-                android:background="@color/gray"
+                android:textColor="@color/white"
+                android:fontFamily="@font/changaregular"
+                android:background="@drawable/background_button"
                 android:text="تسجيل"
                 android:id="@+id/login_button"
                 android:textSize="18sp"
                 android:layout_marginBottom="5dp"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="إنشاء حساب جديد ؟"
+                android:id="@+id/new_account"
+                android:textColor="@color/colorPrimary"
+                android:layout_gravity="center"
+                android:fontFamily="@font/changaextrabbold"/>
+
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:layout_alignParentBottom="true">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="إنشاء حساب"
-            android:textSize="20sp"
-            android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
-            android:layout_margin="10dp"/>
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textSize="18sp"
-            android:text="هل لديك حساب ؟ "/>
-    </LinearLayout>
 
 
 </RelativeLayout>
