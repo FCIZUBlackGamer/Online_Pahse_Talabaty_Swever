@@ -1,4 +1,4 @@
-package talabaty.swever.com.online.Home.MostTrend;
+package talabaty.swever.com.online.Fields.MostTrend;
 
 public class Product {
     int id;

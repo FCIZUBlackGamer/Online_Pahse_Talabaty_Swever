@@ -1,0 +1,97 @@
+package talabaty.swever.com.online.SubCategory;
+
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
+import talabaty.swever.com.online.Fields.MostTrend.Product;
+import talabaty.swever.com.online.ProductDetails.FragmentProductDetails;
+import talabaty.swever.com.online.R;
+
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Vholder> {
+
+    private final Context mContext;
+    private final List<Product> product;
+    FragmentManager fragmentManager;
+
+    public ProductAdapter(Context context, List<Product> products) {
+        this.mContext = context;
+        this.product = products;
+    }
+
+    @NonNull
+    @Override
+    public Vholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_subcategory_product, parent, false);
+        fragmentManager = ((AppCompatActivity) mContext).getSupportFragmentManager();
+        return new Vholder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull Vholder holder, final int position) {
+
+        holder.name.setText(product.get(position).getName());
+        holder.ratingBar.setNumStars(5);
+        holder.ratingBar.setRating(product.get(position).getRate());
+        holder.price.setText(String.valueOf(product.get(position).getPrice()) + " EG");
+        if (product.get(position).getSell() != 0) {
+            holder.sell.setText("%" + String.valueOf(product.get(position).getSell()));
+            holder.sell_image.setVisibility(View.VISIBLE);
+        }else {
+            holder.sell_image.setVisibility(View.INVISIBLE);
+        }
+        if (!product.get(position).getImage_url().isEmpty()) {
+            Picasso.with(mContext).load(product.get(position).getImage_url()).into(holder.image);
+        }
+
+        holder.action.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frame_home,new FragmentProductDetails().setId(product.get(position).getId())).addToBackStack("FragmentProductDetails").commit();
+            }
+        });
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return product.size();
+    }
+
+    public class Vholder extends RecyclerView.ViewHolder {
+        TextView name;
+        TextView price;
+        TextView sell;
+        RatingBar ratingBar;
+        ImageView image;
+        ImageView sell_image;
+        Button action;
+
+        public Vholder(View view) {
+            super(view);
+            this.name = view.findViewById(R.id.product_name);
+            this.price = view.findViewById(R.id.product_price);
+            this.image = view.findViewById(R.id.product_image);
+            this.sell = view.findViewById(R.id.sell);
+            this.ratingBar = view.findViewById(R.id.product_rat);
+            this.sell_image = view.findViewById(R.id.sell_image);
+            this.action = view.findViewById(R.id.action);
+        }
+
+    }
+
+}

@@ -1,4 +1,4 @@
-package talabaty.swever.com.online.Home;
+package talabaty.swever.com.online.Fields;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,11 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import talabaty.swever.com.online.Home.MostTrend.FragmentMostTrend;
-import talabaty.swever.com.online.Home.MostViewed.FragmentMostViewed;
+import talabaty.swever.com.online.Fields.MostTrend.FragmentMostTrend;
+import talabaty.swever.com.online.Fields.MostViewed.FragmentMostViewed;
 import talabaty.swever.com.online.R;
 
-public class FragmentHome extends Fragment {
+public class FragmentFields extends Fragment {
 
     private TabLayout tabLayout;
     ViewPager viewPager = null;
@@ -81,11 +81,11 @@ public class FragmentHome extends Fragment {
         public Fragment getItem(int position) {
             Fragment fragment = null;
             if (position == 0) {
-                fragment = new FragmentMostTrend();
+                fragment = new FragmentMostTrend().setType("trend");
             } else if (position == 1) {
-                fragment = new FragmentMostViewed();
+                fragment = new FragmentMostViewed().setType("trend");
             } else if (position == 2) {
-                fragment = new FragmentMostTrend();
+                fragment = new FragmentMostTrend().setType("trend");
             }
             return fragment;
         }

@@ -1,4 +1,4 @@
-package talabaty.swever.com.online.Contact;
+package talabaty.swever.com.online.Category;
 
 import android.app.ProgressDialog;
 import android.graphics.Color;
@@ -7,18 +7,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.Request;
@@ -35,20 +34,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import talabaty.swever.com.online.Fields.MostTrend.MontagAdapter;
 import talabaty.swever.com.online.Fields.MostTrend.Product;
 import talabaty.swever.com.online.R;
 
-public class FragmentHomeContacts extends Fragment {
+public class FragmentHomeCategory extends Fragment {
 
-
-    RecyclerView gridView;
-    ContactAdapter booksAdapter;
+    GridView gridView;
+    MontagAdapter booksAdapter;
     List<Product> products;
-
     int temp_first, temp_last;
     TextView next, num, last;
     int item_num, page_num;
@@ -59,24 +55,22 @@ public class FragmentHomeContacts extends Fragment {
     RatingBar bar;
     ImageView logo;
 
-    public static FragmentHomeContacts setData(String phone, String email, String address, String name, String logo, float bar) {
-        FragmentHomeContacts fragmentHomeContacts = new FragmentHomeContacts();
-        phon = phone;
-        emai = email;
-        addres = address;
-        nam = name;
-        log = logo;
-        ba = bar;
+    public static FragmentHomeCategory setData(String phone, String email, String address, String name, String logo, float bar){
+        FragmentHomeCategory fragmentHomeContacts = new FragmentHomeCategory();
+        phon =phone;
+        emai =email;
+        addres =address;
+        nam =name;
+        log =logo;
+        ba =bar;
         return fragmentHomeContacts;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_contacts_home, container, false);
-        gridView = (RecyclerView) view.findViewById(R.id.gridview);
-        gridView.setHasFixedSize(true);
-        gridView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true));
+        View view = inflater.inflate(R.layout.fragment_contacts_home, container,false);
+        gridView = (GridView) view.findViewById(R.id.gridview);
         next = view.findViewById(R.id.next);
         last = view.findViewById(R.id.previous);
         num = view.findViewById(R.id.item_num);
@@ -136,19 +130,31 @@ public class FragmentHomeContacts extends Fragment {
             }
         });
 
-
-        /** Adapter Montag*/
-
         loadData(0, "1");
 
-    }
+        /** Adapter Montag*/
+//        for (int x=0; x<20; x++){
+//            Product r = new Product(0, "IPhone", "",12000, 20,3);
+//            products[x] = r;
+//        }
+//        booksAdapter = new MontagAdapter(getActivity(), products);
+//        gridView.setAdapter(booksAdapter);
+//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Product book = products[position];
+//                //Todo: Make Some Action
+//                book.getId();
+//            }
+//        });
 
+    }
     private void loadData(final int x, final String type) {
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("جارى تحميل البيانات ...");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Products/MostVisited",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://onlineapi.sweverteam.com/Products/MostVisited?type="+type+"&x="+x+"&count=80",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -186,27 +192,24 @@ public class FragmentHomeContacts extends Fragment {
                                     products.add(r);
                                     temp = object1.getInt("Id");
 
+                                    if (r.equals("1")) {
+                                        page_num++;
+                                    } else if (r.equals("0")) {
+                                        page_num--;
+                                    }
 
                                 }
-
-                                if (type.equals("1")) {
-                                    page_num++;
-                                } else if (type.equals("0")) {
-                                    page_num--;
-                                }
-
-                                booksAdapter = new ContactAdapter(getActivity(), products, new ContactAdapter.OnItemClickListener(){
-
+                                booksAdapter = new MontagAdapter(getActivity(), products);
+                                gridView.setAdapter(booksAdapter);
+                                item_num = temp;
+                                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
-                                    public void onItemClick(Product item) {
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        Product book = products.get(position);
                                         //Todo: Make Some Action
-                                        item.getId();
+                                        book.getId();
                                     }
                                 });
-                                gridView.setAdapter(booksAdapter);
-
-                                item_num = temp;
-
                                 num.setText(page_num + "");
                             } else {
                                 Toast toast = Toast.makeText(getActivity(), "لا توجد منتجات جديده", Toast.LENGTH_SHORT);
@@ -230,17 +233,7 @@ public class FragmentHomeContacts extends Fragment {
                 else if (error instanceof TimeoutError)
                     Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
             }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("type", type + "");
-                map.put("x", x + "");
-                map.put("count", 80 + "");
-                map.put("token", "?za[ZbGNz2B}MXYZ");
-                return map;
-            }
-        };
+        });
 //        Volley.newRequestQueue(getActivity()).add(stringRequest);
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,

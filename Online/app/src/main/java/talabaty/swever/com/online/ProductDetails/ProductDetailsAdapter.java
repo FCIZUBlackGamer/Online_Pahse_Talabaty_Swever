@@ -39,8 +39,6 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<ProductDetailsAd
 
         if (!talabats.get(position).getImage().isEmpty()) {
             Picasso.with(context).load(talabats.get(position).getImage()).into(holder.image);
-            //Todo: Make Action with Id
-            talabats.get(position).getId();
         }
 
 

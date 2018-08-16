@@ -25,6 +25,11 @@
             android:fontFamily="@font/changamedium"
             android:title="جهات العمل" />
         <item
+            android:id="@+id/nav_nearest"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:fontFamily="@font/changamedium"
+            android:title="الأقرب" />
+        <item
             android:id="@+id/nav_work_with_us"
             android:icon="@drawable/ic_menu_manage"
             android:fontFamily="@font/changamedium"

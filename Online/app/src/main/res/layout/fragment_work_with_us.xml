@@ -8,6 +8,19 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <!--<Button-->
+        <!--android:id="@+id/open_program"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:background="@drawable/background_button"-->
+        <!--android:fontFamily="@font/changamedium"-->
+        <!--android:text="ذهاب إلى صفحه الاشتراك"-->
+        <!--android:textColor="@color/transgray"-->
+        <!--android:textSize="18sp" />-->
+
+
+
         <Spinner
             android:id="@+id/id_type"
             android:layout_width="match_parent"

@@ -1,0 +1,53 @@
+package talabaty.swever.com.online.SubCategory;
+
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import talabaty.swever.com.online.Fields.MostViewed.Contact;
+import talabaty.swever.com.online.R;
+
+public class FragmentContact extends Fragment {
+
+    RecyclerView recyclerView_contact;
+    RecyclerView.Adapter adapter_contact;
+    static List<Contact> contact_List;
+
+    public static FragmentContact setList(List<Contact> contact_Lis){
+        FragmentContact contact = new FragmentContact();
+        contact_List = new ArrayList<>();
+        contact_List = contact_Lis;
+        return contact;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_subcategory_recycleview_contact, container, false);
+        /** Contact Rec*/
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView_contact = (RecyclerView) view.findViewById(R.id.rec_contact);
+        recyclerView_contact.setLayoutManager(layoutManager);
+
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        /** contact_List Is Already Filled From FragmentSubCategory() */
+        adapter_contact = new ContactAdapter(getActivity(),contact_List);
+        recyclerView_contact.setAdapter(adapter_contact);
+
+    }
+}

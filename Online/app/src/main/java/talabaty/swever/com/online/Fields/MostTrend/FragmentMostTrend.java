@@ -1,4 +1,4 @@
-package talabaty.swever.com.online.Contact;
+package talabaty.swever.com.online.Fields.MostTrend;
 
 import android.app.ProgressDialog;
 import android.graphics.Color;
@@ -7,14 +7,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RatingBar;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +27,6 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,76 +37,61 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import talabaty.swever.com.online.Fields.MostTrend.Product;
+import talabaty.swever.com.online.ProductDetails.FragmentProductDetails;
 import talabaty.swever.com.online.R;
+import talabaty.swever.com.online.Switch_nav;
 
-public class FragmentHomeContacts extends Fragment {
+public class FragmentMostTrend extends Fragment {
 
-
-    RecyclerView gridView;
-    ContactAdapter booksAdapter;
+    GridView gridView;
+    MontagAdapter booksAdapter;
     List<Product> products;
-
     int temp_first, temp_last;
     TextView next, num, last;
     int item_num, page_num;
-    static String phon, emai, addres, nam, log;
-    static float ba;
 
-    TextView phone, email, address, name;
-    RatingBar bar;
-    ImageView logo;
+    FragmentManager fragmentManager;
 
-    public static FragmentHomeContacts setData(String phone, String email, String address, String name, String logo, float bar) {
-        FragmentHomeContacts fragmentHomeContacts = new FragmentHomeContacts();
-        phon = phone;
-        emai = email;
-        addres = address;
-        nam = name;
-        log = logo;
-        ba = bar;
-        return fragmentHomeContacts;
+    // http://onlineapi.sweverteam.com/Products/MostVisited/list?type=1&x=0&count=10&token=?za[ZbGNz2B}MXYZ
+    static String Type = "null";
+    String Link;
+    public FragmentMostTrend setType(String type){
+        FragmentMostTrend trend = new FragmentMostTrend();
+        Type = type;
+        return trend;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_contacts_home, container, false);
-        gridView = (RecyclerView) view.findViewById(R.id.gridview);
-        gridView.setHasFixedSize(true);
-        gridView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true));
+        View view = inflater.inflate(R.layout.fragment_home_most_trend, container, false);
+        gridView = (GridView) view.findViewById(R.id.gridview);
         next = view.findViewById(R.id.next);
         last = view.findViewById(R.id.previous);
         num = view.findViewById(R.id.item_num);
         item_num = page_num = 0;
         num.setText(1 + "");
         products = new ArrayList<>();
-        phone = view.findViewById(R.id.company_phone);
-        email = view.findViewById(R.id.company_email);
-        name = view.findViewById(R.id.company_name);
-        address = view.findViewById(R.id.company_address);
-        bar = view.findViewById(R.id.company_rate);
-        logo = view.findViewById(R.id.company_logo);
+        fragmentManager = getFragmentManager();
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
-        /** Basic Info*/
-        phone.setText(phon);
-        name.setText(nam);
-        email.setText(emai);
-        address.setText(addres);
-        bar.setRating(ba);
-        if (!log.isEmpty()) {
-            Picasso.with(getActivity()).load(log).into(logo);
-        }
-
         temp_first = 0;
         temp_last = 10;
         page_num = 0;
+
+        if (Type.equals("trend")) {
+            ((Switch_nav) getActivity())
+                    .setActionBarTitle("المنتجات الأكثر مبيعا");
+            Link = "http://onlineapi.sweverteam.com/Products/MostVisited/list";
+        }else {
+            ((Switch_nav) getActivity())
+                    .setActionBarTitle("المنتجات ");
+            Link = "http://onlineapi.sweverteam.com/Products/List";
+        }
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,9 +119,6 @@ public class FragmentHomeContacts extends Fragment {
             }
         });
 
-
-        /** Adapter Montag*/
-
         loadData(0, "1");
 
     }
@@ -148,7 +128,7 @@ public class FragmentHomeContacts extends Fragment {
         progressDialog.setMessage("جارى تحميل البيانات ...");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Products/MostVisited",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Link,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -187,26 +167,25 @@ public class FragmentHomeContacts extends Fragment {
                                     temp = object1.getInt("Id");
 
 
-                                }
 
+                                }
                                 if (type.equals("1")) {
                                     page_num++;
                                 } else if (type.equals("0")) {
                                     page_num--;
                                 }
-
-                                booksAdapter = new ContactAdapter(getActivity(), products, new ContactAdapter.OnItemClickListener(){
-
+                                booksAdapter = new MontagAdapter(getActivity(), products);
+                                gridView.setAdapter(booksAdapter);
+                                item_num = temp;
+                                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
-                                    public void onItemClick(Product item) {
-                                        //Todo: Make Some Action
-                                        item.getId();
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        Product book = products.get(position);
+
+                                        fragmentManager.beginTransaction()
+                                                .replace(R.id.frame_home,new FragmentProductDetails().setId(book.getId())).addToBackStack("FragmentProductDetails").commit();
                                     }
                                 });
-                                gridView.setAdapter(booksAdapter);
-
-                                item_num = temp;
-
                                 num.setText(page_num + "");
                             } else {
                                 Toast toast = Toast.makeText(getActivity(), "لا توجد منتجات جديده", Toast.LENGTH_SHORT);
@@ -230,14 +209,14 @@ public class FragmentHomeContacts extends Fragment {
                 else if (error instanceof TimeoutError)
                     Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
             }
-        }) {
+        }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("type", type + "");
-                map.put("x", x + "");
-                map.put("count", 80 + "");
-                map.put("token", "?za[ZbGNz2B}MXYZ");
+                HashMap<String,String> map = new HashMap<>();
+                map.put("type",type+"");
+                map.put("x",x+"");
+                map.put("count",80+"");
+                map.put("token","?za[ZbGNz2B}MXYZ");
                 return map;
             }
         };

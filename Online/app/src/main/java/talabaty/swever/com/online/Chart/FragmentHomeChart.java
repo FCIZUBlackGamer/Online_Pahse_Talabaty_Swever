@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,6 +40,9 @@ public class FragmentHomeChart extends Fragment {
     Button conf;
     ImageButton ignore;
 
+    ChartDatabase chartDatabase;
+    Cursor cursor;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,6 +53,8 @@ public class FragmentHomeChart extends Fragment {
         buy = view.findViewById(R.id.buy);
         recyclerView.setLayoutManager(layoutManager);
         sanfList = new ArrayList<>();
+        chartDatabase = new ChartDatabase(getActivity());
+        cursor = chartDatabase.ShowData();
         return view;
     }
 
@@ -128,9 +134,11 @@ public class FragmentHomeChart extends Fragment {
             adapter.notifyItemRangeRemoved(0, size);
         }
 
-        for (int x=0; x<10; x++) {
-            Sanf s = new Sanf((x + 1),"Banana", "","Good","Yellow",12);
+        int x=1;
+        while (cursor.moveToNext()){
 
+            Sanf s = new Sanf(x,cursor.getString(1), cursor.getString(2),cursor.getString(5),cursor.getString(3),Float.parseFloat(cursor.getString(4)));
+            x++;
             sanfList.add(s);
         }
 

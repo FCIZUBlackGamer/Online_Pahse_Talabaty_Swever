@@ -1,4 +1,4 @@
-package talabaty.swever.com.online.Home.MostViewed;
+package talabaty.swever.com.online.Fields.MostViewed;
 
 public class Contact {
     int id;
@@ -9,6 +9,12 @@ public class Contact {
     String phone;
     String company_logo;
     String company_qrCode;
+
+    public Contact(int id, String name, String company_logo) {
+        this.id = id;
+        this.name = name;
+        this.company_logo = company_logo;
+    }
 
     public Contact(int id, String name, float rate, String location, String email, String phone, String company_logo, String company_qrCode) {
         this.id = id;

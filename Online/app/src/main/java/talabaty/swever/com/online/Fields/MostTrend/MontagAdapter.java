@@ -1,4 +1,4 @@
-package talabaty.swever.com.online.Home.MostTrend;
+package talabaty.swever.com.online.Fields.MostTrend;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
@@ -11,28 +11,28 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import talabaty.swever.com.online.Contact.FragmentHomeContacts;
+import java.util.List;
+
 import talabaty.swever.com.online.ProductDetails.FragmentProductDetails;
 import talabaty.swever.com.online.R;
 
 public class MontagAdapter extends BaseAdapter {
 
     private final Context mContext;
-    private final Product[] products;
+    private final List<Product> products;
     FragmentManager fragmentManager;
 
-    public MontagAdapter(Context context, Product[] products) {
+    public MontagAdapter(Context context, List<Product> products) {
         this.mContext = context;
         this.products = products;
     }
 
     @Override
     public int getCount() {
-        return products.length;
+        return products.size();
     }
 
     @Override
@@ -46,8 +46,8 @@ public class MontagAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final Product product = products[position];
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final Product product = products.get(position);
 
         // view holder pattern
         if (convertView == null) {
@@ -73,10 +73,12 @@ public class MontagAdapter extends BaseAdapter {
         viewHolder.ratingBar.setNumStars(5);
         viewHolder.ratingBar.setRating(product.getRate());
         viewHolder.price.setText(String.valueOf(product.getPrice()) + " EG");
-//    if (!String.valueOf(product.getSell()).isEmpty()) {
-        viewHolder.sell.setText("%" + String.valueOf(product.getSell()));
-        viewHolder.sell_image.setVisibility(View.VISIBLE);
-//    }
+        if (product.getSell() != 0) {
+            viewHolder.sell.setText("%" + String.valueOf(product.getSell()));
+            viewHolder.sell_image.setVisibility(View.VISIBLE);
+        }else {
+            viewHolder.sell_image.setVisibility(View.INVISIBLE);
+        }
         if (!product.getImage_url().isEmpty()) {
             Picasso.with(mContext).load(product.getImage_url()).into(viewHolder.image);
         }
@@ -85,7 +87,7 @@ public class MontagAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.frame_home,new FragmentProductDetails()).commit();
+                        .replace(R.id.frame_home,new FragmentProductDetails().setId(products.get(position).getId())).addToBackStack("FragmentProductDetails").commit();
             }
         });
         return convertView;

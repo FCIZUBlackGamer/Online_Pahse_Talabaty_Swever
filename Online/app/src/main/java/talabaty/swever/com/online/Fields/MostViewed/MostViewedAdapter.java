@@ -1,4 +1,4 @@
-package talabaty.swever.com.online.Home.MostViewed;
+package talabaty.swever.com.online.Fields.MostViewed;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -18,7 +18,6 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import talabaty.swever.com.online.Contact.FragmentHomeContacts;
-import talabaty.swever.com.online.Home.MostTrend.FragmentMostTrend;
 import talabaty.swever.com.online.R;
 
 public class MostViewedAdapter extends RecyclerView.Adapter<MostViewedAdapter.Vholder> {
@@ -58,7 +57,7 @@ public class MostViewedAdapter extends RecyclerView.Adapter<MostViewedAdapter.Vh
                 fragmentManager.beginTransaction()
                         .replace(R.id.frame_home,new FragmentHomeContacts().setData(contacts.get(position).getPhone(),contacts.get(position).getEmail(),
                                 contacts.get(position).getLocation(), contacts.get(position).getName(), contacts.get(position).getCompany_logo(),
-                                contacts.get(position).getRate())).commit();
+                                contacts.get(position).getRate())).addToBackStack("FragmentHomeContacts").commit();
             }
         });
     }
