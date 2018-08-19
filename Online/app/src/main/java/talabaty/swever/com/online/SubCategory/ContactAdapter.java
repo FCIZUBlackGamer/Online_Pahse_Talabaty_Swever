@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,9 +51,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
     List<Product> product_List;
     List<Integer> subCatId;
 
-    public ContactAdapter(Context context, List<Contact> contacts) {
+    public ContactAdapter(Context context, List<Contact> contact) {
         this.context = context;
-        this.contacts = contacts;
+        contacts = new ArrayList<>();
+        this.contacts = contact;
     }
 
     @NonNull
@@ -76,34 +78,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
             @Override
             public void onClick(View v) {
 
-                //Todo: Show AlertDialog And List SubCategory Of One Contact
-
-                AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
-                builderSingle.setIcon(R.drawable.ic_menu_camera);
-                builderSingle.setTitle("من فضلك أختر احد من الأقسام لعرض المنتجات");
-
                 final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.select_dialog_item);
                 //Todo: First Connect To Api To get List Of SubCategory For One Contact
                 loadSubCategory(contacts.get(position).getId(), arrayAdapter);
 
-
-                builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String strName = arrayAdapter.getItem(which);
-                        System.out.println("Name: "+strName);
-
-
-                    }
-                });
-                builderSingle.show();
 
             }
         });
@@ -145,19 +123,38 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
                             JSONObject object = new JSONObject(response);
                             JSONArray array = object.getJSONArray("Categories");
                             if (array.length() > 0) {
+                                //Todo: Show AlertDialog And List SubCategory Of One Contact
+                                AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+                                builderSingle.setIcon(R.drawable.ic_menu_camera);
+                                builderSingle.setTitle("من فضلك أختر احد من الأقسام لعرض المنتجات");
                                 //Todo: Fill SubCategory Of One Contact From Api
                                 for (int x = 0; x < array.length(); x++) {
                                     JSONObject object1 = array.getJSONObject(x);
                                     arrayAdapter.add(object1.getString("Name"));
                                     subCatId.add(object1.getInt("Id"));
                                 }
+                                builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
 
-                                //Todo: Pended
-                                //Todo: Second Connect To Api To get List Of Products Of One SubCategory For Same Contact
-                                //loadProductOfSubCategory();
+                                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        String strName = arrayAdapter.getItem(which);
+                                        System.out.println("Name: " + strName);
+                                        System.out.println("Id: "+subCatId.get(arrayAdapter.getPosition(strName)));
+                                        //Todo: Second Connect To Api To get List Of Products Of One SubCategory For Same Contact
+                                        loadProductOfSubCategory(subCatId.get(arrayAdapter.getPosition(strName)),product_List);
 
-                            }else {
-                                Toast.makeText(context,"عذرا لا يوجد اقسام بداخل جهه العمل حاليا",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                builderSingle.show();
+
+                            } else {
+                                Toast.makeText(context, "عذرا لا يوجد اقسام بداخل جهه العمل حاليا", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -208,19 +205,31 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
                             JSONObject object = new JSONObject(response);
                             JSONArray array = object.getJSONArray("List");
                             if (array.length() > 0) {
-                                //Todo: Pend
-                                /** Pended Till Finishing Test**/
+                                if (product_List.size() > 0) {
+                                    for (int i = 0; i < product_List.size(); i++) {
+                                        product_List.remove(0);
+                                    }
+
+                                }
+                                //Todo: Solve Problem (Displaying Contacts Not Products) to Display Products
                                 //Todo: Fill Products List From Api And Pass To FragmentProduct()
                                 for (int x = 0; x < array.length(); x++) {
                                     JSONObject object1 = array.getJSONObject(x);
-
+                                    Product r = new Product(object1.getInt("Id"),
+                                            object1.getString("Name"),
+                                            "http://selltlbaty.sweverteam.com" + object1.getString("Photo"),
+                                            (float) object1.getDouble("Price"),
+                                            (float) object1.getDouble("Sale"),
+                                            (float) object1.getDouble("Rate")
+                                    );
+                                    product_List.add(r);
                                 }
-
+                                Log.e("List",product_List.toArray().length+"");
                                 fragmentManager.beginTransaction()
                                         .replace(R.id.rec_product, new FragmentProduct().setList(product_List)).commit();
 
-                            }else {
-                                Toast.makeText(context,"عذرا لا يوجد منتجات حاليا فى ذلك القسم",Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(context, "عذرا لا يوجد منتجات حاليا فى ذلك القسم", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -242,7 +251,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
-                map.put("CategoryId", ID + "");
+                map.put("CategeoryId", ID + "");
                 map.put("x", "0");
                 map.put("count", "10000000");
                 map.put("type", "1");

@@ -26,12 +26,14 @@ public class ChartDatabase extends SQLiteOpenHelper{
 
     private static final String PROUCT_STATE = "state";
 
+    private static final String PROUCT_PRICE = "price";
+
     private static final int DATABASE_VERSION = 2;
     Context cont;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table " +TABLE_NAME +
-            "( "+UID+" integer primary key , "+NAME+" varchar(255) not null, "+PROUCT_IMAGE+" varchar(255) , "+PROUCT_COLOR+" varchar(20) , "+PROUCT_AMOUNT+" varchar(255) not null, "+PROUCT_STATE+" varchar(255) );";
+            "( "+UID+" integer primary key , "+NAME+" varchar(255) not null, "+PROUCT_IMAGE+" varchar(255) , "+PROUCT_COLOR+" varchar(20) , "+PROUCT_AMOUNT+" varchar(255) not null, "+PROUCT_STATE+" varchar(255), "+PROUCT_PRICE+" varchar(255) not null );";
 
     // Database Deletion
     private static final String DATABASE_DROP = "drop table if exists "+TABLE_NAME+";";
@@ -65,7 +67,7 @@ public class ChartDatabase extends SQLiteOpenHelper{
         }
     }
 
-    public boolean InsertData (String name, String image ,String COLOR, String amount, String state)
+    public boolean InsertData (String name, String image ,String COLOR, String amount, String state, String price)
     {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -74,6 +76,7 @@ public class ChartDatabase extends SQLiteOpenHelper{
         contentValues.put(PROUCT_COLOR,COLOR);
         contentValues.put(PROUCT_AMOUNT,amount);
         contentValues.put(PROUCT_STATE,state);
+        contentValues.put(PROUCT_PRICE,price);
         long result = sqLiteDatabase.insert(TABLE_NAME,null,contentValues);
 
         return result==-1?false:true;

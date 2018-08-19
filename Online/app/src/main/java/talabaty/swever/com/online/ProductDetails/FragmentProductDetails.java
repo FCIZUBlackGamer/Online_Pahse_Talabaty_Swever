@@ -170,7 +170,7 @@ public class FragmentProductDetails extends Fragment {
             @Override
             public void onClick(View v) {
                 boolean res;
-                res = chartDatabase.InsertData(title.getText().toString(),/**First Image Of List*/"",final_color,amount.getSelectedItem().toString(),"ممتازة");
+                res = chartDatabase.InsertData(title.getText().toString(),/**First Image Of List*/"",final_color,amount.getSelectedItem().toString(),"ممتازة",price.getText().toString());
                 if (res){
                     Snackbar.make(v,"تم اضافة المنتج لعربة التسوق", Snackbar.LENGTH_LONG).show();
                 }else {
@@ -312,6 +312,7 @@ public class FragmentProductDetails extends Fragment {
         }
 
         colorList = list;
+        final_color = colorList.get(0);
 
         colorAdapter = new ColorProductDetailsAdapter(colorList, new ColorProductDetailsAdapter.OnItemClickListener() {
             @Override
@@ -335,6 +336,7 @@ public class FragmentProductDetails extends Fragment {
         }
 
         sizeList = list;
+        final_size = sizeList.get(0);
 
         sizeAdapter = new SizeProductDetailsAdapter(sizeList, new SizeProductDetailsAdapter.OnItemClickListener() {
             @Override

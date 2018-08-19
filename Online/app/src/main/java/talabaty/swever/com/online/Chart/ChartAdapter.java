@@ -20,10 +20,12 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.Vholder> {
 
     Context context;
     List<Sanf> talabats;
+    ChartDatabase chartDatabase;
 
     public ChartAdapter(Context context, List<Sanf> talabats) {
         this.context = context;
         this.talabats = talabats;
+        chartDatabase = new ChartDatabase(context);
     }
 
     @NonNull
@@ -39,7 +41,9 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.Vholder> {
 
         holder.id.setText(talabats.get(position).getId()+"");
         holder.name.setText(talabats.get(position).getName());
-        holder.color.setBackgroundColor(Color.parseColor(talabats.get(position).getColor()));
+        if (talabats.get(position).getColor().length()>0) {
+            holder.color.setBackgroundColor(Color.parseColor(talabats.get(position).getColor()));
+        }
         holder.amount.setText(talabats.get(position).getAmount()+"");
         holder.state.setText(talabats.get(position).getState());
         if (!talabats.get(position).getImage().isEmpty()) {
@@ -50,6 +54,7 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.Vholder> {
             @Override
             public void onClick(View v) {
                 talabats.remove(position);
+                chartDatabase.DeleteData(talabats.get(position).getId()+"");
                 notifyDataSetChanged();
             }
         });

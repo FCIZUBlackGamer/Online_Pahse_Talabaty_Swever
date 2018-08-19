@@ -170,12 +170,12 @@ public class Fragment_Home extends Fragment {
                             JSONObject object = new JSONObject(response);
                             JSONArray array = object.getJSONArray("List");
                             if (array.length() > 0) {
-                                final int size = productList.size();
+                                final int size = contactList.size();
                                 if (size > 0) {
                                     for (int i = 0; i < size; i++) {
-                                        productList.remove(0);
+                                        contactList.remove(0);
                                     }
-                                    adapterproducts.notifyDataSetChanged();
+                                    adaptercontact.notifyDataSetChanged();
                                 }
 
                                 for (int x = 0; x < array.length(); x++) {
@@ -195,8 +195,8 @@ public class Fragment_Home extends Fragment {
 
                                 }
 
-                                adapterproducts = new ProductAdapter(getActivity(),productList);
-                                recyclerViewproducts.setAdapter(adapterproducts);
+                                adaptercontact = new ContactAdapter(getActivity(),contactList);
+                                recyclerViewcontact.setAdapter(adaptercontact);
 
                             } else {
                                 Toast toast = Toast.makeText(getActivity(), "لا توجد جهات عمل جديده", Toast.LENGTH_SHORT);

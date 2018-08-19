@@ -110,7 +110,7 @@
                             android:layout_height="match_parent"
                             android:layout_column="6"
                             android:gravity="center"
-                            android:text="م"
+                            android:text="السعر"
                             android:fontFamily="@font/changamedium"
                             android:textColor="@color/white" />
                     </TableRow>

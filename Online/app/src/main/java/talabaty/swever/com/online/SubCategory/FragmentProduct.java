@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +24,8 @@ public class FragmentProduct extends Fragment {
     static List<Product> product_List;
 
 
-    public static FragmentContact setList(List<Product> contact_Li){
-        FragmentContact contact = new FragmentContact();
+    public static FragmentProduct setList(List<Product> contact_Li){
+        FragmentProduct contact = new FragmentProduct();
         product_List = new ArrayList<>();
         product_List = contact_Li;
         return contact;

@@ -86,7 +86,7 @@ public class Switch_nav extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         loadCategory();
-        loadContacts();
+        //loadContacts();
 
     }
 
