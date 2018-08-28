@@ -18,15 +18,15 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/close"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/white"
-                android:src="@drawable/dclose"
-                android:textAlignment="center"
-                android:visibility="visible" />
+            <!--<ImageButton-->
+                <!--android:id="@+id/close"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="60dp"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:background="@color/white"-->
+                <!--android:src="@drawable/dclose"-->
+                <!--android:textAlignment="center"-->
+                <!--android:visibility="visible" />-->
 
 
             <LinearLayout
@@ -56,105 +56,105 @@
                     android:textSize="18sp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="visible"
-                android:layout_gravity="center_horizontal"
-                android:gravity="end"
-                android:paddingEnd="15dp"
-                android:id="@+id/layout1">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:visibility="visible"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:gravity="end"-->
+                <!--android:paddingEnd="15dp"-->
+                <!--android:id="@+id/layout1">-->
 
 
-                <Spinner
-                    android:id="@+id/capital"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:paddingEnd="35dp"
-                    android:drawablePadding="5dp"
-                    android:gravity="right|center_vertical"
-                    style="@style/Base.Widget.AppCompat.DropDownItem.Spinner"
-                    android:padding="7dp"
-                    android:textColor="@color/colorPrimaryLight"
-                    android:textColorHint="@color/transgray"
-                    android:textSize="12sp" />
+                <!--<Spinner-->
+                    <!--android:id="@+id/capital"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="3dp"-->
+                    <!--android:paddingEnd="35dp"-->
+                    <!--android:drawablePadding="5dp"-->
+                    <!--android:gravity="right|center_vertical"-->
+                    <!--style="@style/Base.Widget.AppCompat.DropDownItem.Spinner"-->
+                    <!--android:padding="7dp"-->
+                    <!--android:textColor="@color/colorPrimaryLight"-->
+                    <!--android:textColorHint="@color/transgray"-->
+                    <!--android:textSize="12sp" />-->
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="المحافظه"
-                    android:textColor="@color/colorPrimaryLight"
-                    android:textStyle="bold" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="end"
-                android:gravity="end"
-                android:paddingEnd="15dp"
-                android:id="@+id/layout2">
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:gravity="right"-->
+                    <!--android:text="المحافظه"-->
+                    <!--android:textColor="@color/colorPrimaryLight"-->
+                    <!--android:textStyle="bold" />-->
+            <!--</LinearLayout>-->
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_gravity="end"-->
+                <!--android:gravity="end"-->
+                <!--android:paddingEnd="15dp"-->
+                <!--android:id="@+id/layout2">-->
 
 
 
-                <Spinner
-                    android:id="@+id/city"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:paddingEnd="35dp"
-                    android:drawablePadding="5dp"
-                    android:gravity="right|center_vertical"
-                    style="@style/Base.Widget.AppCompat.DropDownItem.Spinner"
-                    android:padding="7dp"
-                    android:textColor="@color/colorPrimaryLight"
-                    android:textColorHint="@color/transgray"
-                    android:textSize="12sp" />
+                <!--<Spinner-->
+                    <!--android:id="@+id/city"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="3dp"-->
+                    <!--android:paddingEnd="35dp"-->
+                    <!--android:drawablePadding="5dp"-->
+                    <!--android:gravity="right|center_vertical"-->
+                    <!--style="@style/Base.Widget.AppCompat.DropDownItem.Spinner"-->
+                    <!--android:padding="7dp"-->
+                    <!--android:textColor="@color/colorPrimaryLight"-->
+                    <!--android:textColorHint="@color/transgray"-->
+                    <!--android:textSize="12sp" />-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="مدينه"
-                    android:textColor="@color/colorPrimaryLight"
-                    android:textStyle="bold" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center_horizontal"
-                android:gravity="end"
-                android:paddingEnd="15dp"
-                android:id="@+id/layout3">
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:gravity="right"-->
+                    <!--android:text="مدينه"-->
+                    <!--android:textColor="@color/colorPrimaryLight"-->
+                    <!--android:textStyle="bold" />-->
+            <!--</LinearLayout>-->
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:gravity="end"-->
+                <!--android:paddingEnd="15dp"-->
+                <!--android:id="@+id/layout3">-->
 
 
-                <Spinner
-                    android:id="@+id/region"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:drawablePadding="5dp"
-                    android:paddingEnd="35dp"
-                    android:gravity="right|center_vertical"
-                    style="@style/Base.Widget.AppCompat.DropDownItem.Spinner"
-                    android:padding="7dp"
-                    android:textColor="@color/colorPrimaryLight"
-                    android:textColorHint="@color/transgray"
-                    android:textSize="12sp" />
+                <!--<Spinner-->
+                    <!--android:id="@+id/region"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="3dp"-->
+                    <!--android:drawablePadding="5dp"-->
+                    <!--android:paddingEnd="35dp"-->
+                    <!--android:gravity="right|center_vertical"-->
+                    <!--style="@style/Base.Widget.AppCompat.DropDownItem.Spinner"-->
+                    <!--android:padding="7dp"-->
+                    <!--android:textColor="@color/colorPrimaryLight"-->
+                    <!--android:textColorHint="@color/transgray"-->
+                    <!--android:textSize="12sp" />-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="منطقه"
-                    android:textColor="@color/colorPrimaryLight"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:gravity="right"-->
+                    <!--android:text="منطقه"-->
+                    <!--android:textColor="@color/colorPrimaryLight"-->
+                    <!--android:textStyle="bold" />-->
+            <!--</LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -172,14 +172,41 @@
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
-                <EditText
+                <!--<EditText-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:minLines="3"-->
+                    <!--android:layout_gravity="top"-->
+                    <!--android:background="@drawable/background_edittext"-->
+                    <!--android:maxLines="6"-->
+                    <!--android:id="@+id/place"/>-->
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minLines="3"
-                    android:layout_gravity="top"
-                    android:background="@drawable/background_edittext"
-                    android:maxLines="6"
-                    android:id="@+id/place"/>
+                    android:layout_height="match_parent">
+
+                    <fragment
+                        android:id="@+id/place_autocomplete_fragment"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:context=".Chart.FinishChart"/>
+
+                    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/map"
+                        xmlns:map="http://schemas.android.com/apk/res-auto"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:layout_below="@id/place_autocomplete_fragment"
+                        tools:context=".Chart.FinishChart" />
+
+
+                </RelativeLayout>
+
             </LinearLayout>
 
             <Button

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "969812361934",
+    "firebase_url": "https://talabaty-213109.firebaseio.com",
+    "project_id": "talabaty-213109",
+    "storage_bucket": "talabaty-213109.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969812361934:android:9bfc2e7b8524cf02",
+        "android_client_info": {
+          "package_name": "talabaty.swever.com.online"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "969812361934-s2ndp2enu63is94s2s2ourlo8ooqntm9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "talabaty.swever.com.online",
+            "certificate_hash": "e268d4126e19a483e6dc965869485f481b5390f6"
+          }
+        },
+        {
+          "client_id": "969812361934-3nob4i8rvrsvasrq5s266glu8p7vv017.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPncaBRRpl10dH01eIkQnLrCZvQNzj2aM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969812361934-3nob4i8rvrsvasrq5s266glu8p7vv017.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

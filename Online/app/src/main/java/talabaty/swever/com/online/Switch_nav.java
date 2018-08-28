@@ -1,6 +1,7 @@
 package talabaty.swever.com.online;
 
 import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -56,6 +57,7 @@ public class Switch_nav extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_switch_nav);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -202,7 +204,7 @@ public class Switch_nav extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
 
-                        progressDialog.dismiss();
+
                         try {
 
                             JSONObject object = new JSONObject(response);
@@ -227,7 +229,7 @@ public class Switch_nav extends AppCompatActivity
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+
                 if (error instanceof ServerError)
                     Toast.makeText(Switch_nav.this, "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
                 else if (error instanceof NetworkError)
@@ -243,6 +245,7 @@ public class Switch_nav extends AppCompatActivity
                 return map;
             }
         };
+        progressDialog.dismiss();
 //        Volley.newRequestQueue(getActivity()).add(stringRequest);
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,

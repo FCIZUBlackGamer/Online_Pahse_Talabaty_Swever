@@ -33,6 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".Switch_nav"
             android:label="@string/title_activity_switch_nav"
@@ -45,6 +46,8 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/. 
         -->
+
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -52,7 +55,15 @@
         <activity
             android:name=".ContactUs.FragmentContactUs"
             android:label="@string/title_activity_fragment_contact_us"
-            tools:ignore="InnerclassSeparator"/>
+            android:debuggable="false"
+            tools:ignore="HardcodedDebugMode,InnerclassSeparator"/>
+
+         <activity
+            android:name=".Chart.FinishChart"
+            android:label="@string/title_activity_fragment_contact_us"
+            android:debuggable="false"
+            tools:ignore="HardcodedDebugMode,InnerclassSeparator"/>
+
 
         <activity android:name=".Register"/>
     </application>

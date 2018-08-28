@@ -1,6 +1,7 @@
 package talabaty.swever.com.online.Fields.MostTrend;
 
 import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -64,6 +65,7 @@ public class FragmentMostTrend extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         View view = inflater.inflate(R.layout.fragment_home_most_trend, container, false);
         gridView = (GridView) view.findViewById(R.id.gridview);
         next = view.findViewById(R.id.next);

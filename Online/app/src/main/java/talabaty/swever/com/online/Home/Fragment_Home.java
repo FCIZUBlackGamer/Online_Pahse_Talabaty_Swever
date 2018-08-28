@@ -1,6 +1,7 @@
 package talabaty.swever.com.online.Home;
 
 import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -49,6 +50,7 @@ public class Fragment_Home extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         View view = inflater.inflate(R.layout.fragment_mainhome_home, container, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewproducts = view.findViewById(R.id.rec_product);
@@ -85,7 +87,7 @@ public class Fragment_Home extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        progressDialog.dismiss();
+
                         try {
 
                             JSONObject object = new JSONObject(response);
@@ -130,7 +132,7 @@ public class Fragment_Home extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+
                 if (error instanceof ServerError)
                     Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
                 else if (error instanceof NetworkError)
@@ -147,6 +149,7 @@ public class Fragment_Home extends Fragment {
                 return map;
             }
         };
+        progressDialog.dismiss();
 //        Volley.newRequestQueue(getActivity()).add(stringRequest);
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
@@ -164,7 +167,7 @@ public class Fragment_Home extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        progressDialog.dismiss();
+
                         try {
 
                             JSONObject object = new JSONObject(response);
@@ -212,7 +215,7 @@ public class Fragment_Home extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+
                 if (error instanceof ServerError)
                     Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
                 else if (error instanceof NetworkError)
@@ -229,6 +232,7 @@ public class Fragment_Home extends Fragment {
                 return map;
             }
         };
+        progressDialog.dismiss();
 //        Volley.newRequestQueue(getActivity()).add(stringRequest);
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,

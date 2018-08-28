@@ -1,5 +1,6 @@
 package talabaty.swever.com.online.Fields;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,6 +25,7 @@ public class FragmentFields extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.pager);
         FragmentManager fragmentManager = getFragmentManager();

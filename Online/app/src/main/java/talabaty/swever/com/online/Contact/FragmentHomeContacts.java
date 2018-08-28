@@ -1,6 +1,7 @@
 package talabaty.swever.com.online.Contact;
 
 import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -73,6 +74,7 @@ public class FragmentHomeContacts extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         View view = inflater.inflate(R.layout.fragment_contacts_home, container, false);
         gridView = (RecyclerView) view.findViewById(R.id.gridview);
         gridView.setHasFixedSize(true);
