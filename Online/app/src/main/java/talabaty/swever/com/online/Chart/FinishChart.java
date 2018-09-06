@@ -10,13 +10,19 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -50,6 +56,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -59,22 +66,36 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
+import com.itextpdf.text.pdf.BarcodeEAN;
+import com.itextpdf.text.pdf.PdfContentByte;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import pl.droidsonroids.gif.GifImageView;
 import talabaty.swever.com.online.R;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.LOCATION_SERVICE;
 import static com.android.volley.VolleyLog.TAG;
+
+import talabaty.swever.com.online.Chart.Models.*;
+import talabaty.swever.com.online.FinalBell.*;
+import talabaty.swever.com.online.*;
 
 //talabaty-213109
 public class FinishChart extends Fragment implements OnMapReadyCallback,
@@ -91,6 +112,9 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
     List<ChartModel> modelList;
     Location location;
 
+    LoginDatabae loginDatabae ;
+    Cursor userId;
+
     private static final int PERMISSION_REQUEST_CODE = 7001;
     private static final int PLAY_SERVICE_REQUEST = 7002;
 
@@ -105,17 +129,31 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
     private PlaceAutocompleteFragment placeAutocompleteFragment;
 
     Marker marker;
+    String addres, city, region, state;
+    View view;
+
+    List<Bell> bellList;
+    Location first, last;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 //        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        View view = inflater.inflate(R.layout.dialog_chart_buy, container, false);
+        view = inflater.inflate(R.layout.dialog_chart_buy, container, false);
 
         Log.e("Fragment", "Found");
         chartDatabase = new ChartDatabase(getActivity());
         cursor = chartDatabase.ShowData();
         modelList = new ArrayList<>();
+
+        loginDatabae = new LoginDatabae(getActivity());
+        userId = loginDatabae.ShowData();
+
+//        BarcodeEAN codeEAN = new BarcodeEAN();
+//        codeEAN.setCodeType(codeEAN.EAN13);
+//        codeEAN.setCode("9780201615883");
+//        PdfContentByte cb;
+//        Image imageEAN = codeEAN.createImageWithBarcode(cb, null, null);
 
         total = view.findViewById(R.id.total);
         conf = view.findViewById(R.id.send);
@@ -129,6 +167,8 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
                 .findFragmentById(R.id.map)).getMapAsync(this);
 
         setUpLocation();
+
+        bellList = new ArrayList<>();
         return view;
     }
 
@@ -138,29 +178,59 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
         super.onStart();
 
 
-
         placeAutocompleteFragment = (PlaceAutocompleteFragment) getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
-        placeAutocompleteFragment.setFilter(new AutocompleteFilter.Builder().setCountry("ID").build());
+//        placeAutocompleteFragment.setFilter(new AutocompleteFilter.Builder().setCountry("ID").build());
 
         placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
+                Geocoder geocoder;
+                List<Address> addresses;
+                geocoder = new Geocoder(getActivity(), Locale.getDefault());
+
                 final LatLng latLngLoc = place.getLatLng();
-                Toast.makeText(
-                        getActivity(),
-                        "Lat " + latLngLoc.latitude + " "
-                                + "Long " + latLngLoc.longitude,
-                        Toast.LENGTH_LONG).show();
+
                 Log.e("Lat2 ", latLngLoc.latitude + " ");
                 Log.e("Long2 ", latLngLoc.longitude + " ");
+                first = new Location("");
+                first.setLongitude(latLngLoc.longitude);
+                first.setLatitude(latLngLoc.latitude);
+                try {
+                    addresses = geocoder.getFromLocation(latLngLoc.latitude, latLngLoc.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                    String address = addresses.get(0).getAddressLine(0);
+                    String cit = addresses.get(0).getLocality();
+                    String stat = addresses.get(0).getAdminArea();
+                    String countr = addresses.get(0).getCountryName();
+//                    String postalCode = addresses.get(0).getPostalCode();
+                    String knownNam = addresses.get(0).getFeatureName();
+                    addres = address;
+                    city = cit;
+                    state = stat;
+                    region = knownNam;
+                    Snackbar.make(
+                            view, addres,
+                            Snackbar.LENGTH_LONG).show();
+//                    if (city != null)
+                    Log.e("city ", cit + "");
+                    Log.e("state ", stat + "");
+                    Log.e("country ", countr + "");
+                    Log.e("knownName ", knownNam + "");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 if (marker != null) {
                     marker.remove();
 
                 }
-//                mMap.clear();
-//                marker = mMap.addMarker(new MarkerOptions().position(latLngLoc).title(place.getName().toString()));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
+                mMap.clear();
+                marker = mMap.addMarker(new MarkerOptions().position(latLngLoc).title(place.getName().toString()));
+//                mMap.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
+//                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngLoc, 12.0f));
+                CameraUpdate location = CameraUpdateFactory.newLatLngZoom(
+                        latLngLoc, 15);
+                mMap.animateCamera(location);
             }
 
             @Override
@@ -173,7 +243,7 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
 
         int tota = 0;
         while (cursor.moveToNext()) {
-            tota += Float.parseFloat(cursor.getString(6));
+            tota += Float.parseFloat(cursor.getString(7));
         }
         total.setText(tota + "");
 
@@ -200,23 +270,59 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
                 cursor = chartDatabase.ShowData();
                 while (cursor.moveToNext()) {
                     ChartModel model = new ChartModel();
-                    model.setId(Integer.parseInt(cursor.getString(0)));
-                    model.setID(Integer.parseInt(cursor.getString(1)));
-                    model.setAmount(Integer.parseInt(cursor.getString(4)));
-                    model.setColor(Color.parseColor(cursor.getString(3)));
-                    model.setImage(cursor.getString(2));
+                    model.setId(Integer.parseInt(cursor.getString(12)));
+                    model.setSize(Integer.parseInt(cursor.getString(4)));
+                    model.setColor(Integer.parseInt(cursor.getString(3)));
                     model.setName(cursor.getString(1));
-                    model.setPrice(Double.parseDouble(cursor.getString(6)));
+                    model.setImage("");
+                    model.setPrice(Double.parseDouble(cursor.getString(7)));
+                    model.setAmount(Integer.parseInt(cursor.getString(5)));
+
+                    String temp_address = cursor.getString(11);
+                    LatLng locatio = getLocationFromAddress(getActivity(), temp_address);
+                    last = new Location("");
+                    last.setLatitude(locatio.latitude);
+                    last.setLongitude(locatio.longitude);
+                    double distanceInMeters = first.distanceTo(last);
+                    model.setDistance(distanceInMeters);
                     modelList.add(model);
                 }
+//                SimpleDateFormat formatter = new SimpleDateFormat("YYYY/MM/dd hh:mm:ss");
+                Date date = new Date();
+//                System.out.println(formatter.format(date));
                 Gson gson = new Gson();
                 String mod = gson.toJson(modelList);
-                uploadChart(mod, "Full Address");
+                Log.e("Model", gson.toJson(mod));
+                uploadChart(mod, addres, region, city, state, date);
             }
         });
     }
 
-    public void showSettingsAlert(){
+    public LatLng getLocationFromAddress(Context context, String strAddress) {
+
+        Geocoder coder = new Geocoder(context);
+        List<Address> address;
+        LatLng p1 = null;
+
+        try {
+            // May throw an IOException
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+
+            Address location = address.get(0);
+            p1 = new LatLng(location.getLatitude(), location.getLongitude());
+
+        } catch (IOException ex) {
+
+            ex.printStackTrace();
+        }
+
+        return p1;
+    }
+
+    public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
 
         // Setting Dialog Title
@@ -230,7 +336,7 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
 
         // On pressing Settings button
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int which) {
+            public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
                 dialog.cancel();
@@ -247,6 +353,7 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
         // Showing Alert Message
         alertDialog.show();
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -395,45 +502,127 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
                 });
 
             }
-        }else if (mMap != null) {
+        } else if (mMap != null) {
 
+            try {
+                mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
 
-            mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+                    @Override
+                    public void onMyLocationChange(Location arg0) {
+                        // TODO Auto-generated method stub
+                        mMap.clear();
+                        mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(arg0.getLatitude(), arg0.getLongitude()))
+                                .title("موقعك")
+                                .draggable(true)
+                                .icon(BitmapDescriptorFactory
+                                        .defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
-                @Override
-                public void onMyLocationChange(Location arg0) {
-                    // TODO Auto-generated method stub
-                    mMap.clear();
-                    mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(arg0.getLatitude(), arg0.getLongitude()))
-                            .title("مكانك")
-                            .draggable(true)
-                            .icon(BitmapDescriptorFactory
-                                    .defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                    }
+                });
+            } catch (Exception e) {
 
-                }
-            });
+            }
+
 
         }
     }
 
-    private void uploadChart(final String mod, final String addres) {
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("جارى تحميل البيانات ...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Order/Order",
+    @SuppressLint("NewApi")
+    private void uploadChart(final String mod, final String addres, final String Region, final String City, final String State, final Date date) {
+
+
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
+        GifImageView gifImageView = new GifImageView(getActivity());
+        gifImageView.setImageResource(R.drawable.load);
+        builder.setCancelable(false);
+        builder.setView(gifImageView);
+        final android.app.AlertDialog dlg = builder.create();
+        dlg .getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        dlg.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Order/OrderPreview",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
-                        progressDialog.dismiss();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+                                dlg.dismiss();
+                            }
+                        }, 5000);   //5 seconds
                         try {
                             //Todo: Still Just Test And Retrieve Data
                             JSONObject object = new JSONObject(response);
-                            JSONArray array = object.getJSONArray("Fields");
+                            JSONArray array = object.getJSONArray("List");
                             if (array.length() > 0) {
 
+                                /*string token, string Order, string Address, string Region, string City, string State, int UserId , string Date*/
+                                for (int x = 0; x < array.length(); x++) {
+                                    JSONObject b = array.getJSONObject(x);
+                                    Bell bell = new Bell();
+                                    /** Get Bell Info*/
+                                    bell.setId(b.getInt("Id"));
+                                    bell.setBarcode(b.getString("Barcode"));
+                                    bell.setTotalPrice(b.getDouble("TotalPrice"));
+                                    bell.setPhone(b.getString("Phone"));
+                                    bell.setChargeValue(b.getDouble("ChargeValue"));
+                                    bell.setAddress(b.getString("Address"));
+                                    bell.setContact_name(b.getString("ShopName"));
+                                    /** Get Products Info for one bell */
+                                    JSONArray OperOrder = new JSONArray(b.getString("OperOrder"));
+                                    String Amount = "";
+                                    String Price = "";
+                                    String name = "";
+                                    if (OperOrder.length() > 0) {
+                                        List<Double> AmountValues, PriceValues;
+                                        List<String> SaleType, Sale;
+                                        Sale = SaleType = new ArrayList<>();
+                                        AmountValues = PriceValues = new ArrayList<>();
+                                        for (int i = 0; i < OperOrder.length(); i++) {
+                                            JSONObject object2 = OperOrder.getJSONObject(i);
+
+                                            name += object2.getString("Name") + "\n";
+                                            Amount += object2.getInt("Amount") + "\n";
+                                            Price += object2.getDouble("Price") + "\n";
+                                            try {
+                                                Sale.add(b.getString("Sale"));
+                                            }catch (Exception e){
+                                                Sale.add(null);
+                                            }
+
+                                            try {
+                                                SaleType.add(b.getString("SaleType"));
+                                            }catch (Exception e){
+                                                SaleType.add(null);
+                                            }
+
+                                            double temp_amount= object2.getInt("Amount");
+                                            double temp_price= object2.getDouble("Price");
+                                            AmountValues.add(temp_amount);
+                                            PriceValues.add(temp_price);
+
+                                        }
+                                        bell.setAmountValues(AmountValues);
+                                        bell.setPriceValues(PriceValues);
+                                        bell.setSaleType(SaleType);
+                                        bell.setSale(Sale);
+                                    }
+
+                                    bell.setName(name);
+                                    bell.setPrice(Price);
+                                    bell.setAmount(Amount);
+
+                                    bellList.add(bell);
+                                }
+
+                                Intent intent = new Intent(getActivity() ,FinalBell_Activity.class);
+                                intent.putExtra("model",(Serializable) bellList);
+                                intent.putExtra("Address", addres + "");
+                                intent.putExtra("Region", Region + "");
+                                intent.putExtra("City", City + "");
+                                intent.putExtra("State", State + "");
+                                startActivity(intent);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -443,7 +632,12 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        dlg.dismiss();
+                    }
+                }, 5000);   //5 seconds
                 if (error instanceof ServerError)
                     Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
                 else if (error instanceof NetworkError)
@@ -456,8 +650,17 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("token", "?za[ZbGNz2B}MXYZ");
-                map.put("Order", mod);
-                map.put("Address", addres);
+                map.put("Order", mod + "");
+                map.put("Address", addres + "");
+                Log.e("Adress", addres + "");
+                map.put("Region", Region + "");
+                Log.e("Region", Region + "");
+                map.put("City", City + "");
+                Log.e("City", City + "");
+                map.put("State", State + "");
+                Log.e("State", State + "");
+                map.put("UserId", userId.getString(2)+"");
+                map.put("Date", new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(date) + "");
                 return map;
             }
         };
@@ -492,11 +695,42 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
         }
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLocation != null) {
+            Geocoder geocoder;
+            List<Address> addresses;
+            geocoder = new Geocoder(getActivity(), Locale.getDefault());
             final double latitude = mLocation.getLatitude();
             final double longitude = mLocation.getLongitude();
 
+            first = new Location("");
+            first.setLongitude(longitude);
+            first.setLatitude(latitude);
+
+            try {
+                addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                String address = addresses.get(0).getAddressLine(0);
+                String cit = addresses.get(0).getLocality();
+                String stat = addresses.get(0).getAdminArea();
+                String countr = addresses.get(0).getCountryName();
+//                    String postalCode = addresses.get(0).getPostalCode();
+                String knownNam = addresses.get(0).getFeatureName();
+                addres = address;
+                city = cit;
+                state = stat;
+                region = knownNam;
+                Snackbar.make(
+                        view, addres,
+                        Snackbar.LENGTH_LONG).show();
+//                    if (city != null)
+                Log.e("city ", cit + "");
+                Log.e("state ", stat + "");
+                Log.e("country ", countr + "");
+                Log.e("knownName ", knownNam + "");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             //show marker
-            mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("your position"));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("موقعك"));
             //Animate camera to your position
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15.0f));
         }
@@ -550,7 +784,11 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        displayLocation();
+        try {
+            displayLocation();
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
@@ -600,10 +838,13 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
                 "Lat " + latLng.latitude + " "
                         + "Long " + latLng.longitude,
                 Toast.LENGTH_LONG).show();
-        Log.e("Lat1 " , latLng.latitude + " ");
-        Log.e("Long1 " , latLng.longitude + " ");
+        Log.e("Lat1 ", latLng.latitude + " ");
+        Log.e("Long1 ", latLng.longitude + " ");
         location.setLatitude(latLng.latitude);
         location.setLongitude(latLng.longitude);
+        first = new Location("");
+        first.setLongitude(latLng.longitude);
+        first.setLatitude(latLng.latitude);
 //        mMap.clear();
     }
 

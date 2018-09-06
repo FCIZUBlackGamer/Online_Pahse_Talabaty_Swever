@@ -1,63 +1,25 @@
 package talabaty.swever.com.online.Chart;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.android.volley.AuthFailureError;
-import com.google.gson.Gson;
-
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import talabaty.swever.com.online.R;
-import talabaty.swever.com.online.Chart.Models.*;
 
-public class FragmentHomeChart extends Fragment {
+public class FragmentHomeChart extends AppCompatActivity {
 
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
@@ -86,22 +48,41 @@ public class FragmentHomeChart extends Fragment {
 //    List<Integer> regionsId;
 //    List<String> regionNames;
 
-    @Nullable
+//    @Nullable
+//    @Override
+//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+//        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//        View view = inflater.inflate(R.layout.fragment_home_chart, container, false);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+//        recyclerView = (RecyclerView) view.findViewById(R.id.rec);
+//        buy = view.findViewById(R.id.buy);
+////        place = view.findViewById(R.id.place);
+//        recyclerView.setLayoutManager(layoutManager);
+//        sanfList = new ArrayList<>();
+//        modelList = new ArrayList<>();
+//        chartDatabase = new ChartDatabase(getActivity());
+//        cursor = chartDatabase.ShowData();
+//        fragmentManager = getFragmentManager();
+//        return view;
+//    }
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        View view = inflater.inflate(R.layout.fragment_home_chart, container, false);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.rec);
-        buy = view.findViewById(R.id.buy);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        setContentView(R.layout.fragment_home_chart);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView = (RecyclerView) findViewById(R.id.rec);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new FadeInDownAnimator(new OvershootInterpolator(1f)));
+        buy = findViewById(R.id.buy);
 //        place = view.findViewById(R.id.place);
         recyclerView.setLayoutManager(layoutManager);
         sanfList = new ArrayList<>();
         modelList = new ArrayList<>();
-        chartDatabase = new ChartDatabase(getActivity());
+        chartDatabase = new ChartDatabase(this);
         cursor = chartDatabase.ShowData();
-        fragmentManager = getFragmentManager();
-        return view;
+        fragmentManager = getSupportFragmentManager();
     }
 
     @Override
@@ -286,13 +267,16 @@ public class FragmentHomeChart extends Fragment {
         if (cursor != null) {
             while (cursor.moveToNext()) {
 
-                Sanf s = new Sanf(Float.parseFloat(cursor.getString(6)), cursor.getString(1), cursor.getString(2), cursor.getString(5), cursor.getString(3), Float.parseFloat(cursor.getString(4)));
+                Sanf s = new Sanf(Float.parseFloat(cursor.getString(7)), cursor.getString(1), cursor.getString(2), cursor.getString(9), cursor.getString(8), Float.parseFloat(cursor.getString(5)));
+                s.setImageId(cursor.getString(12));
                 x++;
                 sanfList.add(s);
             }
         }
 
-        adapter = new ChartAdapter(getActivity(), sanfList);
+        adapter = new ChartAdapter(this, sanfList);
+        SlideInBottomAnimationAdapter alphaAdapter = new SlideInBottomAnimationAdapter(adapter);
+        alphaAdapter.setDuration(3000);
         recyclerView.setAdapter(adapter);
     }
 

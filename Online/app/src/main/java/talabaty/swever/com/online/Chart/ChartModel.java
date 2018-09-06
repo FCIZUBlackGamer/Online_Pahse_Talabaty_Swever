@@ -2,9 +2,7 @@ package talabaty.swever.com.online.Chart;
 
 
 public class ChartModel {
-    public int Id ; 
-    public int ID ; // ProductId
-    public int UserId ;
+    public int Id ;
     public int Amount ;
     public double Price ;
     public String Name ; // ProductName
@@ -12,6 +10,7 @@ public class ChartModel {
     public int Size ;
     public int Color ;
     public int ShopId ; // Contact Id For That Product
+    public double distance ;
 
     public ChartModel(){
         ShopId = 0;
@@ -41,16 +40,12 @@ public class ChartModel {
         ShopId = shopId;
     }
 
-    public void setUserId(int userId) {
-        UserId = userId;
-    }
-
     public void setSize(int size) {
         Size = size;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 
     public void setPrice(double price) {

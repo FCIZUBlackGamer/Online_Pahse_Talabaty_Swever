@@ -1,8 +1,11 @@
 package talabaty.swever.com.online.SubCategory;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -32,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import pl.droidsonroids.gif.GifImageView;
 import talabaty.swever.com.online.Fields.MostViewed.Contact;
 import talabaty.swever.com.online.R;
 
@@ -66,16 +70,25 @@ public class FragmentSubCategory extends Fragment {
     }
 
     private void loadSubCategory() {
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("جارى تحميل البيانات ...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        GifImageView gifImageView = new GifImageView(getActivity());
+        gifImageView.setImageResource(R.drawable.load);
+        builder.setCancelable(false);
+        builder.setView(gifImageView);
+        final AlertDialog dlg = builder.create();
+        dlg .getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        dlg.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/shops/ListByCategory",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
-                        progressDialog.dismiss();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+                                dlg.dismiss();
+                            }
+                        }, 5000);   //5 seconds
                         try {
 
                             JSONObject object = new JSONObject(response);
@@ -105,7 +118,12 @@ public class FragmentSubCategory extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        dlg.dismiss();
+                    }
+                }, 5000);   //5 seconds
                 if (error instanceof ServerError)
                     Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
                 else if (error instanceof NetworkError)

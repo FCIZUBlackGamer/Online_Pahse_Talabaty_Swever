@@ -1,9 +1,12 @@
 package talabaty.swever.com.online.Category;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -12,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -37,6 +42,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.droidsonroids.gif.GifImageView;
 import talabaty.swever.com.online.Fields.MostTrend.MontagAdapter;
 import talabaty.swever.com.online.Fields.MostTrend.Product;
 import talabaty.swever.com.online.R;
@@ -56,14 +62,14 @@ public class FragmentHomeCategory extends Fragment {
     RatingBar bar;
     ImageView logo;
 
-    public static FragmentHomeCategory setData(String phone, String email, String address, String name, String logo, float bar){
+    public static FragmentHomeCategory setData(String phone, String email, String address, String name, String logo, float bar) {
         FragmentHomeCategory fragmentHomeContacts = new FragmentHomeCategory();
-        phon =phone;
-        emai =email;
-        addres =address;
-        nam =name;
-        log =logo;
-        ba =bar;
+        phon = phone;
+        emai = email;
+        addres = address;
+        nam = name;
+        log = logo;
+        ba = bar;
         return fragmentHomeContacts;
     }
 
@@ -71,8 +77,9 @@ public class FragmentHomeCategory extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        View view = inflater.inflate(R.layout.fragment_contacts_home, container,false);
+        View view = inflater.inflate(R.layout.fragment_contacts_home, container, false);
         gridView = (GridView) view.findViewById(R.id.gridview);
+
         next = view.findViewById(R.id.next);
         last = view.findViewById(R.id.previous);
         num = view.findViewById(R.id.item_num);
@@ -151,17 +158,27 @@ public class FragmentHomeCategory extends Fragment {
 //        });
 
     }
+
     private void loadData(final int x, final String type) {
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("جارى تحميل البيانات ...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://onlineapi.sweverteam.com/Products/MostVisited?type="+type+"&x="+x+"&count=80",
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        GifImageView gifImageView = new GifImageView(getActivity());
+        gifImageView.setImageResource(R.drawable.load);
+        builder.setCancelable(false);
+        builder.setView(gifImageView);
+        final AlertDialog dlg = builder.create();
+        dlg.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        dlg.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://onlineapi.sweverteam.com/Products/MostVisited?type=" + type + "&x=" + x + "&count=80",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         int temp = 0;
-                        progressDialog.dismiss();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+                                dlg.dismiss();
+                            }
+                        }, 5000);   //5 seconds
                         try {
 
                             JSONObject object = new JSONObject(response);
@@ -203,6 +220,11 @@ public class FragmentHomeCategory extends Fragment {
                                 }
                                 booksAdapter = new MontagAdapter(getActivity(), products);
                                 gridView.setAdapter(booksAdapter);
+
+                                Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fly_in_from_center);
+                                gridView.setAnimation(anim);
+                                anim.start();
+
                                 item_num = temp;
                                 gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
@@ -227,7 +249,12 @@ public class FragmentHomeCategory extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        dlg.dismiss();
+                    }
+                }, 5000);   //5 seconds
                 if (error instanceof ServerError)
                     Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
                 else if (error instanceof NetworkError)

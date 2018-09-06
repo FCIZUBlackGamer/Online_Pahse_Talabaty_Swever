@@ -1,20 +1,25 @@
 package talabaty.swever.com.online;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -27,6 +32,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,15 +43,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import talabaty.swever.com.online.Chart.FragmentHomeChart;
 import talabaty.swever.com.online.ContactUs.FragmentContactUs;
 import talabaty.swever.com.online.Fields.FragmentFields;
 import talabaty.swever.com.online.Fields.MostTrend.FragmentMostTrend;
 import talabaty.swever.com.online.Fields.MostViewed.FragmentMostViewed;
+import talabaty.swever.com.online.Home.Fragment_Home;
+import talabaty.swever.com.online.NearestContacts.ContactInfo;
+import talabaty.swever.com.online.SubCategory.FragmentSubCategory;
 import talabaty.swever.com.online.WorkWithUs.FragmentWorkWithUs;
-import talabaty.swever.com.online.NearestContacts.*;
-import talabaty.swever.com.online.SubCategory.*;
-import talabaty.swever.com.online.Home.*;
 
 public class Switch_nav extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -54,19 +61,30 @@ public class Switch_nav extends AppCompatActivity
     NavigationView navigationView;
     List<CategoryModel> categoryModelList;
     List<ContactInfo> contactInfos;
+    Bundle bundle;
+
+    CircleImageView imageView;
+    TextView user_name;
+    LoginDatabae loginDatabae;
+    Cursor cursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bundle = savedInstanceState;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.activity_switch_nav);
+        setUi();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        loginDatabae = new LoginDatabae(this);
+        cursor = loginDatabae.ShowData();
 
         fragmentManager = getSupportFragmentManager();
         categoryModelList = new ArrayList<>();
         contactInfos = new ArrayList<>();
+        final Fragment fragment = new Fragment_Home();
         fragmentManager.beginTransaction()
-                .replace(R.id.frame_home,new Fragment_Home()).addToBackStack("Fragment_Home").commit();
+                .add(R.id.frame_home,fragment).commit();
         setActionBarTitle("الرئيسيه");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -74,8 +92,12 @@ public class Switch_nav extends AppCompatActivity
             public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.frame_home,new FragmentHomeChart()).addToBackStack("FragmentHomeChart").commit();
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.frame_home,new FragmentHomeChart()).addToBackStack("FragmentHomeChart").commit();
+                startActivity(new Intent(Switch_nav.this,FragmentHomeChart.class));
+
             }
         });
 
@@ -87,9 +109,39 @@ public class Switch_nav extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View view = navigationView.getHeaderView(0);
+        imageView = view.findViewById(R.id.imageView);
+        user_name = view.findViewById(R.id.textView);
+        while (cursor.moveToNext()) {
+            user_name.setText(cursor.getString(1));
+            if (!cursor.getString(5).isEmpty()) {
+                Picasso.with(this)
+                        .load(cursor.getString(5))
+                        .into(imageView);
+            }
+        }
         loadCategory();
         //loadContacts();
 
+    }
+
+    public void setUi(){
+        setContentView(R.layout.activity_switch_nav);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        ((android.support.v4.widget.DrawerLayout)findViewById(R.id.drawer_layout)).removeAllViews();
+        super.onConfigurationChanged(newConfig);
+
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+        }
+        setUi();
     }
 
     @Override
@@ -167,10 +219,13 @@ public class Switch_nav extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_home,new FragmentContactUs()).addToBackStack("FragmentContactUs").commit();
         } else if (id == R.id.nav_car_shop) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_home,new FragmentHomeChart()).addToBackStack("FragmentHomeChart").commit();
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.frame_home,new FragmentHomeChart()).addToBackStack("FragmentHomeChart").commit();
+            startActivity(new Intent(Switch_nav.this,FragmentHomeChart.class));
         } else if (id == R.id.nav_logout) {
             //Todo: Action Logout
+            loginDatabae.UpdateData("1","c","c","c","0","");
+            startActivity(new Intent(Switch_nav.this, Login.class));
         }else {
             String cat_name = item.getTitle().toString();
             int cat_id = 0;
@@ -255,7 +310,7 @@ public class Switch_nav extends AppCompatActivity
     }
 
 
-
+    //Todo: For The Nearest Contacts To My Current Location
     private void loadContacts() {
         final ProgressDialog progressDialog = new ProgressDialog(Switch_nav.this);
         progressDialog.setMessage("جارى تحميل جهات العمل الأقرب ...");

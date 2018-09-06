@@ -37,7 +37,7 @@
             <RatingBar
                 android:id="@+id/company_rate"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:isIndicator="false"
                 android:numStars="5"
@@ -94,7 +94,7 @@
             <Spinner
                 android:id="@+id/spin_amount"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_margin="3dp"
                 android:layout_weight="1"
@@ -111,6 +111,9 @@
             android:fontFamily="@font/changaregular"
             android:gravity="center"
             android:padding="5dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:layout_marginBottom="10dp"
             android:text="أضف الى عربه التسوق"
             android:textColor="@color/white" />
     </LinearLayout>

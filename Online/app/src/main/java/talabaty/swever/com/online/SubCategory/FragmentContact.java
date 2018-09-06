@@ -9,10 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import talabaty.swever.com.online.Fields.MostViewed.Contact;
 import talabaty.swever.com.online.R;
 
@@ -36,6 +39,7 @@ public class FragmentContact extends Fragment {
         /** Contact Rec*/
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView_contact = (RecyclerView) view.findViewById(R.id.rec_contact);
+        recyclerView_contact.setItemAnimator(new FadeInDownAnimator(new OvershootInterpolator(1f)));
         recyclerView_contact.setLayoutManager(layoutManager);
 
         return view;
@@ -47,6 +51,8 @@ public class FragmentContact extends Fragment {
 
         /** contact_List Is Already Filled From FragmentSubCategory() */
         adapter_contact = new ContactAdapter(getActivity(),contact_List);
+        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapter_contact);
+        alphaAdapter.setDuration(3000);
         recyclerView_contact.setAdapter(adapter_contact);
 
     }

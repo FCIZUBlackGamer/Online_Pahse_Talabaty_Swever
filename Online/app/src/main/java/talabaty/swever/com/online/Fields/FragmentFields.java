@@ -83,7 +83,7 @@ public class FragmentFields extends Fragment {
         public Fragment getItem(int position) {
             Fragment fragment = null;
             if (position == 0) {
-                fragment = new FragmentMostTrend().setType("trend");
+                fragment = new FragmentMostTrend().setType("latest");
             } else if (position == 1) {
                 fragment = new FragmentMostViewed().setType("trend");
             } else if (position == 2) {

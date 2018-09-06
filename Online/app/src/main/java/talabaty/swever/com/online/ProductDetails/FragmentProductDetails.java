@@ -1,15 +1,19 @@
 package talabaty.swever.com.online.ProductDetails;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import pl.droidsonroids.gif.GifImageView;
 import talabaty.swever.com.online.Chart.ChartDatabase;
 import talabaty.swever.com.online.Chart.Sanf;
 import talabaty.swever.com.online.R;
@@ -52,13 +57,15 @@ public class FragmentProductDetails extends Fragment {
     RecyclerView recyclerView_color;
     RecyclerView.Adapter colorAdapter;
     List<String> colorList;
+    List<Integer> indexListcolor;
     String final_color = "";
 
     RecyclerView recyclerView_size;
     RecyclerView.Adapter sizeAdapter;
     List<String> sizeList;
+    List<Integer> indexListsize;
     String final_size = "";
-
+    String image, imageid;
 
 
     Button add;
@@ -68,10 +75,12 @@ public class FragmentProductDetails extends Fragment {
     TextView title, price;
     Spinner amount;
     RatingBar company_rate;
+    View view;
+    String contact_name, address;
 
     static int id;
 
-    public FragmentProductDetails setId(int Id){
+    public FragmentProductDetails setId(int Id) {
         FragmentProductDetails details = new FragmentProductDetails();
         id = Id;
         return details;
@@ -81,7 +90,7 @@ public class FragmentProductDetails extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        View view = inflater.inflate(R.layout.fragment_montag_detail, container,false);
+        view = inflater.inflate(R.layout.fragment_montag_detail, container, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -103,6 +112,7 @@ public class FragmentProductDetails extends Fragment {
         sanfList = new ArrayList<>();
         colorList = new ArrayList<>();
         sizeList = new ArrayList<>();
+        indexListcolor = indexListsize = new ArrayList<>();
         chartDatabase = new ChartDatabase(getActivity());
         return view;
     }
@@ -130,7 +140,7 @@ public class FragmentProductDetails extends Fragment {
                                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                                     v.setTextColor(Color.GREEN);
                                     toast.show();
-                                }else {
+                                } else {
                                     Toast toast = Toast.makeText(getActivity(), "عذرا حدث خطأ أثناء اجراء العملية  .. يرجي المحاوله لاحقا", Toast.LENGTH_SHORT);
                                     TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
                                     v.setTextColor(Color.RED);
@@ -149,13 +159,13 @@ public class FragmentProductDetails extends Fragment {
                         else if (error instanceof TimeoutError)
                             Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
                     }
-                }){
+                }) {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
-                        HashMap<String,String> map = new HashMap<>();
-                        map.put("Id",id+"");
-                        map.put("vote",(int)rating +"");
-                        map.put("token","?za[ZbGNz2B}MXYZ");
+                        HashMap<String, String> map = new HashMap<>();
+                        map.put("Id", id + "");
+                        map.put("vote", (int) rating + "");
+                        map.put("token", "?za[ZbGNz2B}MXYZ");
                         return map;
                     }
                 };
@@ -172,10 +182,31 @@ public class FragmentProductDetails extends Fragment {
             @Override
             public void onClick(View v) {
                 boolean res;
-                res = chartDatabase.InsertData(title.getText().toString(),/**First Image Of List*/"",final_color,amount.getSelectedItem().toString(),"ممتازة",price.getText().toString());
-                if (res){
-                    Snackbar.make(v,"تم اضافة المنتج لعربة التسوق", Snackbar.LENGTH_LONG).show();
-                }else {
+                int finalcolindex = 0, finalsizeindex = 0;
+
+                for (int x = 0; x < colorList.size(); x++) {
+                    Log.e("color In List",colorList.get(x));
+                    if (colorList.get(x).equals(final_color)) {
+                        finalcolindex = indexListcolor.get(colorList.indexOf(final_color));
+                        Log.e("color Index List",finalcolindex+"");
+                    }
+                }
+                Log.e("color",final_color);
+                for (int x = 0; x < sizeList.size(); x++) {
+                    Log.e("size In List",sizeList.get(x));
+                    if (sizeList.get(x).equals(final_size)) {
+                        finalsizeindex = indexListsize.get(sizeList.indexOf(final_size));
+                        Log.e("size Index List",finalsizeindex+"");
+                    }
+                }
+                Log.e("size",final_size);
+                res = chartDatabase.InsertData(title.getText().toString(),
+                        image,imageid, finalcolindex + "", finalsizeindex + "", amount.getSelectedItem().toString(),
+                        "ممتازة", price.getText().toString(), final_color, final_size, contact_name,address,id+"");
+
+                if (res) {
+                    Snackbar.make(v, "تم اضافة المنتج لعربة التسوق", Snackbar.LENGTH_LONG).show();
+                } else {
 
                 }
             }
@@ -184,16 +215,25 @@ public class FragmentProductDetails extends Fragment {
 
     private void loadDetails(final int id) {
 
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("جارى تحميل البيانات ...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        GifImageView gifImageView = new GifImageView(getActivity());
+        gifImageView.setImageResource(R.drawable.load);
+        builder.setCancelable(false);
+        builder.setView(gifImageView);
+        final AlertDialog dlg = builder.create();
+        dlg .getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        dlg.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Products/ShowMore",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
-                        progressDialog.dismiss();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+                                dlg.dismiss();
+                            }
+                        }, 5000);   //5 seconds
                         try {
 
                             JSONObject object = new JSONObject(response);
@@ -207,14 +247,16 @@ public class FragmentProductDetails extends Fragment {
 
                                     title.setText(array.getString("Name"));
                                     company_rate.setRating((float) array.getDouble("Rate"));
-                                    price.setText(array.getDouble("Price")+"");
-
+                                    price.setText(array.getDouble("Price") + "");
+                                    contact_name = array.getString("ShopName");
+                                    address = array.getString("Address");
                                     /** Color List*/
                                     JSONArray color = new JSONArray(array.getString("Color"));
                                     if (color.length() > 0) {
                                         for (int i = 0; i < color.length(); i++) {
                                             JSONObject object2 = color.getJSONObject(i);
                                             codeList.add(object2.getString("Photo"));
+                                            indexListcolor.add(object2.getInt("Id"));
                                         }
                                         loadColor(codeList);
                                     }
@@ -224,20 +266,24 @@ public class FragmentProductDetails extends Fragment {
                                         for (int i = 0; i < size.length(); i++) {
                                             JSONObject object2 = size.getJSONObject(i);
                                             sizeList.add(object2.getString("Photo"));
+                                            indexListsize.add(object2.getInt("Id"));
                                         }
                                         loadSize(sizeList);
                                     }
                                     /** Image List*/
                                     JSONArray image = new JSONArray(array.getString("Gallery"));
                                     if (image.length() > 0) {
+                                        List<Integer> ids = new ArrayList<>();
                                         for (int i = 0; i < image.length(); i++) {
                                             JSONObject object2 = image.getJSONObject(i);
-                                            sourceList.add("http://selltlbaty.sweverteam.com/"+object2.getString("Photo"));
+                                            ids.add(object2.getInt("Id"));
+                                            sourceList.add(object2.getString("Photo"));
                                         }
-                                        loadImages(sourceList);
+                                        loadImages(sourceList, ids);
                                     }
 
                                 }
+                                incremwntView();
                             } else {
                                 Toast toast = Toast.makeText(getActivity(), "لا توجد تفاصيل للمنتج", Toast.LENGTH_SHORT);
                                 TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
@@ -252,7 +298,13 @@ public class FragmentProductDetails extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        dlg.dismiss();
+                    }
+                }, 5000);   //5 seconds
+
                 if (error instanceof ServerError)
                     Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
                 else if (error instanceof NetworkError)
@@ -260,12 +312,12 @@ public class FragmentProductDetails extends Fragment {
                 else if (error instanceof TimeoutError)
                     Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> map = new HashMap<>();
-                map.put("Id",id+"");
-                map.put("token","?za[ZbGNz2B}MXYZ");
+                HashMap<String, String> map = new HashMap<>();
+                map.put("Id", id + "");
+                map.put("token", "?za[ZbGNz2B}MXYZ");
                 return map;
             }
         };
@@ -277,7 +329,42 @@ public class FragmentProductDetails extends Fragment {
         Volley.newRequestQueue(getActivity()).add(stringRequest);
     }
 
-    private void loadImages(List<String> list) {
+    private void incremwntView() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Products/Visit",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("Response For Views", response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error instanceof ServerError)
+                    Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
+                else if (error instanceof NetworkError)
+                    Toast.makeText(getActivity(), "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
+                else if (error instanceof TimeoutError)
+                    Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("Id", id + "");
+                map.put("token", "?za[ZbGNz2B}MXYZ");
+                return map;
+            }
+        };
+//        Volley.newRequestQueue(getActivity()).add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                2,  // maxNumRetries = 2 means no retry
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Volley.newRequestQueue(getActivity()).add(stringRequest);
+    }
+
+    private void loadImages(List<String> list, List<Integer> ids) {
 
         final int size = sanfList.size();
         if (size > 0) {
@@ -288,17 +375,18 @@ public class FragmentProductDetails extends Fragment {
 
         }
 
-        for (int i=0; i<list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             Sanf sanf = new Sanf();
+            sanf.setId(ids.get(i));
             sanf.setImage(list.get(i));
-           // Log.e("Image",sanf.getImage());
+            // Log.e("Image",sanf.getImage());
             sanfList.add(sanf);
         }
 
-
+        image = list.get(0);
+        imageid = ids.get(0)+"";
         adapter = new ProductDetailsAdapter(getActivity(), sanfList);
         recyclerView.setAdapter(adapter);
-
 
     }
 
@@ -319,7 +407,9 @@ public class FragmentProductDetails extends Fragment {
         colorAdapter = new ColorProductDetailsAdapter(colorList, new ColorProductDetailsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String item) {
+//                final_color = String.format("#%06X", (0xFFFFFF & Integer.parseInt(item)));
                 final_color = item;
+                Snackbar.make(view, "تم تحديد اللون " + final_color, Snackbar.LENGTH_LONG).show();
             }
         });
         recyclerView_color.setAdapter(colorAdapter);
@@ -344,6 +434,7 @@ public class FragmentProductDetails extends Fragment {
             @Override
             public void onItemClick(String item) {
                 final_size = item;
+                Snackbar.make(view, "تم تحديد الحجم " + final_size, Snackbar.LENGTH_LONG).show();
             }
         });
         recyclerView_size.setAdapter(sizeAdapter);

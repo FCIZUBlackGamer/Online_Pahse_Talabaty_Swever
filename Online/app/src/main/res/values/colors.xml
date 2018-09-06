@@ -15,4 +15,5 @@
     <color name="yellow">#d2c12a</color>
     <color name="green">#0b690b</color>
     <color name="redlight">#b42b21</color>
+    <color name="black">#000000</color>
 </resources>

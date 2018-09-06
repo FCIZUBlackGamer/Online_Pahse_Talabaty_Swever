@@ -7,11 +7,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/d"
+        android:layout_above="@+id/d"
         android:layout_centerHorizontal="true"
         android:textAlignment="center"
         android:gravity="center"
-        android:background="@color/colormontagat"
+        android:background="@color/transgray"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
@@ -21,9 +21,10 @@
             android:layout_margin="5dp"
             android:layout_marginEnd="3dp"
             android:text="التالى"
+            android:fontFamily="@font/changamedium"
             android:id="@+id/next"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <FrameLayout
@@ -61,9 +62,10 @@
             android:layout_margin="5dp"
             android:layout_marginStart="3dp"
             android:text="السابق"
+            android:fontFamily="@font/changamedium"
             android:id="@+id/previous"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
     </LinearLayout>
 

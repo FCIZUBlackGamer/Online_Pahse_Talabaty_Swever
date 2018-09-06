@@ -34,12 +34,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/log">
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:id="@+id/email"
                 android:background="@drawable/background_edittext"
                 android:padding="10dp"
                 android:fontFamily="@font/changaregular"
@@ -53,10 +55,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:id="@+id/password"
                 android:background="@drawable/background_edittext"
                 android:padding="10dp"
                 android:fontFamily="@font/changaregular"
-                android:inputType="textVisiblePassword"
+                android:inputType="textPassword"
+                android:gravity="end"
                 android:lines="1"
                 android:minLines="1"
                 android:maxLines="1"
@@ -80,6 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
+                    android:id="@+id/keep_me_login"
                     android:buttonTint="@color/colorPrimary"/>
             </LinearLayout>
 

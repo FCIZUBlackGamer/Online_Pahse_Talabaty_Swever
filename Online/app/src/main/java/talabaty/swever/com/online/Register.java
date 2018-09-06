@@ -1,15 +1,448 @@
 package talabaty.swever.com.online;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Register extends AppCompatActivity {
+
+    EditText fname, lname, date_of_birth, email, pass, repass, phone;
+    TextView login;
+    Button signup;
+    CircleImageView image;
+
+    private int PICK_IMAGE_REQUEST = 1;
+    final int CAMERA_PIC_REQUEST = 1337;
+
+    List<ImageSource> Gallary;
+    String baseUrl = "http://www.selltlbaty.sweverteam.com/";
+    private String UPLOAD_URL = baseUrl + "Uploads/UploadAndro";
+    private String UPLOAD_LINK = "http://onlineapi.sweverteam.com/Login/AddUser";
+
+    private String KEY_IMAGE = "base64imageString";
+    private String KEY_NAME = "name";
+    //    List<byte[]> bytes;
+    // To Get Data
+    UserModel userModel = null;
+    private static final int CAMERA_REQUEST = 1888;
+    Bitmap bitmap;
+    List<String> imageStrings;
+
+    DatePickerDialog.OnDateSetListener DatePicker1;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_register);
+        fname = findViewById(R.id.fname);
+        lname = findViewById(R.id.lname);
+        date_of_birth = findViewById(R.id.date_of_birth);
+        email = findViewById(R.id.email);
+        pass = findViewById(R.id.password);
+        repass = findViewById(R.id.repassword);
+        login = findViewById(R.id.goto_login);
+        signup = findViewById(R.id.signup);
+        image = findViewById(R.id.image);
+        phone = findViewById(R.id.phone);
+        imageStrings = new ArrayList<>();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        userModel = new UserModel();
+        date_of_birth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dialog = new DatePickerDialog(
+                        Register.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth
+                        , DatePicker1
+                        , year, month, day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        DatePicker1 = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month = month + 1;
+                date_of_birth.setText(year + "/" + month +"/" + dayOfMonth);
+            }
+        };
+
+        requestStoragePermission();
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout layout = new LinearLayout(Register.this);
+                layout.setOrientation(LinearLayout.VERTICAL);
+                Button cam = new Button(Register.this);
+                cam.setText("فتح الكاميرا");
+                cam.setWidth(20);
+                cam.setTextSize(24);
+                cam.setHeight(60);
+                Button gallary = new Button(Register.this);
+                gallary.setText("فتح المعرض");
+                gallary.setWidth(20);
+                gallary.setTextSize(24);
+                gallary.setHeight(60);
+                Button cancel = new Button(Register.this);
+                cancel.setText("إلغاء");
+                cancel.setWidth(20);
+                cancel.setTextSize(24);
+                cancel.setHeight(60);
+
+                layout.addView(cam);
+                layout.addView(gallary);
+                layout.addView(cancel);
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
+                builder.setCancelable(false)
+                        .setTitle("ارفاق صوره")
+                        .setView(layout);
+
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+
+                gallary.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openGalary();
+                        dialog.dismiss();
+                    }
+                });
+
+                cam.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openCamera();
+                        dialog.dismiss();
+                    }
+                });
+
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+        
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Register.this, Login.class));
+            }
+        });
+
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Todo: Validate Inputs
+
+                userModel.setCountryId(1);
+                userModel.setFirstName(fname.getText().toString());
+                userModel.setLastName(lname.getText().toString());
+                userModel.setDateOfBirth(date_of_birth.getText().toString());
+                userModel.setPassword(pass.getText().toString());
+                userModel.setMail(email.getText().toString());
+                userModel.setPhone(phone.getText().toString());
+                uploadImage();
+            }
+        });
+    }
+
+    private void uploadImage() {
+        final Gson gson = new Gson();
+        Log.e("Connection UploadImage", "Here");
+
+        final String allImages = gson.toJson(imageStrings);
+        Log.e("Start: ", allImages);
+        //Showing the progress dialog
+        final ProgressDialog loading = ProgressDialog.show(this, "Uploading...", "Please wait...", false, false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, UPLOAD_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        //Disimissing the progress dialog
+                        loading.dismiss();
+                        Log.e("Path: ", s);
+                        try {
+
+                            JSONObject object = new JSONObject(s);
+                            JSONArray array = object.getJSONArray("Images");
+                            for (int x = 0; x < array.length(); x++) {
+                                String object1 = array.getString(x);
+                                userModel.setPhoto(object1);
+                            }
+                            
+                            final String jsonInString = gson.toJson(userModel);
+                            Log.e("Data", jsonInString);
+                            Log.e("Gallary", gson.toJson(Gallary));
+                            uploadMontage(jsonInString);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+                        loading.dismiss();
+
+                        //Showing toast
+//                        Toast.makeText(Register.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                        if (volleyError instanceof ServerError)
+                            Log.e("Error: ", "Server Error");
+                        else if (volleyError instanceof TimeoutError)
+                            Log.e("Error: ", "Timeout Error");
+                        else if (volleyError instanceof NetworkError)
+                            Log.e("Error: ", "Bad Network");
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                //Creating parameters
+                Map<String, String> params = new Hashtable<String, String>();
+
+                //Adding parameters
+                params.put(KEY_IMAGE, allImages);
+
+                params.put(KEY_NAME, "Mohamed");
+
+                //returning parameters
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                2,  // maxNumRetries = 2 means no retry
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Volley.newRequestQueue(this).add(stringRequest);
+    }
+
+    private void openGalary() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    private void openCamera() {
+        //Todo: Open Camera
+
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+
+    }
+
+    //Requesting permission
+    private void requestStoragePermission() {
+        if (ContextCompat.checkSelfPermission(Register.this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+            return;
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(Register.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            //If the user has denied the permission previously your code will come to this block
+            //Here you can explain why you need this permission
+            //Explain here why you need this permission
+        }
+        //And finally ask for the permission
+        ActivityCompat.requestPermissions(Register.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 123);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 100) {
+
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                Toast.makeText(Register.this, "camera permission granted", Toast.LENGTH_LONG).show();
+
+            } else {
+
+                Toast.makeText(Register.this, "camera permission denied", Toast.LENGTH_LONG).show();
+
+            }
+
+        }
+    }//end onRequestPermissionsResult
+
+    //handling the image chooser activity result
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Uri filePath;
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            filePath= data.getData();
+
+            try {
+                //Getting the Bitmap from Gallery
+                bitmap = MediaStore.Images.Media.getBitmap(Register.this.getContentResolver(), filePath);
+                image.setImageBitmap(bitmap);
+                if (image.getDrawable() == null){
+                    imageStrings.add(getStringImage(bitmap));
+                }else {
+                    imageStrings.add(0,getStringImage(bitmap));
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            bitmap = (Bitmap) data.getExtras().get("data");
+            image.setImageBitmap(bitmap);
+            if (image.getDrawable() == null){
+                imageStrings.add(getStringImage(bitmap));
+            }else {
+                imageStrings.add(0,getStringImage(bitmap));
+            }
+
+        }
+    }
+
+    public String getStringImage(Bitmap bmp) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
+    }
+
+    private void uploadMontage(final String jsonInString) {
+        Log.e("Connection UploadMontag", "Here");
+        Log.e("Full Model",jsonInString);
+        final ProgressDialog loading = ProgressDialog.show(this, "Uploading...", "Please wait...", false, false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, UPLOAD_LINK,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        //Disimissing the progress dialog
+                        loading.dismiss();
+                        Log.e("Data: ", s);
+                        if (s.equals("\"duplicate\"")){
+                            Toast toast = Toast.makeText(Register.this, " البريد الالكتروني او رقم التليفون مكرر  .. يرجي إعاده المحاوله", Toast.LENGTH_SHORT);
+                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                            v.setTextColor(Color.RED);
+                            toast.show();
+                        }else if (s.equals("\"fail\"")){
+                            Toast toast = Toast.makeText(Register.this, "عذرا حدث خطأ أثناء اجراء العملية  .. يرجي المحاوله لاحقا", Toast.LENGTH_SHORT);
+                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                            v.setTextColor(Color.RED);
+                            toast.show();
+                        }else  {
+                            Toast toast = Toast.makeText(Register.this, "اسم المستخدم هو "+s, Toast.LENGTH_LONG);
+                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                            v.setTextColor(Color.GREEN);
+                            toast.show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+                        loading.dismiss();
+
+                        //Showing toast
+//                        Toast.makeText(Register.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                        if (volleyError instanceof ServerError)
+                            Log.e("Error: ", "Server Error");
+                        else if (volleyError instanceof TimeoutError)
+                            Log.e("Error: ", "Timeout Error");
+                        else if (volleyError instanceof NetworkError)
+                            Log.e("Error: ", "Bad Network");
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Converting Bitmap to String
+//                for (int x= 0; x<imageSources.size(); x++) {
+//                    String image = getStringImage(bitmap);
+//                }
+
+                //Creating parameters
+                Map<String, String> params = new Hashtable<String, String>();
+
+                //Adding parameters
+                params.put("user", jsonInString);
+
+                params.put("token", "?za[ZbGNz2B}MXYZ");
+
+                //returning parameters
+                return params;
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                2,  // maxNumRetries = 2 means no retry
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Volley.newRequestQueue(this).add(stringRequest);
     }
 }

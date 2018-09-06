@@ -1,9 +1,12 @@
 package talabaty.swever.com.online.Fields.MostTrend;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -13,8 +16,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import pl.droidsonroids.gif.GifImageView;
 import talabaty.swever.com.online.ProductDetails.FragmentProductDetails;
 import talabaty.swever.com.online.R;
 import talabaty.swever.com.online.Switch_nav;
@@ -52,11 +59,14 @@ public class FragmentMostTrend extends Fragment {
     int item_num, page_num;
 
     FragmentManager fragmentManager;
+    LinearLayout linearLayout;
 
     // http://onlineapi.sweverteam.com/Products/MostVisited/list?type=1&x=0&count=10&token=?za[ZbGNz2B}MXYZ
     static String Type = "null";
     String Link;
-    public FragmentMostTrend setType(String type){
+    int amount = 0;
+
+    public FragmentMostTrend setType(String type) {
         FragmentMostTrend trend = new FragmentMostTrend();
         Type = type;
         return trend;
@@ -71,6 +81,7 @@ public class FragmentMostTrend extends Fragment {
         next = view.findViewById(R.id.next);
         last = view.findViewById(R.id.previous);
         num = view.findViewById(R.id.item_num);
+        linearLayout = view.findViewById(R.id.d);
         item_num = page_num = 0;
         num.setText(1 + "");
         products = new ArrayList<>();
@@ -85,14 +96,23 @@ public class FragmentMostTrend extends Fragment {
         temp_last = 10;
         page_num = 0;
 
+        ((Switch_nav) getActivity())
+                .setActionBarTitle("المنتجات ");
         if (Type.equals("trend")) {
-            ((Switch_nav) getActivity())
-                    .setActionBarTitle("المنتجات الأكثر مبيعا");
+
             Link = "http://onlineapi.sweverteam.com/Products/MostVisited/list";
-        }else {
-            ((Switch_nav) getActivity())
-                    .setActionBarTitle("المنتجات ");
+            amount = 0;
+            linearLayout.setVisibility(View.VISIBLE);
+        } else if (Type.equals("latest")){ //Todo: Latest Products From API
+
             Link = "http://onlineapi.sweverteam.com/Products/List";
+            amount = 1;
+            linearLayout.setVisibility(View.INVISIBLE);
+        } else {
+
+            Link = "http://onlineapi.sweverteam.com/Products/List";
+            amount = 0;
+            linearLayout.setVisibility(View.VISIBLE);
         }
 
         next.setOnClickListener(new View.OnClickListener() {
@@ -126,16 +146,25 @@ public class FragmentMostTrend extends Fragment {
     }
 
     private void loadData(final int x, final String type) {
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("جارى تحميل البيانات ...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        GifImageView gifImageView = new GifImageView(getActivity());
+        gifImageView.setImageResource(R.drawable.load);
+        builder.setCancelable(false);
+        builder.setView(gifImageView);
+        final AlertDialog dlg = builder.create();
+        dlg.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        dlg.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Link,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         int temp = 0;
-                        progressDialog.dismiss();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+                                dlg.dismiss();
+                            }
+                        }, 5000);   //5 seconds
                         try {
 
                             JSONObject object = new JSONObject(response);
@@ -169,7 +198,6 @@ public class FragmentMostTrend extends Fragment {
                                     temp = object1.getInt("Id");
 
 
-
                                 }
                                 if (type.equals("1")) {
                                     page_num++;
@@ -178,6 +206,9 @@ public class FragmentMostTrend extends Fragment {
                                 }
                                 booksAdapter = new MontagAdapter(getActivity(), products);
                                 gridView.setAdapter(booksAdapter);
+                                Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fly_in_from_center);
+                                gridView.setAnimation(anim);
+                                anim.start();
                                 item_num = temp;
                                 gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
@@ -185,7 +216,7 @@ public class FragmentMostTrend extends Fragment {
                                         Product book = products.get(position);
 
                                         fragmentManager.beginTransaction()
-                                                .replace(R.id.frame_home,new FragmentProductDetails().setId(book.getId())).addToBackStack("FragmentProductDetails").commit();
+                                                .replace(R.id.frame_home, new FragmentProductDetails().setId(book.getId())).addToBackStack("FragmentProductDetails").commit();
                                     }
                                 });
                                 num.setText(page_num + "");
@@ -203,7 +234,12 @@ public class FragmentMostTrend extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        dlg.dismiss();
+                    }
+                }, 5000);   //5 seconds
                 if (error instanceof ServerError)
                     Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
                 else if (error instanceof NetworkError)
@@ -211,14 +247,18 @@ public class FragmentMostTrend extends Fragment {
                 else if (error instanceof TimeoutError)
                     Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> map = new HashMap<>();
-                map.put("type",type+"");
-                map.put("x",x+"");
-                map.put("count",80+"");
-                map.put("token","?za[ZbGNz2B}MXYZ");
+                HashMap<String, String> map = new HashMap<>();
+                map.put("type", type + "");
+                map.put("x", x + "");
+                if (amount == 1){
+                    map.put("count", 10 + "");
+                }else {
+                    map.put("count", 80 + "");
+                }
+                map.put("token", "?za[ZbGNz2B}MXYZ");
                 return map;
             }
         };

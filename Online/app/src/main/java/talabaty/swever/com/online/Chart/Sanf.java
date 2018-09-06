@@ -2,7 +2,7 @@ package talabaty.swever.com.online.Chart;
 
 public class Sanf {
     float id;
-    String name, image, state, color;
+    String name, image, state, color, imageId;
     float amount;
 
     public Sanf() {
@@ -15,6 +15,14 @@ public class Sanf {
         this.state = state;
         this.color = color;
         this.amount = amount;
+    }
+
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
+    }
+
+    public String getImageId() {
+        return imageId;
     }
 
     public void setName(String name) {

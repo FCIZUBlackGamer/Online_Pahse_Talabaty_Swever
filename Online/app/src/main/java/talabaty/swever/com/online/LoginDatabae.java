@@ -1,4 +1,4 @@
-package talabaty.swever.com.online.Chart;
+package talabaty.swever.com.online;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,9 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
-public class ChartDatabase extends SQLiteOpenHelper{
+public class LoginDatabae extends SQLiteOpenHelper{
 
-    private static final String DATABASE_NAME = "Online";
+    private static final String DATABASE_NAME = "Admin";
 
     private static final String TABLE_NAME = "TABLE_Local";
 
@@ -18,41 +18,25 @@ public class ChartDatabase extends SQLiteOpenHelper{
 
     private static final String NAME = "name";
 
-    private static final String PROUCT_IMAGE = "image";
+    private static final String USER_ID = "userId";
 
-    private static final String PROUCT_COLOR = "color";
+    private static final String PHONE = "phone";
 
-    private static final String PROUCT_SIZE = "size";
+    private static final String TYPE = "type";
 
-    private static final String PROUCT_AMOUNT = "amount";
+    private static final String IMAGE = "image"; //http://www.selltlbaty.sweverteam.com/
 
-    private static final String PROUCT_STATE = "state";
-
-    private static final String PROUCT_PRICE = "price";
-
-    private static final String COLOR_val = "colorval";
-
-    private static final String SIZE_val = "sizeval";
-
-    private static final String CONTACT_NAME = "contactname";
-
-    private static final String ADDRESS = "address";
-
-    private static final String PRODUCT_ID = "productid";
-
-    private static final String PROUCT_IMAGE_ID = "imageid";
-
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 2;
     Context cont;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table " +TABLE_NAME +
-            "( "+UID+" integer primary key , "+NAME+" varchar(255) not null, "+PROUCT_IMAGE+" varchar(255) , "+PROUCT_COLOR+" varchar(20) , "+PROUCT_SIZE+" varchar(20) , "+PROUCT_AMOUNT+" varchar(255) not null, "+PROUCT_STATE+" varchar(255), "+PROUCT_PRICE+" varchar(255) not null , " +COLOR_val+" varchar(20) , "+SIZE_val+" varchar(20), "+CONTACT_NAME+" varchar(225), "+ADDRESS+" varchar(225) not null, "+PRODUCT_ID+" varchar(225) not null, "+PROUCT_IMAGE_ID+" varchar(225) not null );";
+            "( "+UID+" integer primary key , "+NAME+" varchar(255) not null, "+USER_ID+" varchar(255) , "+PHONE+" varchar(20) , "+TYPE+" varchar(255) not null, "+IMAGE+" varchar(255) );";
 
     // Database Deletion
     private static final String DATABASE_DROP = "drop table if exists "+TABLE_NAME+";";
 
-    public ChartDatabase(Context context) {
+    public LoginDatabae(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.cont = context;
     }
@@ -61,7 +45,8 @@ public class ChartDatabase extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         try {
             db.execSQL(DATABASE_CREATE);
-            Toast.makeText(cont,"تم إنشاء سله تسوق", Toast.LENGTH_SHORT).show();
+            db.execSQL("insert into "+TABLE_NAME+" ( "+UID+", "+NAME+", "+USER_ID+", "+PHONE+", "+TYPE+"," +IMAGE+") values ( '1', 'e', '0', '0', '0', '0');");
+            // Toast.makeText(cont,"تم إنشاء سله تسوق", Toast.LENGTH_SHORT).show();
         }catch (SQLException e)
         {
             Toast.makeText(cont,"database doesn't created " +e.toString(), Toast.LENGTH_SHORT).show();
@@ -81,23 +66,15 @@ public class ChartDatabase extends SQLiteOpenHelper{
         }
     }
 
-    public boolean InsertData (String name, String image, String imageid ,String COLOR, String size, String amount, String state, String price, String COLORval, String sizeval, String contact, String add, String id)
+    public boolean InsertData (String name, String userid ,String phone, String type, String image)
     {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(NAME,name);
-        contentValues.put(PROUCT_IMAGE,image);
-        contentValues.put(PROUCT_IMAGE_ID,imageid);
-        contentValues.put(PROUCT_COLOR,COLOR);
-        contentValues.put(PROUCT_SIZE,size);
-        contentValues.put(PROUCT_AMOUNT,amount);
-        contentValues.put(PROUCT_STATE,state);
-        contentValues.put(PROUCT_PRICE,price);
-        contentValues.put(COLOR_val,COLORval);
-        contentValues.put(SIZE_val,sizeval);
-        contentValues.put(CONTACT_NAME,contact);
-        contentValues.put(ADDRESS,add);
-        contentValues.put(PRODUCT_ID,id);
+        contentValues.put(USER_ID,userid);
+        contentValues.put(PHONE,phone);
+        contentValues.put(TYPE,type);
+        contentValues.put(IMAGE,image);
         long result = sqLiteDatabase.insert(TABLE_NAME,null,contentValues);
 
         return result==-1?false:true;
@@ -110,22 +87,16 @@ public class ChartDatabase extends SQLiteOpenHelper{
         return cursor;
     }
 
-    public Cursor getID ( String image )
-    {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery(
-                "select "+UID+" from "+TABLE_NAME+" where "+PROUCT_IMAGE_ID+" = "+image+" ;",null);
-        return cursor;
-    }
-
-    public boolean UpdateData (String id, String name, String pass , String PROUCT_COLO )
+    public boolean UpdateData (String id, String name, String userid ,String phone, String type, String image)
     {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(UID,id);
         contentValues.put(NAME,name);
-        contentValues.put(PROUCT_IMAGE,pass);
-        contentValues.put(PROUCT_COLOR,PROUCT_COLO);
+        contentValues.put(USER_ID,userid);
+        contentValues.put(PHONE,phone);
+        contentValues.put(TYPE,type);
+        contentValues.put(IMAGE,image);
         sqLiteDatabase.update(TABLE_NAME,contentValues,"id = "+Integer.parseInt( id ),null);
 
         return true;
@@ -137,7 +108,7 @@ public class ChartDatabase extends SQLiteOpenHelper{
         ContentValues contentValues = new ContentValues();
         contentValues.put(UID,id);
         contentValues.put(PROUCT_STATE,PROUCT_STATE);
-        contentValues.put(PROUCT_AMOUNT,lang);
+        contentValues.put(TYPE,lang);
         sqLiteDatabase.update(TABLE_NAME,contentValues,"id = ?",new String[]{id});
 
         return true;

@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -51,6 +53,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
     List<Product> product_List;
     List<Integer> subCatId;
 
+    private int lastPosition = -1;
+
     public ContactAdapter(Context context, List<Contact> contact) {
         this.context = context;
         contacts = new ArrayList<>();
@@ -68,6 +72,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
 
     @Override
     public void onBindViewHolder(@NonNull Vholder holder, final int position) {
+
+        setAnimation(holder.itemView, position);
 
         holder.name.setText(contacts.get(position).getName());
         if (!contacts.get(position).getCompany_logo().isEmpty()) {
@@ -265,6 +271,17 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
                 2,  // maxNumRetries = 2 means no retry
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Volley.newRequestQueue(context).add(stringRequest);
+    }
+
+    private void setAnimation(View viewToAnimate, int position)
+    {
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition)
+        {
+            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        }
     }
 
 }

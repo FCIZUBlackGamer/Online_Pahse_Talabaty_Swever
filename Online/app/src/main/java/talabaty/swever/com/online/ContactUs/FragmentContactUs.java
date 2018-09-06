@@ -1,11 +1,14 @@
 package talabaty.swever.com.online.ContactUs;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -47,6 +50,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import pl.droidsonroids.gif.GifImageView;
 import talabaty.swever.com.online.CategoryModel;
 import talabaty.swever.com.online.R;
 import talabaty.swever.com.online.Switch_nav;
@@ -106,16 +110,25 @@ public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-                progressDialog.setMessage("جارى تحميل البيانات ...");
-                progressDialog.setCancelable(false);
-                progressDialog.show();
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                GifImageView gifImageView = new GifImageView(getActivity());
+                gifImageView.setImageResource(R.drawable.load);
+                builder.setCancelable(false);
+                builder.setView(gifImageView);
+                final AlertDialog dlg = builder.create();
+                dlg .getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                dlg.show();
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/contact/SendMail",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
 
-                                progressDialog.dismiss();
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    public void run() {
+                                        dlg.dismiss();
+                                    }
+                                }, 5000);   //5 seconds
                                 if (response.equals("\"success\"")){
                                     Toast.makeText(getActivity(),"تم الإرسال بنجاح",Toast.LENGTH_SHORT).show();
                                 }else {
@@ -126,7 +139,12 @@ public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        progressDialog.dismiss();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+                                dlg.dismiss();
+                            }
+                        }, 5000);   //5 seconds
                         if (error instanceof ServerError)
                             Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
                         else if (error instanceof NetworkError)

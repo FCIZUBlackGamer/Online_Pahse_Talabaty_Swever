@@ -33,11 +33,16 @@ public class SizeProductDetailsAdapter extends RecyclerView.Adapter<SizeProductD
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Vholder holder, final int position) {
+    public void onBindViewHolder(@NonNull final Vholder holder, final int position) {
 
         holder.bind(sizeList.get(position), listener);
         holder.size_button.setText(sizeList.get(position));
-
+//        holder.size_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                holder.size_button.setBackgroundResource(R.drawable.background_edittext);
+//            }
+//        });
     }
 
     @Override

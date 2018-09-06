@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="400dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="بلحه العلمانى"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:id="@+id/contact_name"
+        android:fontFamily="@font/changabold"
+        android:textColor="@color/black"
+        android:layout_marginEnd="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="التكلفة "
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="@font/changabold"
+            android:textColor="@color/black"
+            android:layout_marginEnd="10dp"/>
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="سعر الوحده "
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="@font/changabold"
+            android:textColor="@color/black"
+            android:layout_marginEnd="10dp"/>
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="عدد القطع "
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="@font/changabold"
+            android:textColor="@color/black"
+            android:layout_marginEnd="10dp"/>
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="اسم المنتج "
+            android:fontFamily="@font/changabold"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:id="@+id/each_total"
+            android:fontFamily="@font/changabold"
+            android:textColor="@color/black"
+            android:layout_marginEnd="10dp"/>
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="سعر الوحده "
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:id="@+id/unit_price"
+            android:fontFamily="@font/changabold"
+            android:textColor="@color/black"
+            android:layout_marginEnd="10dp"/>
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="عدد القطع "
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:id="@+id/num_item"
+            android:fontFamily="@font/changabold"
+            android:textColor="@color/black"
+            android:layout_marginEnd="10dp"/>
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="اسم المنتج "
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:id="@+id/item_name"
+            android:fontFamily="@font/changabold"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="123"
+            android:id="@+id/all_total"
+            android:fontFamily="@font/changabold"
+            android:textColor="@color/black"
+            android:layout_marginEnd="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="الإجمالى:"
+            android:fontFamily="@font/changabold"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
+
+</LinearLayout>
