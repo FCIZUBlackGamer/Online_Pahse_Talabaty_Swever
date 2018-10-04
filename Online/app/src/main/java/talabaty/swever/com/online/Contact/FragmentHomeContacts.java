@@ -1,12 +1,9 @@
 package talabaty.swever.com.online.Contact;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -43,10 +40,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import pl.droidsonroids.gif.GifImageView;
 import talabaty.swever.com.online.Fields.MostTrend.Product;
 import talabaty.swever.com.online.R;
-
 public class FragmentHomeContacts extends Fragment {
 
 
@@ -60,11 +55,16 @@ public class FragmentHomeContacts extends Fragment {
     static String phon, emai, addres, nam, log;
     static float ba;
 
+    RecyclerView recyclerView_offer;
+    RecyclerView.Adapter offerAdapter;
+    List<Product> offerList;
+
     TextView phone, email, address, name;
     RatingBar bar;
     ImageView logo;
+    static int ShopId;
 
-    public static FragmentHomeContacts setData(String phone, String email, String address, String name, String logo, float bar) {
+    public static FragmentHomeContacts setData(int Id, String phone, String email, String address, String name, String logo, float bar) {
         FragmentHomeContacts fragmentHomeContacts = new FragmentHomeContacts();
         phon = phone;
         emai = email;
@@ -72,6 +72,7 @@ public class FragmentHomeContacts extends Fragment {
         nam = name;
         log = logo;
         ba = bar;
+        ShopId = Id;
         return fragmentHomeContacts;
     }
 
@@ -83,6 +84,11 @@ public class FragmentHomeContacts extends Fragment {
         gridView = (RecyclerView) view.findViewById(R.id.gridview);
         gridView.setHasFixedSize(true);
         gridView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true));
+
+        recyclerView_offer = (RecyclerView) view.findViewById(R.id.gridview);
+        recyclerView_offer.setHasFixedSize(true);
+        recyclerView_offer.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true));
+
         next = view.findViewById(R.id.next);
         last = view.findViewById(R.id.previous);
         num = view.findViewById(R.id.item_num);
@@ -95,6 +101,7 @@ public class FragmentHomeContacts extends Fragment {
         address = view.findViewById(R.id.company_address);
         bar = view.findViewById(R.id.company_rate);
         logo = view.findViewById(R.id.company_logo);
+
         return view;
     }
 
@@ -146,29 +153,21 @@ public class FragmentHomeContacts extends Fragment {
         /** Adapter Montag*/
 
         loadData(0, "1");
+        loadContactOffersPrepareFood(ShopId);
 
     }
 
     private void loadData(final int x, final String type) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        GifImageView gifImageView = new GifImageView(getActivity());
-        gifImageView.setImageResource(R.drawable.load);
-        builder.setCancelable(false);
-        builder.setView(gifImageView);
-        final AlertDialog dlg = builder.create();
-        dlg .getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        dlg.show();
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("جارى تحميل البيانات ...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Products/MostVisited",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         int temp = 0;
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dlg.dismiss();
-                            }
-                        }, 5000);   //5 seconds
+                        progressDialog.dismiss();
                         try {
 
                             JSONObject object = new JSONObject(response);
@@ -215,7 +214,7 @@ public class FragmentHomeContacts extends Fragment {
                                     @Override
                                     public void onItemClick(Product item) {
                                         //Todo: Make Some Action
-                                        item.getId();
+                                        Log.e("ProductId",item.getId()+"");
                                     }
                                 });
                                 gridView.setAdapter(booksAdapter);
@@ -237,12 +236,8 @@ public class FragmentHomeContacts extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-                        dlg.dismiss();
-                    }
-                }, 5000);   //5 seconds
+                progressDialog.dismiss();
+
                 if (error instanceof ServerError)
                     Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
                 else if (error instanceof NetworkError)
@@ -261,6 +256,96 @@ public class FragmentHomeContacts extends Fragment {
                 return map;
             }
         };
+//        Volley.newRequestQueue(getActivity()).add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                2,  // maxNumRetries = 2 means no retry
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Volley.newRequestQueue(getActivity()).add(stringRequest);
+    }
+
+    private void loadContactOffersPrepareFood(final int shopId) {
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("جارى تحميل البيانات ...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Offers/ListByShop",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+
+                            JSONObject object = new JSONObject(response);
+                            JSONArray array = object.getJSONArray("Offers");
+                            if (array.length() > 0) {
+
+                                final int size = offerList.size();
+                                if (size > 0) {
+                                    for (int i = 0; i < size; i++) {
+                                        offerList.remove(0);
+
+                                    }
+                                    offerAdapter.notifyDataSetChanged();
+                                }
+
+
+                                for (int x = 0; x < array.length(); x++) {
+                                    JSONObject object1 = array.getJSONObject(x);
+
+                                    Product r = new Product(object1.getInt("Id"),
+                                            object1.getString("Name"),
+                                            "http://selltlbaty.sweverteam.com" + object1.getString("Photo"),
+                                            object1.getInt("Price"),
+                                            0,
+                                            0
+                                    );
+                                    offerList.add(r);
+
+                                }
+
+                                offerAdapter = new ContactAdapter(getActivity(), offerList, new ContactAdapter.OnItemClickListener(){
+
+                                    @Override
+                                    public void onItemClick(Product item) {
+                                        //Todo: Make Some Action
+                                        Log.e("ProductId",item.getId()+"");
+                                    }
+                                });
+                                recyclerView_offer.setAdapter(offerAdapter);
+
+                            } else {
+                                Toast toast = Toast.makeText(getActivity(), "لا توجد جهات عمل جديده", Toast.LENGTH_SHORT);
+                                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                                v.setTextColor(Color.GREEN);
+                                toast.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                if (error instanceof ServerError)
+                    Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
+                else if (error instanceof NetworkError)
+                    Toast.makeText(getActivity(), "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
+                else if (error instanceof TimeoutError)
+                    Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("ShopId", shopId+ "");
+                map.put("token", "?za[ZbGNz2B}MXYZ");
+                return map;
+            }
+        };
+        progressDialog.dismiss();
 //        Volley.newRequestQueue(getActivity()).add(stringRequest);
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,

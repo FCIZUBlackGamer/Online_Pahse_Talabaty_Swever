@@ -87,7 +87,7 @@ public class MostViewedAdapter extends BaseAdapter {
             public void onClick(View v) {
 //                if (shopId == -1) {
                     fragmentManager.beginTransaction()
-                            .replace(R.id.frame_home, new FragmentHomeContacts().setData(contacts.get(position).getPhone(), contacts.get(position).getEmail(),
+                            .replace(R.id.frame_home, new FragmentHomeContacts().setData(contacts.get(position).getId(),contacts.get(position).getPhone(), contacts.get(position).getEmail(),
                                     contacts.get(position).getLocation(), contacts.get(position).getName(), contacts.get(position).getCompany_logo(),
                                     contacts.get(position).getRate())).addToBackStack("FragmentHomeContacts").commit();
 //                } else {
