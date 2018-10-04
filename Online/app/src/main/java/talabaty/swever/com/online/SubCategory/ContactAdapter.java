@@ -16,6 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import talabaty.swever.com.online.Fields.MostTrend.FragmentMostTrend;
 import talabaty.swever.com.online.Fields.MostTrend.Product;
 import talabaty.swever.com.online.Fields.MostViewed.Contact;
 import talabaty.swever.com.online.R;
@@ -52,6 +54,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
     FragmentManager fragmentManager;
     List<Product> product_List;
     List<Integer> subCatId;
+    FrameLayout frameLayout;
 
     private int lastPosition = -1;
 
@@ -59,6 +62,13 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
         this.context = context;
         contacts = new ArrayList<>();
         this.contacts = contact;
+    }
+
+    public ContactAdapter(Context context, List<Contact> contact, FrameLayout frameLayout) {
+        this.context = context;
+        contacts = new ArrayList<>();
+        this.contacts = contact;
+        this.frameLayout = frameLayout;
     }
 
     @NonNull
@@ -131,7 +141,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
                             if (array.length() > 0) {
                                 //Todo: Show AlertDialog And List SubCategory Of One Contact
                                 AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
-                                builderSingle.setIcon(R.drawable.ic_menu_camera);
+                                builderSingle.setIcon(R.drawable.ic_info_outline_black_24dp);
                                 builderSingle.setTitle("من فضلك أختر احد من الأقسام لعرض المنتجات");
                                 //Todo: Fill SubCategory Of One Contact From Api
                                 for (int x = 0; x < array.length(); x++) {
@@ -215,9 +225,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
                                     for (int i = 0; i < product_List.size(); i++) {
                                         product_List.remove(0);
                                     }
-
                                 }
-                                //Todo: Solve Problem (Displaying Contacts Not Products) to Display Products
+
                                 //Todo: Fill Products List From Api And Pass To FragmentProduct()
                                 for (int x = 0; x < array.length(); x++) {
                                     JSONObject object1 = array.getJSONObject(x);
@@ -230,9 +239,11 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
                                     );
                                     product_List.add(r);
                                 }
-                                Log.e("List",product_List.toArray().length+"");
+                                Log.e("List",product_List.size()+"");
+
+                                frameLayout.removeAllViews();
                                 fragmentManager.beginTransaction()
-                                        .replace(R.id.rec_product, new FragmentProduct().setList(product_List)).commit();
+                                        .replace(R.id.frame_pro, new FragmentMostTrend().setList(product_List)).commit();
 
                             } else {
                                 Toast.makeText(context, "عذرا لا يوجد منتجات حاليا فى ذلك القسم", Toast.LENGTH_SHORT).show();
@@ -258,6 +269,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("CategeoryId", ID + "");
+                Log.e("CategeoryId", ID + "");
                 map.put("x", "0");
                 map.put("count", "10000000");
                 map.put("type", "1");

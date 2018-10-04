@@ -31,7 +31,7 @@ public class LoginDatabae extends SQLiteOpenHelper{
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table " +TABLE_NAME +
-            "( "+UID+" integer primary key , "+NAME+" varchar(255) not null, "+USER_ID+" varchar(255) , "+PHONE+" varchar(20) , "+TYPE+" varchar(255) not null, "+IMAGE+" varchar(255) );";
+            "( " + UID + " integer primary key , " + NAME + " varchar(255) not null, " + USER_ID + " varchar(255) , " + PHONE + " varchar(20) , " + TYPE + " varchar(255) not null, " + IMAGE + " varchar(255) );";
 
     // Database Deletion
     private static final String DATABASE_DROP = "drop table if exists "+TABLE_NAME+";";
@@ -45,7 +45,7 @@ public class LoginDatabae extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         try {
             db.execSQL(DATABASE_CREATE);
-            db.execSQL("insert into "+TABLE_NAME+" ( "+UID+", "+NAME+", "+USER_ID+", "+PHONE+", "+TYPE+"," +IMAGE+") values ( '1', 'e', '0', '0', '0', '0');");
+            db.execSQL("insert into " + TABLE_NAME + " ( " + UID + ", " + NAME + ", " + USER_ID + ", " + PHONE + ", " + TYPE + "," + IMAGE +  ") values ( '1', 'e', '0', '0', '0', '0');");
             // Toast.makeText(cont,"تم إنشاء سله تسوق", Toast.LENGTH_SHORT).show();
         }catch (SQLException e)
         {
@@ -102,17 +102,16 @@ public class LoginDatabae extends SQLiteOpenHelper{
         return true;
     }
 
-    public boolean UpdateData (String id, String lang, String PROUCT_STATE ,int c)
-    {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(UID,id);
-        contentValues.put(PROUCT_STATE,PROUCT_STATE);
-        contentValues.put(TYPE,lang);
-        sqLiteDatabase.update(TABLE_NAME,contentValues,"id = ?",new String[]{id});
-
-        return true;
-    }
+//    public boolean UpdateState(String id, String PROUCT_STATE)
+//    {
+//        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put(UID,id);
+//        contentValues.put(State, PROUCT_STATE);
+//        sqLiteDatabase.update(TABLE_NAME,contentValues,"id = ?",new String[]{id});
+//
+//        return true;
+//    }
 
     public int DeleteData (String id)
     {

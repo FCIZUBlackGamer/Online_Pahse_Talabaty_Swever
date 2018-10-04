@@ -1,5 +1,6 @@
 package talabaty.swever.com.online.SubCategory;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -45,7 +46,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Vholder>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Vholder holder, final int position) {
+    public void onBindViewHolder(@NonNull Vholder holder, @SuppressLint("RecyclerView") final int position) {
 
         setAnimation(holder.itemView, position);
 
@@ -67,7 +68,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Vholder>
             @Override
             public void onClick(View v) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.frame_home,new FragmentProductDetails().setId(product.get(position).getId())).addToBackStack("FragmentProductDetails").commit();
+                        .replace(R.id.frame_home,new FragmentProductDetails().setId(product.get(position).getId(), product.get(position).getIsOffer())).addToBackStack("FragmentOfferDetails").commit();
             }
         });
 
@@ -89,13 +90,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Vholder>
 
         public Vholder(View view) {
             super(view);
-            this.name = view.findViewById(R.id.product_name);
-            this.price = view.findViewById(R.id.product_price);
-            this.image = view.findViewById(R.id.product_image);
-            this.sell = view.findViewById(R.id.sell);
-            this.ratingBar = view.findViewById(R.id.product_rat);
-            this.sell_image = view.findViewById(R.id.sell_image);
-            this.action = view.findViewById(R.id.action);
+            name = view.findViewById(R.id.product_name);
+            price = view.findViewById(R.id.product_price);
+            image = view.findViewById(R.id.product_image);
+            sell = view.findViewById(R.id.sell);
+            ratingBar = view.findViewById(R.id.product_rat);
+            sell_image = view.findViewById(R.id.sell_image);
+            action = view.findViewById(R.id.action);
         }
 
     }

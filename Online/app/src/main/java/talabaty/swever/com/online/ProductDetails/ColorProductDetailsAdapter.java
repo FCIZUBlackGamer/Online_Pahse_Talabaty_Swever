@@ -45,8 +45,11 @@ public class ColorProductDetailsAdapter extends RecyclerView.Adapter<ColorProduc
     public void onBindViewHolder(@NonNull final Vholder holder, final int position) {
         holder.bind(colorList.get(position), listener);
         Log.e("Color", colorList.get(position));
-        holder.color.setBackgroundColor(Color.parseColor(colorList.get(position)));
+        try {
+            holder.color.setBackgroundColor(Color.parseColor(colorList.get(position)));
+        }catch (Exception e){
 
+        }
 
 //        holder.color.setOnClickListener(new View.OnClickListener() {
 //            @Override

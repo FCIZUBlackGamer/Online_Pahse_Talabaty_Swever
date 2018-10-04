@@ -1,12 +1,9 @@
 package talabaty.swever.com.online.ProductDetails;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -18,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -43,7 +41,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import pl.droidsonroids.gif.GifImageView;
 import talabaty.swever.com.online.Chart.ChartDatabase;
 import talabaty.swever.com.online.Chart.Sanf;
 import talabaty.swever.com.online.R;
@@ -67,7 +64,6 @@ public class FragmentProductDetails extends Fragment {
     String final_size = "";
     String image, imageid;
 
-
     Button add;
 
     ChartDatabase chartDatabase;
@@ -78,11 +74,13 @@ public class FragmentProductDetails extends Fragment {
     View view;
     String contact_name, address;
 
-    static int id;
+    static int id, offer_type;
+    String Link = null;
 
-    public FragmentProductDetails setId(int Id) {
+    public FragmentProductDetails setId(int Id, int Offer_type) {
         FragmentProductDetails details = new FragmentProductDetails();
         id = Id;
+        offer_type = Offer_type;
         return details;
     }
 
@@ -120,13 +118,18 @@ public class FragmentProductDetails extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        if (offer_type == 0)
+        {
+            Link = "http://onlineapi.sweverteam.com/Products/ShowMore";
+        }else {
+            Link = "http://onlineapi.sweverteam.com/Offers/OffersDetails";
+        }
         loadDetails(id); /** Product Id*/
 
         company_rate.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, final float rating, boolean fromUser) {
                 final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-                progressDialog.setMessage("جارى تحميل البيانات ...");
                 progressDialog.setCancelable(false);
                 progressDialog.show();
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Products/rate",
@@ -215,25 +218,15 @@ public class FragmentProductDetails extends Fragment {
 
     private void loadDetails(final int id) {
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        GifImageView gifImageView = new GifImageView(getActivity());
-        gifImageView.setImageResource(R.drawable.load);
-        builder.setCancelable(false);
-        builder.setView(gifImageView);
-        final AlertDialog dlg = builder.create();
-        dlg .getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        dlg.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Products/ShowMore",
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("جارى تحميل البيانات ...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Link,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dlg.dismiss();
-                            }
-                        }, 5000);   //5 seconds
+                        progressDialog.dismiss();
                         try {
 
                             JSONObject object = new JSONObject(response);
@@ -247,9 +240,16 @@ public class FragmentProductDetails extends Fragment {
 
                                     title.setText(array.getString("Name"));
                                     company_rate.setRating((float) array.getDouble("Rate"));
-                                    price.setText(array.getDouble("Price") + "");
-                                    contact_name = array.getString("ShopName");
-                                    address = array.getString("Address");
+                                    price.setText(array.getDouble("Price") + " LE");
+                                    if (offer_type == 1)
+                                    {
+
+                                    }else {
+                                        contact_name = array.getString("ShopName");
+                                        address = array.getString("Address");
+                                    }
+
+
                                     /** Color List*/
                                     JSONArray color = new JSONArray(array.getString("Color"));
                                     if (color.length() > 0) {
@@ -280,6 +280,12 @@ public class FragmentProductDetails extends Fragment {
                                             sourceList.add(object2.getString("Photo"));
                                         }
                                         loadImages(sourceList, ids);
+                                    }else {
+                                        List<Integer> ids = new ArrayList<>();
+                                            ids.add(0);
+                                            sourceList.add("https://vignette.wikia.nocookie.net/simpsons/images/6/60/No_Image_Available.png");
+
+                                        loadImages(sourceList, ids);
                                     }
 
                                 }
@@ -298,12 +304,7 @@ public class FragmentProductDetails extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-                        dlg.dismiss();
-                    }
-                }, 5000);   //5 seconds
+                progressDialog.dismiss();
 
                 if (error instanceof ServerError)
                     Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();

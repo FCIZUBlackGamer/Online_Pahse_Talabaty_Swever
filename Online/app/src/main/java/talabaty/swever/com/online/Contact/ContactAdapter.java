@@ -68,7 +68,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.VHolder>
             @Override
             public void onClick(View v) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.frame_home,new FragmentProductDetails().setId(products.get(position).getId())).addToBackStack("FragmentProductDetails").commit();
+                        .replace(R.id.frame_home,new FragmentProductDetails().setId(products.get(position).getId(),products.get(position).getIsOffer())).addToBackStack("FragmentOfferDetails").commit();
             }
         });
 

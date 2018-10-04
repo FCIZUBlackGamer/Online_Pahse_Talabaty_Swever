@@ -72,7 +72,7 @@ public class MontagAdapter extends BaseAdapter {
         viewHolder.name.setText(product.getName());
         viewHolder.ratingBar.setNumStars(5);
         viewHolder.ratingBar.setRating(product.getRate());
-        viewHolder.price.setText(String.valueOf(product.getPrice()) + " EG");
+        viewHolder.price.setText(String.valueOf(product.getPrice()) + " LE");
         if (product.getSell() != 0) {
             viewHolder.sell.setText("%" + String.valueOf(product.getSell()));
             viewHolder.sell_image.setVisibility(View.VISIBLE);
@@ -87,7 +87,7 @@ public class MontagAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 fragmentManager.beginTransaction()
-                        .replace(R.id.frame_home,new FragmentProductDetails().setId(products.get(position).getId())).addToBackStack("FragmentProductDetails").commit();
+                        .replace(R.id.frame_home,new FragmentProductDetails().setId(products.get(position).getId(),products.get(position).getIsOffer())).addToBackStack("FragmentOfferDetails").commit();
             }
         });
         return convertView;

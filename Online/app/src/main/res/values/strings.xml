@@ -8,9 +8,14 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string-array name="id_type">
-        <item>-- أختر --</item>
         <item>بطاقه هوية شخصيه</item>
         <item>جواز سفر</item>
+
+    </string-array>
+
+    <string-array name="del">
+        <item>بالكيلو</item>
+        <item>بالمحافظه</item>
 
     </string-array>
     <string name="title_activity_fragment_contact_us">Map</string>

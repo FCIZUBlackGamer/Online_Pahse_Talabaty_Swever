@@ -4,49 +4,59 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+        <!--<item-->
+            <!--android:id="@+id/nav_new_offers"-->
+            <!--android:icon="@drawable/ic_offers"-->
+            <!--android:fontFamily="@font/changamedium"-->
+            <!--android:title="أحدث العروض" />-->
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_home_black_24dp"
             android:fontFamily="@font/changamedium"
             android:title="الصفحة الرئيسية" />
         <item
-            android:id="@+id/nav_montag"
-            android:icon="@drawable/ic_menu_gallery"
+            android:id="@+id/nav_new_food"
+            android:icon="@drawable/ic_if_food"
             android:fontFamily="@font/changamedium"
+            android:title="جهز وجبتى" />
+        <item
+            android:id="@+id/nav_montag"
+            android:fontFamily="@font/changamedium"
+            android:icon="@drawable/montage"
             android:title="منتجات" />
         <item
             android:id="@+id/nav_category"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/montage"
             android:fontFamily="@font/changamedium"
             android:title="مجالات" />
         <item
             android:id="@+id/nav_contact"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/contact"
             android:fontFamily="@font/changamedium"
             android:title="جهات العمل" />
         <item
             android:id="@+id/nav_nearest"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_location_on_black_24dp"
             android:fontFamily="@font/changamedium"
             android:title="الأقرب" />
         <item
             android:id="@+id/nav_work_with_us"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_if_business_suitcase_outline_stroke"
             android:fontFamily="@font/changamedium"
             android:title="أشترك معنا" />
         <item
             android:id="@+id/nav_call_us"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/us"
             android:fontFamily="@font/changamedium"
             android:title="أتصل بنا" />
         <item
             android:id="@+id/nav_car_shop"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/chart"
             android:fontFamily="@font/changamedium"
             android:title="عربه الشراء" />
         <item
             android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_if_exit_enter_leave_door_out"
             android:fontFamily="@font/changamedium"
             android:title="تسجيل خروج" />
     </group>

@@ -21,6 +21,7 @@ public class FragmentFields extends Fragment {
 
     private TabLayout tabLayout;
     ViewPager viewPager = null;
+    FragmentManager fragmentManager;
 
     @Nullable
     @Override
@@ -28,7 +29,7 @@ public class FragmentFields extends Fragment {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.pager);
-        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager = getFragmentManager();
         viewPager.setAdapter(new pager(fragmentManager));
         tabLayout = (TabLayout) view.findViewById(R.id.tablayout);
         return view;

@@ -1,12 +1,11 @@
 package talabaty.swever.com.online.Chart.Models;
 
-import android.os.Parcelable;
-
 import java.io.Serializable;
 import java.util.List;
 
 public class Bell implements Serializable {
     int Id;
+    int IsOffer;
     String Barcode;
     double TotalPrice;
     double ChargeValue;
@@ -23,6 +22,10 @@ public class Bell implements Serializable {
 
     public Bell(){
 
+    }
+
+    public void setIsOffer(int isOffer) {
+        IsOffer = isOffer;
     }
 
     public void setAmountValues(List<Double> amountValues) {

@@ -1,13 +1,8 @@
 package talabaty.swever.com.online.Home;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,10 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.OvershootInterpolator;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,26 +37,25 @@ import java.util.List;
 import java.util.Map;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
-import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
-import pl.droidsonroids.gif.GifImageView;
+import talabaty.swever.com.online.Fields.MostTrend.Product;
+import talabaty.swever.com.online.Fields.MostViewed.Contact;
 import talabaty.swever.com.online.R;
-import talabaty.swever.com.online.Fields.MostViewed.*;
-import talabaty.swever.com.online.Fields.MostTrend.*;
-import talabaty.swever.com.online.SubCategory.*;
+import talabaty.swever.com.online.SubCategory.ContactAdapter;
+import talabaty.swever.com.online.SubCategory.ProductAdapter;
 
 public class Fragment_Home extends Fragment {
 
-    RecyclerView recyclerViewcontact, recyclerViewproducts;
-    RecyclerView.Adapter adaptercontact, adapterproducts;
+    RecyclerView recyclerViewcontact, recyclerViewproducts, recyclerViewoffers;
+    RecyclerView.Adapter adaptercontact, adapterproducts, adapteroffers;
     List<Contact> contactList;
-    List<Product> productList;
+    List<Product> productList, offerList;
     View view;
     LayoutInflater inflate;
     ViewGroup containe;
+//    ProgressDialog progressDialog;
+    FrameLayout frameLayout;
 
     @Nullable
     @Override
@@ -72,8 +64,10 @@ public class Fragment_Home extends Fragment {
         inflate = inflater;
         containe = container;
         setUi(inflate, containe);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewproducts = view.findViewById(R.id.rec_product);
+        frameLayout = view.findViewById(R.id.frame_pro);
         recyclerViewproducts.setLayoutManager(layoutManager);
         recyclerViewproducts.setItemAnimator(new FadeInDownAnimator(new OvershootInterpolator(1f)));
         productList = new ArrayList<>();
@@ -83,6 +77,12 @@ public class Fragment_Home extends Fragment {
         recyclerViewcontact.setLayoutManager(layoutManager1);
         recyclerViewcontact.setItemAnimator(new FadeInUpAnimator(new OvershootInterpolator(1f)));
         contactList = new ArrayList<>();
+
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewoffers = view.findViewById(R.id.rec_offers);
+        recyclerViewoffers.setLayoutManager(layoutManager2);
+        recyclerViewoffers.setItemAnimator(new FadeInDownAnimator(new OvershootInterpolator(1f)));
+        offerList = new ArrayList<>();
 
         return view;
     }
@@ -97,6 +97,8 @@ public class Fragment_Home extends Fragment {
         //Todo: get List Of Contacts
         loadContact();
 
+        //Todo: get List Of Offers
+        loadOffers();
 
     }
 
@@ -120,78 +122,66 @@ public class Fragment_Home extends Fragment {
 //    }
 
     private void loadProduct() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        GifImageView gifImageView = new GifImageView(getActivity());
-        gifImageView.setImageResource(R.drawable.load);
-        builder.setCancelable(false);
-        builder.setView(gifImageView);
-        final AlertDialog dlg = builder.create();
-        dlg.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        dlg.show();
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("جارى تحميل البيانات ...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Home/ListProduct",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(final String response) {
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dlg.dismiss();
-                                try {
+                        progressDialog.dismiss();
+                        try {
 
-                                    JSONObject object = new JSONObject(response);
-                                    final JSONArray array = object.getJSONArray("List");
-                                    if (array.length() > 0) {
+                            JSONObject object = new JSONObject(response);
+                            final JSONArray array = object.getJSONArray("List");
+                            if (array.length() > 0) {
 
-                                        final int size = productList.size();
-                                        if (size > 0) {
-                                            for (int i = 0; i < size; i++) {
-                                                productList.remove(0);
-                                                adapterproducts.notifyItemRemoved(i);
-                                            }
-                                        }
-
-                                        for (int x = 0; x < array.length(); x++) {
-                                            JSONObject object1 = array.getJSONObject(x);
-
-                                            Product r = new Product(object1.getInt("Id"),
-                                                    object1.getString("Name"),
-                                                    "http://selltlbaty.sweverteam.com" + object1.getString("Photo"),
-                                                    (float) object1.getDouble("Price"),
-                                                    (float) object1.getDouble("Sale"),
-                                                    (float) object1.getDouble("Rate")
-                                            );
-                                            productList.add(r);
-
-                                        }
-
-                                        adapterproducts = new ProductAdapter(getActivity(), productList);
-                                        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapterproducts);
-                                        alphaAdapter.setDuration(3000);
-                                        recyclerViewproducts.setAdapter(adapterproducts);
-
-
-                                    } else {
-                                        Toast toast = Toast.makeText(getActivity(), "لا توجد منتجات جديده", Toast.LENGTH_SHORT);
-                                        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                                        v.setTextColor(Color.GREEN);
-                                        toast.show();
+                                final int size = productList.size();
+                                if (size > 0) {
+                                    for (int i = 0; i < size; i++) {
+                                        productList.remove(0);
+                                        adapterproducts.notifyItemRemoved(i);
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
                                 }
+
+                                for (int x = 0; x < array.length(); x++) {
+                                    JSONObject object1 = array.getJSONObject(x);
+
+                                    Product r = new Product(object1.getInt("Id"),
+                                            object1.getString("Name"),
+                                            "http://selltlbaty.sweverteam.com" + object1.getString("Photo"),
+                                            (float) object1.getDouble("Price"),
+                                            (float) object1.getDouble("Sale"),
+                                            (float) object1.getDouble("Rate")
+                                    );
+                                    r.setIsOffer(0);
+                                    productList.add(r);
+
+                                }
+
+                                adapterproducts = new ProductAdapter(getActivity(), productList);
+                                AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapterproducts);
+                                alphaAdapter.setDuration(3000);
+                                recyclerViewproducts.setAdapter(adapterproducts);
+
+
+                            } else {
+                                Toast toast = Toast.makeText(getActivity(), "لا توجد منتجات جديده", Toast.LENGTH_SHORT);
+                                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                                v.setTextColor(Color.GREEN);
+                                toast.show();
                             }
-                        }, 5000);   //5 seconds
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-                        dlg.dismiss();
-                    }
-                }, 2500);   //5 seconds
+                progressDialog.dismiss();
 
                 if (error instanceof ServerError)
                     Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
@@ -216,6 +206,101 @@ public class Fragment_Home extends Fragment {
                 2,  // maxNumRetries = 2 means no retry
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Volley.newRequestQueue(getActivity()).add(stringRequest);
+    }
+
+    private void loadOffers() {
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("جارى تحميل البيانات ...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Offers/List",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(final String response) {
+                        progressDialog.dismiss();
+                        try {
+
+                            JSONObject object = new JSONObject(response);
+                            final JSONArray array = object.getJSONArray("Offers");
+                            if (array.length() > 0) {
+
+                                final int size = offerList.size();
+                                if (size > 0) {
+                                    for (int i = 0; i < size; i++) {
+                                        offerList.remove(0);
+                                        adapteroffers.notifyItemRemoved(i);
+                                    }
+                                }
+
+                                for (int x = 0; x < array.length(); x++) {
+                                    JSONObject object1 = array.getJSONObject(x);
+
+                                    Product r = new Product(object1.getInt("Id"),
+                                            object1.getString("Name"),
+                                            "http://selltlbaty.sweverteam.com" + object1.getString("Photo"),
+                                            (float) object1.getDouble("Price"),
+                                            0,
+                                            (float) object1.getDouble("Rate")
+                                    );
+                                    r.setIsOffer(1);
+                                    offerList.add(r);
+
+                                }
+
+                                adapteroffers = new ProductAdapter(getActivity(), offerList);
+                                AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapteroffers);
+                                alphaAdapter.setDuration(3000);
+                                recyclerViewoffers.setAdapter(adapteroffers);
+
+
+                            } else {
+                                Toast toast = Toast.makeText(getActivity(), "لا توجد منتجات جديده", Toast.LENGTH_SHORT);
+                                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                                v.setTextColor(Color.GREEN);
+                                toast.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+
+                if (error instanceof ServerError)
+                    Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
+                else if (error instanceof NetworkError)
+                    Toast.makeText(getActivity(), "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
+                else if (error instanceof TimeoutError)
+                    Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("count", 80 + "");
+                map.put("token", "?za[ZbGNz2B}MXYZ");
+                return map;
+            }
+        };
+
+//        Volley.newRequestQueue(getActivity()).add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                2,  // maxNumRetries = 2 means no retry
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Volley.newRequestQueue(getActivity()).add(stringRequest);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+//        if(progressDialog != null && progressDialog.isShowing()){
+//            progressDialog.dismiss();
+//        }
     }
 
     private void loadContact() {
@@ -258,7 +343,7 @@ public class Fragment_Home extends Fragment {
 
                                 }
 
-                                adaptercontact = new ContactAdapter(getActivity(), contactList);
+                                adaptercontact = new ContactAdapter(getActivity(), contactList, frameLayout);
                                 AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adaptercontact);
                                 alphaAdapter.setDuration(3000);
                                 recyclerViewcontact.setAdapter(adaptercontact);

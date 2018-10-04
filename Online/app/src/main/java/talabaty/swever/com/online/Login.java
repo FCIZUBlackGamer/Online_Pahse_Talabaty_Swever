@@ -1,6 +1,7 @@
 package talabaty.swever.com.online;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -60,12 +61,13 @@ public class Login extends AppCompatActivity {
                 Intent intent = new Intent(Login.this, Switch_nav.class);
 //                intent.putExtra("fragment", "mabi3at");
                 startActivity(intent);
+                finish();
             }
         }
 
         login = findViewById(R.id.login_button);
         new_account = findViewById(R.id.new_account);
-        keep_me_login = findViewById(R.id.keep_me_login);
+        keep_me_login = findViewById(R.id.keep_my_login);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         login.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +76,10 @@ public class Login extends AppCompatActivity {
 
                 final String name = email.getText().toString();
                 final String passwor = password.getText().toString();
+                final ProgressDialog progressDialog = new ProgressDialog(Login.this);
+                progressDialog.setMessage("جارى تحميل البيانات ...");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
                 RequestQueue queue = Volley.newRequestQueue(Login.this);
                 StringRequest request = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Login/Login", new Response.Listener<String>() {
                     @Override
@@ -90,15 +96,7 @@ public class Login extends AppCompatActivity {
                         } else {
 
 
-                            final AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
-                            GifImageView gifImageView = new GifImageView(Login.this);
-                            gifImageView.setImageResource(R.drawable.load);
-                            builder.setCancelable(false);
-                            builder.setView(gifImageView);
-                            final AlertDialog dlg = builder.create();
 
-                            dlg .getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                            dlg.show();
 //                            Toast.makeText(Login.this, "Welcome Home!", Toast.LENGTH_SHORT).show();
                             try {
                                 JSONObject object = new JSONObject(response);
@@ -115,12 +113,13 @@ public class Login extends AppCompatActivity {
                                 Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
                                     public void run() {
-                                        dlg.dismiss();
+                                        progressDialog.dismiss();
                                         Intent intent = new Intent(Login.this,Switch_nav.class);
 
                                         startActivity(intent);
+                                        finish();
                                     }
-                                }, 5000);   //5 seconds
+                                }, 3000);   //5 seconds
 
 
                             } catch (JSONException e) {
@@ -132,7 +131,7 @@ public class Login extends AppCompatActivity {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        progressDialog.dismiss();
                         if (error instanceof ServerError)
                             Toast.makeText(Login.this, "Server Error", Toast.LENGTH_SHORT).show();
                         else if (error instanceof TimeoutError)

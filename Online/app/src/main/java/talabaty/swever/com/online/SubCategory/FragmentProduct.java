@@ -11,9 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import talabaty.swever.com.online.Fields.MostTrend.Product;
 import talabaty.swever.com.online.R;
 
@@ -26,7 +29,6 @@ public class FragmentProduct extends Fragment {
 
     public static FragmentProduct setList(List<Product> contact_Li){
         FragmentProduct contact = new FragmentProduct();
-        product_List = new ArrayList<>();
         product_List = contact_Li;
         return contact;
     }
@@ -47,8 +49,12 @@ public class FragmentProduct extends Fragment {
     public void onStart() {
         super.onStart();
 
+        Gson gson = new Gson();
+        Log.e("Product",gson.toJson(product_List));
         /** product_List Is Already Filled From #ContactAdapter# */
         adapter_product = new ProductAdapter(getActivity(),product_List);
+        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapter_product);
+        alphaAdapter.setDuration(3000);
         recyclerView_product.setAdapter(adapter_product);
     }
 }

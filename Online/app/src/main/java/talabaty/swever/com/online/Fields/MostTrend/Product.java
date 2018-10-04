@@ -6,6 +6,7 @@ public class Product {
     float price;
     float sell;
     float rate;
+    int IsOffer;
 
     public Product(int id, String name, String image_url, float price, float sell, float rate) {
         this.id = id;
@@ -14,6 +15,10 @@ public class Product {
         this.price = price;
         this.sell = sell;
         this.rate = rate;
+    }
+
+    public void setIsOffer(int isOffer) {
+        IsOffer = isOffer;
     }
 
     public int getId() {
@@ -38,5 +43,9 @@ public class Product {
 
     public float getRate() {
         return rate;
+    }
+
+    public int getIsOffer() {
+        return IsOffer;
     }
 }

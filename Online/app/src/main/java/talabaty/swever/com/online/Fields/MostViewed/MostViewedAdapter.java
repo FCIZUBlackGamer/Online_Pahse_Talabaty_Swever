@@ -1,13 +1,12 @@
 package talabaty.swever.com.online.Fields.MostViewed;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -19,69 +18,99 @@ import java.util.List;
 
 import talabaty.swever.com.online.Contact.FragmentHomeContacts;
 import talabaty.swever.com.online.R;
+import talabaty.swever.com.online.PrepareFood.*;
 
-public class MostViewedAdapter extends RecyclerView.Adapter<MostViewedAdapter.Vholder> {
+public class MostViewedAdapter extends BaseAdapter {
 
     Context context;
     List<Contact> contacts;
     FragmentManager fragmentManager;
+    int shopId = -1;
 
     public MostViewedAdapter(Context context, List<Contact> contacts) {
         this.context = context;
         this.contacts = contacts;
     }
 
-    @NonNull
-    @Override
-    public Vholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_home_most_viewed, parent, false);
-        fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-        return new Vholder(view);
+    public MostViewedAdapter(Context context, List<Contact> contacts, int shopId) {
+        this.context = context;
+        this.contacts = contacts;
+        this.shopId = shopId;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Vholder holder, final int position) {
-
-        holder.phone.setText(contacts.get(position).getPhone());
-        holder.name.setText(contacts.get(position).getName());
-        holder.email.setText(contacts.get(position).getEmail());
-        holder.address.setText(contacts.get(position).getLocation());
-        holder.bar.setRating(contacts.get(position).getRate());
-        if (!contacts.get(position).getCompany_logo().isEmpty()) {
-            Picasso.with(context).load(contacts.get(position).getCompany_logo()).into(holder.logo);
-        }
-
-        holder.move.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragmentManager.beginTransaction()
-                        .replace(R.id.frame_home,new FragmentHomeContacts().setData(contacts.get(position).getPhone(),contacts.get(position).getEmail(),
-                                contacts.get(position).getLocation(), contacts.get(position).getName(), contacts.get(position).getCompany_logo(),
-                                contacts.get(position).getRate())).addToBackStack("FragmentHomeContacts").commit();
-            }
-        });
-    }
-
-    @Override
-    public int getItemCount() {
+    public int getCount() {
         return contacts.size();
     }
 
-    public class Vholder extends RecyclerView.ViewHolder {
-        TextView phone, email, address, name;
+    @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final Contact product = contacts.get(position);
+
+        // view holder pattern
+        if (convertView == null) {
+            final LayoutInflater layoutInflater = LayoutInflater.from(context);
+            fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+            convertView = layoutInflater.inflate(R.layout.adapter_home_most_viewed, null);
+
+            final ImageView image = (ImageView) convertView.findViewById(R.id.company_logo);
+            final TextView name = (TextView) convertView.findViewById(R.id.company_name);
+            final RatingBar rate = (RatingBar) convertView.findViewById(R.id.company_rate);
+            final Button action = (Button) convertView.findViewById(R.id.move);
+
+            final Vholder viewHolder = new Vholder(name, rate, image, action);
+            convertView.setTag(viewHolder);
+        }
+
+        final Vholder viewHolder = (Vholder) convertView.getTag();
+//    viewHolder.imageViewCoverArt.setImageResource(book.getImageResource());
+        viewHolder.name.setText(product.getName());
+        viewHolder.bar.setNumStars(5);
+        viewHolder.bar.setRating(product.getRate());
+
+        if (!product.getCompany_logo().isEmpty()) {
+            Picasso.with(context).load(product.getCompany_logo()).into(viewHolder.logo);
+        }
+
+        viewHolder.move.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                if (shopId == -1) {
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.frame_home, new FragmentHomeContacts().setData(contacts.get(position).getPhone(), contacts.get(position).getEmail(),
+                                    contacts.get(position).getLocation(), contacts.get(position).getName(), contacts.get(position).getCompany_logo(),
+                                    contacts.get(position).getRate())).addToBackStack("FragmentHomeContacts").commit();
+//                } else {
+//                    fragmentManager.beginTransaction()
+//                            .replace(R.id.frame_home,new FragmentPrepareFood().setData(contacts.get(position).getId())).addToBackStack("FragmentPrepareFood").commit();
+//                }
+            }
+        });
+        return convertView;
+    }
+
+    public class Vholder {
+        TextView name;
         RatingBar bar;
         ImageView logo;
         Button move;
 
-        public Vholder(View itemView) {
-            super(itemView);
-            phone = itemView.findViewById(R.id.company_phone);
-            email = itemView.findViewById(R.id.company_email);
-            name = itemView.findViewById(R.id.company_name);
-            address = itemView.findViewById(R.id.company_address);
-            bar = itemView.findViewById(R.id.company_rate);
-            logo = itemView.findViewById(R.id.company_logo);
-            move = itemView.findViewById(R.id.move);
+        public Vholder(TextView namee, RatingBar bare, ImageView sell_image, Button action) {
+            name = namee;
+            bar = bare;
+            logo = sell_image;
+            move = action;
+
         }
 
     }

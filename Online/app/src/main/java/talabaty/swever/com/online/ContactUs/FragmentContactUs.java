@@ -61,6 +61,7 @@ public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
     TextView desc, address, phone, site, fb, titter, youtube, gplus, insta;
     EditText title, name, content, email;
     Button send;
+    ProgressDialog progressDialog;
 
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
@@ -110,25 +111,16 @@ public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                GifImageView gifImageView = new GifImageView(getActivity());
-                gifImageView.setImageResource(R.drawable.load);
-                builder.setCancelable(false);
-                builder.setView(gifImageView);
-                final AlertDialog dlg = builder.create();
-                dlg .getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                dlg.show();
+                progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setMessage("جارى تحميل البيانات ...");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/contact/SendMail",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
 
-                                Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    public void run() {
-                                        dlg.dismiss();
-                                    }
-                                }, 5000);   //5 seconds
+                                progressDialog.dismiss();
                                 if (response.equals("\"success\"")){
                                     Toast.makeText(getActivity(),"تم الإرسال بنجاح",Toast.LENGTH_SHORT).show();
                                 }else {
@@ -139,12 +131,7 @@ public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dlg.dismiss();
-                            }
-                        }, 5000);   //5 seconds
+                        progressDialog.dismiss();
                         if (error instanceof ServerError)
                             Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
                         else if (error instanceof NetworkError)

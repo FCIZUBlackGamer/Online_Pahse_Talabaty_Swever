@@ -5,29 +5,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
+    <GridView
+        android:id="@+id/gridview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rec"/>
+        android:layout_height="match_parent"
+        android:columnWidth="180dp"
+        android:gravity="center"
+        android:horizontalSpacing="10dp"
+        android:numColumns="2"
+        android:layout_marginEnd="3dp"
+        android:stretchMode="spacingWidthUniform"
+        android:layout_marginTop="2dp"
+        android:verticalSpacing="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:textAlignment="center"
-        android:layout_below="@+id/gridview"
-        android:layout_marginTop="30dp"
         android:gravity="center"
+        android:id="@+id/layout"
         android:background="@color/transgray"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_marginEnd="3dp"
-            android:text="التالى"
+            android:background="@drawable/ic_chevron_left_black_24dp"
             android:fontFamily="@font/changamedium"
             android:id="@+id/next"
             android:textColor="@color/colorPrimaryDark"
@@ -64,11 +71,11 @@
         </FrameLayout>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_marginStart="3dp"
-            android:text="السابق"
+            android:background="@drawable/ic_chevron_right_black_24dp"
             android:fontFamily="@font/changamedium"
             android:id="@+id/previous"
             android:textColor="@color/colorPrimaryDark"

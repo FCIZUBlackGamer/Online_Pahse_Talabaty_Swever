@@ -1,10 +1,12 @@
 package talabaty.swever.com.online;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -16,15 +18,18 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,9 +61,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Register extends AppCompatActivity {
 
-    EditText fname, lname, date_of_birth, email, pass, repass, phone;
+    EditText fname, lname, email, pass, repass, phone;
     TextView login;
-    Button signup;
+    Button signup, date_of_birth;
     CircleImageView image;
 
     private int PICK_IMAGE_REQUEST = 1;
@@ -80,6 +85,11 @@ public class Register extends AppCompatActivity {
 
     DatePickerDialog.OnDateSetListener DatePicker1;
 
+    View Camera_view;
+    ImageView close, minimize, cam, gal;
+    FloatingActionButton appear;
+    int close_type;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +97,7 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         fname = findViewById(R.id.fname);
         lname = findViewById(R.id.lname);
+        appear = findViewById(R.id.appear);
         date_of_birth = findViewById(R.id.date_of_birth);
         email = findViewById(R.id.email);
         pass = findViewById(R.id.password);
@@ -103,6 +114,7 @@ public class Register extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         userModel = new UserModel();
+        appear.setVisibility(View.GONE);
         date_of_birth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,39 +142,27 @@ public class Register extends AppCompatActivity {
 
         requestStoragePermission();
         image.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
-                LinearLayout layout = new LinearLayout(Register.this);
-                layout.setOrientation(LinearLayout.VERTICAL);
-                Button cam = new Button(Register.this);
-                cam.setText("فتح الكاميرا");
-                cam.setWidth(20);
-                cam.setTextSize(24);
-                cam.setHeight(60);
-                Button gallary = new Button(Register.this);
-                gallary.setText("فتح المعرض");
-                gallary.setWidth(20);
-                gallary.setTextSize(24);
-                gallary.setHeight(60);
-                Button cancel = new Button(Register.this);
-                cancel.setText("إلغاء");
-                cancel.setWidth(20);
-                cancel.setTextSize(24);
-                cancel.setHeight(60);
 
-                layout.addView(cam);
-                layout.addView(gallary);
-                layout.addView(cancel);
+                final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                Camera_view = inflater.inflate(R.layout.camera_view, null);
+
+                close = Camera_view.findViewById(R.id.close);
+                minimize = Camera_view.findViewById(R.id.minimize);
+                cam = Camera_view.findViewById(R.id.cam);
+                gal = Camera_view.findViewById(R.id.gal);
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
                 builder.setCancelable(false)
-                        .setTitle("ارفاق صوره")
-                        .setView(layout);
+                        .setView(Camera_view);
 
                 final AlertDialog dialog = builder.create();
                 dialog.show();
 
-                gallary.setOnClickListener(new View.OnClickListener() {
+                gal.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         openGalary();
@@ -178,10 +178,104 @@ public class Register extends AppCompatActivity {
                     }
                 });
 
-                cancel.setOnClickListener(new View.OnClickListener() {
+                close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        close_type =0;
                         dialog.dismiss();
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                appear.setVisibility(View.GONE);
+                            }
+                        });
+
+                    }
+                });
+
+                minimize.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        close_type =1;
+                        dialog.dismiss();
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                appear.setVisibility(View.VISIBLE);
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+
+
+        appear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final LayoutInflater inflater = (LayoutInflater) Register.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                Camera_view = inflater.inflate(R.layout.camera_view, null);
+
+                close = Camera_view.findViewById(R.id.close);
+                minimize = Camera_view.findViewById(R.id.minimize);
+                cam = Camera_view.findViewById(R.id.cam);
+                gal = Camera_view.findViewById(R.id.gal);
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
+                builder.setCancelable(false)
+                        .setView(Camera_view);
+
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+
+                gal.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openGalary();
+                        dialog.dismiss();
+                    }
+                });
+
+                cam.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openCamera();
+                        dialog.dismiss();
+                    }
+                });
+
+                close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        close_type =0;
+                        dialog.dismiss();
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                appear.setVisibility(View.GONE);
+                            }
+                        });
+                    }
+                });
+
+                minimize.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        close_type =1;
+                        dialog.dismiss();
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                appear.setVisibility(View.VISIBLE);
+                            }
+                        });
                     }
                 });
             }

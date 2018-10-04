@@ -531,26 +531,16 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
     @SuppressLint("NewApi")
     private void uploadChart(final String mod, final String addres, final String Region, final String City, final String State, final Date date) {
 
-
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
-        GifImageView gifImageView = new GifImageView(getActivity());
-        gifImageView.setImageResource(R.drawable.load);
-        builder.setCancelable(false);
-        builder.setView(gifImageView);
-        final android.app.AlertDialog dlg = builder.create();
-        dlg .getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        dlg.show();
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("جارى تحميل البيانات ...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Order/OrderPreview",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dlg.dismiss();
-                            }
-                        }, 5000);   //5 seconds
+                        progressDialog.dismiss();
                         try {
                             //Todo: Still Just Test And Retrieve Data
                             JSONObject object = new JSONObject(response);
@@ -632,12 +622,7 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-                        dlg.dismiss();
-                    }
-                }, 5000);   //5 seconds
+                progressDialog.dismiss();
                 if (error instanceof ServerError)
                     Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
                 else if (error instanceof NetworkError)

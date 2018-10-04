@@ -4,23 +4,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout
+        android:id="@+id/frame_pro"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rec_product"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        </android.support.v7.widget.RecyclerView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="منتجات"
+                android:fontFamily="@font/cairoblack"
+                android:layout_marginEnd="10dp"
+                android:padding="10dp"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimaryDark"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rec_contact"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rec_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        </android.support.v7.widget.RecyclerView>
-    </LinearLayout>
+            </android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="جهات عمل"
+                android:fontFamily="@font/cairoblack"
+                android:layout_marginEnd="10dp"
+                android:padding="10dp"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimaryDark"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rec_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="عروض المنتجات"
+                android:fontFamily="@font/cairoblack"
+                android:layout_marginEnd="10dp"
+                android:padding="10dp"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimaryDark"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rec_offers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+    </FrameLayout>
 </ScrollView>

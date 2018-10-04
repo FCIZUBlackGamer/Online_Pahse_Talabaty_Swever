@@ -39,6 +39,7 @@
 
                     <ImageView
                         android:id="@+id/sell_image"
+                        android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/sell" />
@@ -49,8 +50,9 @@
                         android:layout_height="31dp"
                         android:fontFamily="@font/changamedium"
                         android:paddingBottom="5dp"
-                        android:paddingEnd="5dp"
-                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingStart="5dp"
+                        android:layout_alignParentRight="true"
                         android:text="%10"
                         android:textColor="@color/white"
                         android:textSize="16sp" />

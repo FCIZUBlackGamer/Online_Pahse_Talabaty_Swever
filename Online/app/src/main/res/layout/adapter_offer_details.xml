@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/changaextrabbold"
+        android:gravity="center_horizontal"
+        android:text="منتج 1"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/pro_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/changaextrabbold"
+        android:gravity="center_horizontal"
+        android:text="200 LE"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="16sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/changaextrabbold"
+            android:gravity="center_horizontal"
+            android:text="منتج 1"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_alignParentRight="true"
+            android:fontFamily="@font/changaextrabbold"
+            android:gravity="center_horizontal"
+            android:text="اللون: "
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/changaextrabbold"
+            android:gravity="center_horizontal"
+            android:text="منتج 1"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_alignParentRight="true"
+            android:fontFamily="@font/changaextrabbold"
+            android:gravity="center_horizontal"
+            android:text="الحجم: "
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

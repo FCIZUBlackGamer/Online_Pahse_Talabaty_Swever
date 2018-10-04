@@ -37,7 +37,7 @@
             <RatingBar
                 android:id="@+id/company_rate"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="45dp"
                 android:layout_gravity="center"
                 android:isIndicator="false"
                 android:numStars="5"
@@ -70,31 +70,79 @@
                 android:layout_weight="3"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rec_color"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginBottom="3dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
-                </android.support.v7.widget.RecyclerView>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:fontFamily="@font/changabold"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="center_vertical"
+                        android:text="الألوان:"
+                        android:layout_centerInParent="true"
+                        android:textColor="@color/colorPrimaryDark" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rec_color"
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_alignParentLeft="true"
+                        android:orientation="horizontal">
+
+                    </android.support.v7.widget.RecyclerView>
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="@font/changabold"
+                        android:text="الأحجام:"
+                        android:layout_centerInParent="true"
+                        android:textColor="@color/colorPrimaryDark" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rec_size"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_alignParentLeft="true"
                     android:orientation="horizontal">
 
                 </android.support.v7.widget.RecyclerView>
+
+
+
+                </LinearLayout>
             </LinearLayout>
 
             <Spinner
                 android:id="@+id/spin_amount"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
+                android:padding="2dp"
                 android:layout_gravity="center"
                 android:layout_margin="3dp"
                 android:layout_weight="1"

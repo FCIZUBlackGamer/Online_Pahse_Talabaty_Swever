@@ -53,6 +53,7 @@ import talabaty.swever.com.online.Home.Fragment_Home;
 import talabaty.swever.com.online.NearestContacts.ContactInfo;
 import talabaty.swever.com.online.SubCategory.FragmentSubCategory;
 import talabaty.swever.com.online.WorkWithUs.FragmentWorkWithUs;
+import talabaty.swever.com.online.PrepareFood.*;
 
 public class Switch_nav extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -107,6 +108,7 @@ public class Switch_nav extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View view = navigationView.getHeaderView(0);
@@ -124,6 +126,7 @@ public class Switch_nav extends AppCompatActivity
         //loadContacts();
 
     }
+
 
     public void setUi(){
         setContentView(R.layout.activity_switch_nav);
@@ -154,42 +157,42 @@ public class Switch_nav extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.switch_nav, menu);
-//        for (int i=0;i<menu.size();i++) {
-//            MenuItem mi = menu.getItem(i);
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.switch_nav, menu);
+////        for (int i=0;i<menu.size();i++) {
+////            MenuItem mi = menu.getItem(i);
+////
+//////            //for aapplying a font to subMenu ...
+//////            SubMenu subMenu = mi.getSubMenu();
+//////            if (subMenu!=null && subMenu.size() >0 ) {
+//////                for (int j=0; j <subMenu.size();j++) {
+//////                    MenuItem subMenuItem = subMenu.getItem(j);
+//////                    applyFontToMenuItem(subMenuItem);
+//////                }
+//////            }
+////
+////            //the method we have create in activity
+////            applyFontToMenuItem(mi);
+////        }
+//        return true;
+//    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Fields/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
 //
-////            //for aapplying a font to subMenu ...
-////            SubMenu subMenu = mi.getSubMenu();
-////            if (subMenu!=null && subMenu.size() >0 ) {
-////                for (int j=0; j <subMenu.size();j++) {
-////                    MenuItem subMenuItem = subMenu.getItem(j);
-////                    applyFontToMenuItem(subMenuItem);
-////                }
-////            }
-//
-//            //the method we have create in activity
-//            applyFontToMenuItem(mi);
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
 //        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Fields/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -198,11 +201,19 @@ public class Switch_nav extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            //todo: Custom Activity
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_home,new Fragment_Home()).addToBackStack("Fragment_Home").commit();
+        }
+//        else if (id == R.id.nav_new_offers) {
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.frame_home,new FragmentMostTrend().setType("offers")).addToBackStack("FragmentMostTrend").commit();
+//        }
+        else if (id == R.id.nav_new_food) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_home,new FragmentMostViewed().setType("prepare_food")).addToBackStack("FragmentMostViewed").commit();
         } else if (id == R.id.nav_nearest) {
-
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_home,new FragmentMostViewed().setType("nearest")).addToBackStack("FragmentMostViewed").commit();
         } else if (id == R.id.nav_montag) {
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_home,new FragmentMostTrend()).addToBackStack("FragmentMostTrend").commit();
@@ -211,7 +222,7 @@ public class Switch_nav extends AppCompatActivity
                     .replace(R.id.frame_home,new FragmentFields()).addToBackStack("FragmentFields").commit();
         } else if (id == R.id.nav_contact) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.frame_home,new FragmentMostViewed()).addToBackStack("FragmentMostViewed").commit();
+                    .replace(R.id.frame_home,new FragmentMostViewed().setType("normal")).addToBackStack("FragmentMostViewed").commit();
         } else if (id == R.id.nav_work_with_us) {
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_home,new FragmentWorkWithUs()).addToBackStack("FragmentWorkWithUs").commit();
