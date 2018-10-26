@@ -1,6 +1,7 @@
 package talabaty.swever.com.online.Fields.MostViewed;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -18,6 +19,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.OvershootInterpolator;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,6 +78,8 @@ public class FragmentMostViewed extends Fragment {
     static String Type = "null";
     String Link;
     View view;
+    LinearLayout layout;
+    ProgressDialog progressDialog, progressDialog2;
 //    boolean enabled;
 //
 //    private static final int REQUEST_LOCATION = 1;
@@ -107,6 +112,7 @@ public class FragmentMostViewed extends Fragment {
         next = view.findViewById(R.id.next);
         last = view.findViewById(R.id.previous);
         num = view.findViewById(R.id.item_num);
+        layout = view.findViewById(R.id.layout);
         item_num = page_num = 0;
         num.setText(1 + "");
         fragmentManager= getFragmentManager();
@@ -179,12 +185,6 @@ public class FragmentMostViewed extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-//        locationManager.removeUpdates(this);
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
 
@@ -192,12 +192,12 @@ public class FragmentMostViewed extends Fragment {
         if (Type.equals("trend")) {
             ((Switch_nav) getActivity())
                     .setActionBarTitle("الأكثر زيارة");
-            Link = "http://onlineapi.sweverteam.com/shops/MostVisited/list";
+            Link = "http://onlineapi.rivile.com/shops/MostVisited/list";
             loadContact(0,"1");
         } else if (Type.equals("nearest")) {
             ((Switch_nav) getActivity())
                     .setActionBarTitle("الأقرب");
-            Link = "http://onlineapi.sweverteam.com/shops/list";
+            Link = "http://onlineapi.rivile.com/shops/list";
 
             GpsLocationTracker mGpsLocationTracker = new GpsLocationTracker(getActivity());
 
@@ -239,29 +239,28 @@ public class FragmentMostViewed extends Fragment {
         } else if (Type.equals("normal")){
             ((Switch_nav) getActivity())
                     .setActionBarTitle("جهات العمل ");
-            Link = "http://onlineapi.sweverteam.com/shops/list";
+            Link = "http://onlineapi.rivile.com/shops/list";
             loadContact(0,"1");
+        } else if (Type.equals("prepare_food")){
+            ((Switch_nav) getActivity())
+                    .setActionBarTitle("جهات العمل ");
+            //Todo: Edit Api Link and Response Data .... and don't forget the adapter
+            Link = "http://onlineapi.rivile.com/BeTheChef/ShopList";
+            loadContactOffersPrepareFood();
         }
-//        else if (Type.equals("prepare_food")){
-//            ((Switch_nav) getActivity())
-//                    .setActionBarTitle("جهات العمل ");
-//            //Todo: Edit Api Link and Response Data .... and don't forget the adapter
-//            Link = "http://onlineapi.sweverteam.com/shops/list";
-            loadContactOffersPrepareFood(0,"1");
-//        }
 
     }
 
     private void loadContact(final int x, final String type) {
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("جارى تحميل البيانات ...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+        progressDialog2 = new ProgressDialog(getActivity());
+        progressDialog2.setMessage("جارى تحميل البيانات ...");
+        progressDialog2.setCancelable(false);
+        progressDialog2.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Link,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
+                        progressDialog2.dismiss();
                         try {
 
                             JSONObject object = new JSONObject(response);
@@ -288,7 +287,7 @@ public class FragmentMostViewed extends Fragment {
                                                 object1.getString("Address"),
                                                 "BBB",// object1.getString("Email")
                                                 object1.getString("Phone"),
-                                                "http://selltlbaty.sweverteam.com" + object1.getString("Photo"),
+                                                "http://selltlbaty.rivile.com" + object1.getString("Photo"),
                                                 ""
                                         );
                                         contacts.add(info);
@@ -296,12 +295,17 @@ public class FragmentMostViewed extends Fragment {
                                     }
                                 }else {
                                     state = state.trim().toLowerCase();
+                                    String shop_address = "";
 
                                     for (int x = 0; x < array.length(); x++) {
                                         JSONObject object1 = array.getJSONObject(x);
                                         Log.e("InCity",state);
-                                        Log.e("OutCity",object1.getString("EnglishCityName"));
-                                        if (state.contains(object1.getString("EnglishCityName"))) {
+                                        String[] plit_add = object1.getString("Address").split(",");
+                                        for (int i=0; i<plit_add.length; i++){
+                                            shop_address = plit_add[i];
+                                        }
+                                        Log.e("OutCity",shop_address);
+                                        if (state.contains(shop_address.toLowerCase().trim())) {
                                             Contact info = new Contact(
                                                     object1.getInt("Id"),
                                                     object1.getString("Name"),
@@ -309,7 +313,7 @@ public class FragmentMostViewed extends Fragment {
                                                     object1.getString("Address"),
                                                     "BBB",// object1.getString("Email")
                                                     object1.getString("Phone"),
-                                                    "http://selltlbaty.sweverteam.com" + object1.getString("Photo"),
+                                                    "http://selltlbaty.rivile.com" + object1.getString("Photo"),
                                                     ""
                                             );
                                             contacts.add(info);
@@ -333,9 +337,17 @@ public class FragmentMostViewed extends Fragment {
                                 });
 
                             } else {
-                                Toast toast = Toast.makeText(getActivity(), "لا توجد جهات عمل جديده", Toast.LENGTH_SHORT);
-                                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                                v.setTextColor(Color.GREEN);
+                                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                                View layout = inflater.inflate(R.layout.toast_info,null);
+
+                                TextView text = (TextView) layout.findViewById(R.id.txt);
+                                text.setText("لا توجد بيانات");
+
+                                Toast toast = new Toast(getActivity());
+                                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                toast.setDuration(Toast.LENGTH_LONG);
+                                toast.setView(layout);
                                 toast.show();
                             }
                         } catch (JSONException e) {
@@ -346,13 +358,25 @@ public class FragmentMostViewed extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog2.dismiss();
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                View layout = inflater.inflate(R.layout.toast_warning,null);
+
+                TextView text = (TextView) layout.findViewById(R.id.txt);
 
                 if (error instanceof ServerError)
-                    Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
-                else if (error instanceof NetworkError)
-                    Toast.makeText(getActivity(), "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى الاتصال بالخادم");
                 else if (error instanceof TimeoutError)
-                    Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى مدة الاتصال");
+                else if (error instanceof NetworkError)
+                    text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                Toast toast = new Toast(getActivity());
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
             }
         }) {
             @Override
@@ -365,7 +389,7 @@ public class FragmentMostViewed extends Fragment {
                 return map;
             }
         };
-        progressDialog.dismiss();
+
 //        Volley.newRequestQueue(getActivity()).add(stringRequest);
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
@@ -374,8 +398,9 @@ public class FragmentMostViewed extends Fragment {
         Volley.newRequestQueue(getActivity()).add(stringRequest);
     }
 
-    private void loadContactOffersPrepareFood(final int x, final String type) {
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+    private void loadContactOffersPrepareFood() {
+        layout.setVisibility(View.GONE);
+        progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("جارى تحميل البيانات ...");
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -383,7 +408,7 @@ public class FragmentMostViewed extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
+                        progressDialog.dismiss();
                         try {
 
                             JSONObject object = new JSONObject(response);
@@ -410,7 +435,7 @@ public class FragmentMostViewed extends Fragment {
                                             object1.getString("Address"),
                                             "BBB",// object1.getString("Email")
                                             object1.getString("Phone"),
-                                            "http://selltlbaty.sweverteam.com" + object1.getString("Photo"),
+                                            "http://selltlbaty.rivile.com" + object1.getString("Photo"),
                                             ""
                                     );
                                     contacts.add(info);
@@ -431,9 +456,17 @@ public class FragmentMostViewed extends Fragment {
                                 });
 
                             } else {
-                                Toast toast = Toast.makeText(getActivity(), "لا توجد جهات عمل جديده", Toast.LENGTH_SHORT);
-                                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                                v.setTextColor(Color.GREEN);
+                                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                                View layout = inflater.inflate(R.layout.toast_info,null);
+
+                                TextView text = (TextView) layout.findViewById(R.id.txt);
+                                text.setText("لا توجد بيانات");
+
+                                Toast toast = new Toast(getActivity());
+                                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                toast.setDuration(Toast.LENGTH_LONG);
+                                toast.setView(layout);
                                 toast.show();
                             }
                         } catch (JSONException e) {
@@ -444,26 +477,35 @@ public class FragmentMostViewed extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                View layout = inflater.inflate(R.layout.toast_warning,null);
+
+                TextView text = (TextView) layout.findViewById(R.id.txt);
 
                 if (error instanceof ServerError)
-                    Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
-                else if (error instanceof NetworkError)
-                    Toast.makeText(getActivity(), "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى الاتصال بالخادم");
                 else if (error instanceof TimeoutError)
-                    Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى مدة الاتصال");
+                else if (error instanceof NetworkError)
+                    text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                Toast toast = new Toast(getActivity());
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
-                map.put("count", 80 + "");
-                map.put("type", type + "");
-                map.put("x", x + "");
                 map.put("token", "?za[ZbGNz2B}MXYZ");
                 return map;
             }
         };
-        progressDialog.dismiss();
+
 //        Volley.newRequestQueue(getActivity()).add(stringRequest);
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
@@ -472,6 +514,16 @@ public class FragmentMostViewed extends Fragment {
         Volley.newRequestQueue(getActivity()).add(stringRequest);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(progressDialog != null && progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }if(progressDialog2 != null && progressDialog2.isShowing()){
+            progressDialog2.dismiss();
+        }
+
+    }
     public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
 

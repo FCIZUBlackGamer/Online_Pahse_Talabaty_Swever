@@ -42,12 +42,28 @@ public class ChartDatabase extends SQLiteOpenHelper{
 
     private static final String PROUCT_IMAGE_ID = "imageid";
 
-    private static final int DATABASE_VERSION = 4;
+    private static final String ISOFFER = "isoffer";
+
+    private static final int DATABASE_VERSION = 2;
     Context cont;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table " +TABLE_NAME +
-            "( "+UID+" integer primary key , "+NAME+" varchar(255) not null, "+PROUCT_IMAGE+" varchar(255) , "+PROUCT_COLOR+" varchar(20) , "+PROUCT_SIZE+" varchar(20) , "+PROUCT_AMOUNT+" varchar(255) not null, "+PROUCT_STATE+" varchar(255), "+PROUCT_PRICE+" varchar(255) not null , " +COLOR_val+" varchar(20) , "+SIZE_val+" varchar(20), "+CONTACT_NAME+" varchar(225), "+ADDRESS+" varchar(225) not null, "+PRODUCT_ID+" varchar(225) not null, "+PROUCT_IMAGE_ID+" varchar(225) not null );";
+            "( "+UID+" integer primary key , "
+            +NAME+" varchar(255) not null, "
+            +PROUCT_IMAGE+" varchar(255) , "
+            +PROUCT_COLOR+" varchar(20) , "
+            +PROUCT_SIZE+" varchar(20) , "
+            +PROUCT_AMOUNT+" varchar(255) not null, "
+            +PROUCT_STATE+" varchar(255), "
+            +PROUCT_PRICE+" varchar(255) not null , "
+            +COLOR_val+" varchar(20) , "
+            +SIZE_val+" varchar(20), "
+            +CONTACT_NAME+" varchar(225), "
+            +ADDRESS+" varchar(225) not null, "
+            +PRODUCT_ID+" varchar(225) not null, "
+            +PROUCT_IMAGE_ID+" varchar(225) , "
+            +ISOFFER+" varchar(225) not null );";
 
     // Database Deletion
     private static final String DATABASE_DROP = "drop table if exists "+TABLE_NAME+";";
@@ -81,7 +97,20 @@ public class ChartDatabase extends SQLiteOpenHelper{
         }
     }
 
-    public boolean InsertData (String name, String image, String imageid ,String COLOR, String size, String amount, String state, String price, String COLORval, String sizeval, String contact, String add, String id)
+    public long InsertData (String name,
+                               String image,
+                               String imageid,
+                               String COLOR,
+                               String size,
+                               String amount,
+                               String state,
+                               String price,
+                               String COLORval,
+                               String sizeval,
+                               String contact,
+                               String add,
+                               String id,
+                               String isOffer)
     {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -98,9 +127,10 @@ public class ChartDatabase extends SQLiteOpenHelper{
         contentValues.put(CONTACT_NAME,contact);
         contentValues.put(ADDRESS,add);
         contentValues.put(PRODUCT_ID,id);
+        contentValues.put(ISOFFER,isOffer);
         long result = sqLiteDatabase.insert(TABLE_NAME,null,contentValues);
 
-        return result==-1?false:true;
+        return result;
     }
 
     public Cursor ShowData ()
@@ -110,16 +140,15 @@ public class ChartDatabase extends SQLiteOpenHelper{
         return cursor;
     }
 
-    public Cursor getID ( String image )
+    public Cursor getID ( String id )
     {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(
-                "select "+UID+" from "+TABLE_NAME+" where "+PROUCT_IMAGE_ID+" = "+image+" ;",null);
+                "select "+UID+" from "+TABLE_NAME+" where productid = "+id+" ;",null);
         return cursor;
     }
 
-    public boolean UpdateData (String id, String name, String pass , String PROUCT_COLO )
-    {
+    public boolean UpdateData (String id, String name, String pass , String PROUCT_COLO ) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(UID,id);
@@ -131,8 +160,7 @@ public class ChartDatabase extends SQLiteOpenHelper{
         return true;
     }
 
-    public boolean UpdateData (String id, String lang, String PROUCT_STATE ,int c)
-    {
+    public boolean UpdateData (String id, String lang, String PROUCT_STATE ,int c) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(UID,id);
@@ -146,6 +174,11 @@ public class ChartDatabase extends SQLiteOpenHelper{
     public int DeleteData (String id)
     {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        return sqLiteDatabase.delete(TABLE_NAME,"ID = ?",new String[] {id});
+        return sqLiteDatabase.delete(TABLE_NAME,"id = ?",new String[] {id});
+    }
+    public void DeleteData ()
+    {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.execSQL("delete from "+ TABLE_NAME);
     }
 }

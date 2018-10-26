@@ -1,6 +1,7 @@
 package talabaty.swever.com.online;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -16,6 +17,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,7 +56,6 @@ import talabaty.swever.com.online.Home.Fragment_Home;
 import talabaty.swever.com.online.NearestContacts.ContactInfo;
 import talabaty.swever.com.online.SubCategory.FragmentSubCategory;
 import talabaty.swever.com.online.WorkWithUs.FragmentWorkWithUs;
-import talabaty.swever.com.online.PrepareFood.*;
 
 public class Switch_nav extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -68,6 +70,8 @@ public class Switch_nav extends AppCompatActivity
     TextView user_name;
     LoginDatabae loginDatabae;
     Cursor cursor;
+
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -261,66 +265,90 @@ public class Switch_nav extends AppCompatActivity
     }
 
     private void loadCategory() {
-        final ProgressDialog progressDialog = new ProgressDialog(Switch_nav.this);
-        progressDialog.setMessage("جارى تحميل البيانات ...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Fields/List",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog = new ProgressDialog(Switch_nav.this);
+                progressDialog.setMessage("جارى تحميل البيانات ...");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Fields/List",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
 
+                                progressDialog.dismiss();
+                                try {
 
-                        try {
+                                    JSONObject object = new JSONObject(response);
+                                    JSONArray array = object.getJSONArray("Fields");
+                                    if (array.length() > 0) {
+                                        Menu menu = navigationView.getMenu();
+                                        Menu submenu = menu.addSubMenu("مجالات");
+                                        for (int x = 0; x < array.length(); x++) {
+                                            JSONObject object1 = array.getJSONObject(x);
 
-                            JSONObject object = new JSONObject(response);
-                            JSONArray array = object.getJSONArray("Fields");
-                            if (array.length() > 0) {
-                                Menu menu = navigationView.getMenu();
-                                Menu submenu = menu.addSubMenu("مجالات");
-                                for (int x = 0; x < array.length(); x++) {
-                                    JSONObject object1 = array.getJSONObject(x);
-
-                                    CategoryModel categoryModel = new CategoryModel(object1.getInt("Id"),object1.getString("Name"),"http://selltlbaty.sweverteam.com"+object1.getString("Photo"));
-                                    submenu.add(object1.getString("Name"));
-                                    categoryModelList.add(categoryModel);
+                                            CategoryModel categoryModel = new CategoryModel(object1.getInt("Id"),object1.getString("Name"),"http://selltlbaty.sweverteam.com"+object1.getString("Photo"));
+                                            submenu.add(object1.getString("Name"));
+                                            categoryModelList.add(categoryModel);
+                                        }
+                                        navigationView.invalidate();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                                navigationView.invalidate();
+
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
 
+                        progressDialog.dismiss();
+                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                        View layout = inflater.inflate(R.layout.toast_warning, null);
+
+                        TextView text = (TextView) layout.findViewById(R.id.txt);
+
+                        if (error instanceof ServerError)
+                            text.setText("خطأ فى الاتصال بالخادم");
+                        else if (error instanceof TimeoutError)
+                            text.setText("خطأ فى مدة الاتصال");
+                        else if (error instanceof NetworkError)
+                            text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                        Toast toast = new Toast(Switch_nav.this);
+                        toast.setGravity(Gravity.BOTTOM, 0, 0);
+                        toast.setDuration(Toast.LENGTH_LONG);
+                        toast.setView(layout);
+                        toast.show();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                if (error instanceof ServerError)
-                    Toast.makeText(Switch_nav.this, "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
-                else if (error instanceof NetworkError)
-                    Toast.makeText(Switch_nav.this, "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
-                else if (error instanceof TimeoutError)
-                    Toast.makeText(Switch_nav.this, "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> map = new HashMap<>();
-                map.put("token","?za[ZbGNz2B}MXYZ");
-                return map;
-            }
-        };
-        progressDialog.dismiss();
+                }){
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        HashMap<String,String> map = new HashMap<>();
+                        map.put("token","?za[ZbGNz2B}MXYZ");
+                        return map;
+                    }
+                };
 //        Volley.newRequestQueue(getActivity()).add(stringRequest);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                2,  // maxNumRetries = 2 means no retry
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(Switch_nav.this).add(stringRequest);
+                stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                        3,  // maxNumRetries = 2 means no retry
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                Volley.newRequestQueue(Switch_nav.this).add(stringRequest);
+            }
+        });
+
     }
 
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
     //Todo: For The Nearest Contacts To My Current Location
     private void loadContacts() {
         final ProgressDialog progressDialog = new ProgressDialog(Switch_nav.this);

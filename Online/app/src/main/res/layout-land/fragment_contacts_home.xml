@@ -87,6 +87,7 @@
                 android:id="@+id/company_logo"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/apple" />
 
             <TextView
@@ -104,7 +105,6 @@
                 android:id="@+id/company_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/details"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:numStars="5"
@@ -112,99 +112,99 @@
                 android:progressTint="@color/colormontagat"
                 android:textAlignment="center" />
 
-            <LinearLayout
-                android:id="@+id/details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/company_logo"
-                android:background="@android:color/darker_gray"
-                android:orientation="vertical">
+            <!--<LinearLayout-->
+            <!--android:id="@+id/details"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/company_logo"-->
+            <!--android:background="@android:color/darker_gray"-->
+            <!--android:orientation="vertical">-->
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+            <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:orientation="horizontal">
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="20dp"-->
+            <!--android:orientation="horizontal">-->
 
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/contact_location" />
+            <!--<ImageView-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:src="@drawable/contact_location" />-->
 
-                        <TextView
-                            android:id="@+id/company_address"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="5dp"
-                            android:fontFamily="@font/changamedium"
-                            android:text="اول الشارع"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
-                    </LinearLayout>
+            <!--<TextView-->
+            <!--android:id="@+id/company_address"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginStart="5dp"-->
+            <!--android:fontFamily="@font/changamedium"-->
+            <!--android:text="اول الشارع"-->
+            <!--android:textAlignment="center"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="14sp" />-->
+            <!--</LinearLayout>-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:orientation="horizontal">
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="20dp"-->
+            <!--android:orientation="horizontal">-->
 
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/contact_phone" />
+            <!--<ImageView-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:src="@drawable/contact_phone" />-->
 
-                        <TextView
-                            android:id="@+id/company_phone"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="5dp"
-                            android:fontFamily="@font/changamedium"
-                            android:text="01020118565"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-                </LinearLayout>
+            <!--<TextView-->
+            <!--android:id="@+id/company_phone"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginStart="5dp"-->
+            <!--android:fontFamily="@font/changamedium"-->
+            <!--android:text="01020118565"-->
+            <!--android:textAlignment="center"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="14sp" />-->
+            <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+            <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:orientation="horizontal">
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="20dp"-->
+            <!--android:orientation="horizontal">-->
 
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:src="@drawable/contact_message" />
+            <!--<ImageView-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:src="@drawable/contact_message" />-->
 
-                        <TextView
-                            android:id="@+id/company_email"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="5dp"
-                            android:fontFamily="@font/changamedium"
-                            android:text="zozo_fofa@yahoo.com"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            android:textSize="14sp" />
-                    </LinearLayout>
+            <!--<TextView-->
+            <!--android:id="@+id/company_email"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginStart="5dp"-->
+            <!--android:fontFamily="@font/changamedium"-->
+            <!--android:text="zozo_fofa@yahoo.com"-->
+            <!--android:textAlignment="center"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="14sp" />-->
+            <!--</LinearLayout>-->
 
-                </LinearLayout>
-            </LinearLayout>
+            <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
 
 
         </LinearLayout>
@@ -224,7 +224,7 @@
 
 
 
-        <GridView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/gridview"
             android:layout_marginTop="20dp"
             android:layout_below="@id/mon"
@@ -250,7 +250,7 @@
             android:textSize="14sp"
             android:textStyle="bold" />
 
-        <GridView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/rec_offers"
             android:layout_marginTop="20dp"
             android:layout_below="@id/offer"

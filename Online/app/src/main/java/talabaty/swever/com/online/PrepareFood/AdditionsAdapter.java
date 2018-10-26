@@ -18,19 +18,19 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import talabaty.swever.com.online.R;
-
+import talabaty.swever.com.online.Chart.*;
 public class AdditionsAdapter extends RecyclerView.Adapter<AdditionsAdapter.Vholder> {
 
     Context context;
-    List<PrepareFood> talabats;
+    List<AdditionalModel> talabats;
     FragmentManager fragmentManager;
     private final AdditionsAdapter.OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(PrepareFood item);
+        void onItemClick(AdditionalModel item);
     }
 
-    public AdditionsAdapter(Context context, List<PrepareFood> talabats, AdditionsAdapter.OnItemClickListener listener) {
+    public AdditionsAdapter(Context context, List<AdditionalModel> talabats, AdditionsAdapter.OnItemClickListener listener) {
         this.context = context;
         this.talabats = talabats;
         this.listener = listener;
@@ -51,7 +51,17 @@ public class AdditionsAdapter extends RecyclerView.Adapter<AdditionsAdapter.Vhol
         holder.bind(talabats.get(position), listener);
 
         holder.name.setText(talabats.get(position).getName());
-        holder.price.setText(talabats.get(position).getPrice()+" EG");
+        holder.price.setText(talabats.get(position).getPrice()+" LE");
+
+        holder.check.setChecked(talabats.get(position).getChecked());
+//        holder.check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//
+//                talabats.get(position).setChecked(isChecked);
+//
+//            }
+//        });
 
     }
 
@@ -70,7 +80,8 @@ public class AdditionsAdapter extends RecyclerView.Adapter<AdditionsAdapter.Vhol
             price = itemView.findViewById(R.id.price);
             check = itemView.findViewById(R.id.check);
         }
-        public void bind(final PrepareFood item, final AdditionsAdapter.OnItemClickListener listener) {
+
+        public void bind(final AdditionalModel item, final AdditionsAdapter.OnItemClickListener listener) {
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {

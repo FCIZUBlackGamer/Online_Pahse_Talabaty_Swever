@@ -3,6 +3,7 @@ package talabaty.swever.com.online.ContactUs;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -17,6 +18,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -61,7 +63,7 @@ public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
     TextView desc, address, phone, site, fb, titter, youtube, gplus, insta;
     EditText title, name, content, email;
     Button send;
-    ProgressDialog progressDialog;
+    ProgressDialog progressDialog, progressDialog2;
 
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
@@ -108,55 +110,96 @@ public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
         super.onStart();
         loadDetails();
 
+
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog = new ProgressDialog(getActivity());
-                progressDialog.setMessage("جارى تحميل البيانات ...");
-                progressDialog.setCancelable(false);
-                progressDialog.show();
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/contact/SendMail",
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
+                if (valiate(name.getText().toString(),
+                        title.getText().toString(),
+                        email.getText().toString(),
+                        content.getText().toString())) {
 
-                                progressDialog.dismiss();
-                                if (response.equals("\"success\"")){
-                                    Toast.makeText(getActivity(),"تم الإرسال بنجاح",Toast.LENGTH_SHORT).show();
-                                }else {
-                                    Toast.makeText(getActivity(),"عذرا حدث خطأ ما يرجى الابلاغ عنه والمحاوله لاحقا",Toast.LENGTH_SHORT).show();
+                    progressDialog = new ProgressDialog(getActivity());
+                    progressDialog.setMessage("جارى تحميل البيانات ...");
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/contact/SendMail",
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+
+                                    progressDialog.dismiss();
+                                    if (response.equals("\"success\"")) {
+                                        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                                        View layout = inflater.inflate(R.layout.toast_info, null);
+
+                                        TextView text = (TextView) layout.findViewById(R.id.txt);
+                                        text.setText("تم الإرسال بنجاح");
+
+                                        Toast toast = new Toast(getActivity());
+                                        toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                        toast.setDuration(Toast.LENGTH_LONG);
+                                        toast.setView(layout);
+                                        toast.show();
+                                    } else {
+                                        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                                        View layout = inflater.inflate(R.layout.toast_warning, null);
+
+                                        TextView text = (TextView) layout.findViewById(R.id.txt);
+                                        text.setText("عذرا حدث خطأ ما يرجى الابلاغ عنه والمحاوله لاحقا");
+
+                                        Toast toast = new Toast(getActivity());
+                                        toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                        toast.setDuration(Toast.LENGTH_LONG);
+                                        toast.setView(layout);
+                                        toast.show();
+                                    }
+
                                 }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            progressDialog.dismiss();
+                            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        progressDialog.dismiss();
-                        if (error instanceof ServerError)
-                            Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
-                        else if (error instanceof NetworkError)
-                            Toast.makeText(getActivity(), "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
-                        else if (error instanceof TimeoutError)
-                            Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
-                    }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        HashMap<String, String> map = new HashMap<>();
-                        map.put("token", "?za[ZbGNz2B}MXYZ");
-                        map.put("name", name.getText().toString());
-                        map.put("email", email.getText().toString());
-                        map.put("subject", title.getText().toString());
-                        map.put("message", content.getText().toString());
-                        return map;
-                    }
-                };
+                            View layout = inflater.inflate(R.layout.toast_warning, null);
+
+                            TextView text = (TextView) layout.findViewById(R.id.txt);
+
+                            if (error instanceof ServerError)
+                                text.setText("خطأ فى الاتصال بالخادم");
+                            else if (error instanceof TimeoutError)
+                                text.setText("خطأ فى مدة الاتصال");
+                            else if (error instanceof NetworkError)
+                                text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                            Toast toast = new Toast(getActivity());
+                            toast.setGravity(Gravity.BOTTOM, 0, 0);
+                            toast.setDuration(Toast.LENGTH_LONG);
+                            toast.setView(layout);
+                            toast.show();
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            HashMap<String, String> map = new HashMap<>();
+                            map.put("token", "?za[ZbGNz2B}MXYZ");
+                            map.put("name", name.getText().toString());
+                            map.put("email", email.getText().toString());
+                            map.put("subject", title.getText().toString());
+                            map.put("message", content.getText().toString());
+                            return map;
+                        }
+                    };
 //        Volley.newRequestQueue(getActivity()).add(stringRequest);
-                stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                        DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                        2,  // maxNumRetries = 2 means no retry
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                Volley.newRequestQueue(getActivity()).add(stringRequest);
+                    stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                            DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                            2,  // maxNumRetries = 2 means no retry
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                    Volley.newRequestQueue(getActivity()).add(stringRequest);
+                }
             }
         });
 
@@ -229,6 +272,24 @@ public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
         /** Still Insta */
     }
 
+    private boolean valiate(String nam, String titl, String emai, String conten) {
+        boolean res = true;
+        if (nam.length() < 3){
+            name.setError("ادخل اسم صحيح");
+            res = false;
+        }if (titl.length() < 3){
+            title.setError("ادخل عنوان صحيح");
+            res = false;
+        }if (emai.length() < 4 || !emai.contains("@")|| !emai.contains(".")){
+            email.setError("ادخل بريد الكترونى صحيح");
+            res = false;
+        }if (conten.length() < 3){
+            content.setError("ادخل محتوى الرساله ");
+            res = false;
+        }
+        return res;
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -241,16 +302,16 @@ public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
     }
 
     private void loadDetails() {
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("جارى تحميل البيانات ...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/contact/SocialMedia",
+        progressDialog2 = new ProgressDialog(getActivity());
+        progressDialog2.setMessage("جارى تحميل البيانات ...");
+        progressDialog2.setCancelable(false);
+        progressDialog2.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/contact/SocialMedia",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
-                        progressDialog.dismiss();
+                        progressDialog2.dismiss();
                         try {
 
                             JSONObject object = new JSONObject(response);
@@ -275,13 +336,25 @@ public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                progressDialog2.dismiss();
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                View layout = inflater.inflate(R.layout.toast_warning,null);
+
+                TextView text = (TextView) layout.findViewById(R.id.txt);
+
                 if (error instanceof ServerError)
-                    Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
-                else if (error instanceof NetworkError)
-                    Toast.makeText(getActivity(), "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى الاتصال بالخادم");
                 else if (error instanceof TimeoutError)
-                    Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى مدة الاتصال");
+                else if (error instanceof NetworkError)
+                    text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                Toast toast = new Toast(getActivity());
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
             }
         }) {
             @Override
@@ -299,6 +372,15 @@ public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
         Volley.newRequestQueue(getActivity()).add(stringRequest);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(progressDialog != null && progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }if(progressDialog2 != null && progressDialog2.isShowing()){
+            progressDialog2.dismiss();
+        }
 
+    }
 
 }

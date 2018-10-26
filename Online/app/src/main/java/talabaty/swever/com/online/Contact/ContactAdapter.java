@@ -19,6 +19,7 @@ import java.util.List;
 import talabaty.swever.com.online.R;
 import talabaty.swever.com.online.Fields.MostTrend.Product;
 import talabaty.swever.com.online.ProductDetails.FragmentProductDetails;
+import talabaty.swever.com.online.OffersDetails.*;
 
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.VHolder> {
@@ -26,6 +27,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.VHolder>
     private final List<Product> products;
     FragmentManager fragmentManager;
     private final OnItemClickListener listener;
+    int type = -1;
 
     public interface OnItemClickListener {
         void onItemClick(Product item);
@@ -36,10 +38,16 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.VHolder>
         this.mContext = c;
         this.listener = listener;
     }
+    public ContactAdapter(int typem, Context c, List<Product> row_items, OnItemClickListener listener) {
+        this.products = row_items;
+        this.mContext = c;
+        this.listener = listener;
+        type = typem;
+    }
 
     @Override
     public ContactAdapter.VHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
+        View v = LayoutInflater.from(mContext)
                 .inflate(R.layout.adapter_home_most_trend,parent,false);
         fragmentManager = ((AppCompatActivity) mContext).getSupportFragmentManager();
         return new VHolder(v);
@@ -67,8 +75,16 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.VHolder>
         holder.action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager.beginTransaction()
-                        .replace(R.id.frame_home,new FragmentProductDetails().setId(products.get(position).getId(),products.get(position).getIsOffer())).addToBackStack("FragmentOfferDetails").commit();
+                /** Normal Product */
+                if (type == -1){
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.frame_home,new FragmentProductDetails().setId(products.get(position).getId(),products.get(position).getIsOffer())).addToBackStack("FragmentOfferDetails").commit();
+                }else {
+                    /** Product with Offer */
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.frame_home,new FragmentOfferDetails().setId(products.get(position).getId(),products.get(position).getIsOffer())).addToBackStack("FragmentOfferDetails").commit();
+                }
+
             }
         });
 

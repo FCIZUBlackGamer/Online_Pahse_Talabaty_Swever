@@ -25,6 +25,7 @@ public class PrepareFood {
     public String getImage() {
         return image;
     }
+
     public float getPrice() {
         return price;
     }

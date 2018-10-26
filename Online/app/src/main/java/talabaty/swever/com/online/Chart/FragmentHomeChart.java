@@ -4,6 +4,7 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,6 +41,8 @@ public class FragmentHomeChart extends AppCompatActivity {
     ChartDatabase chartDatabase;
     Cursor cursor;
     List<ChartModel> modelList;
+    List<String> colors, sizes;
+
 //    List<State> states;
 //    List<String> stateNames;
 //    List<Cities> cities;
@@ -88,6 +91,7 @@ public class FragmentHomeChart extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        colors = sizes = new ArrayList<>();
         loadChart();
 //        capital.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
@@ -118,8 +122,12 @@ public class FragmentHomeChart extends AppCompatActivity {
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               fragmentManager.beginTransaction()
-                       .replace(R.id.frame_home,new FinishChart()).addToBackStack("FinishChart").commit();
+                if (sanfList.size()>0) {
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.frame_home, new FinishChart()).addToBackStack("FinishChart").commit();
+                }else {
+                    Snackbar.make(v,"لا توجد مشتريات حاليا", Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -255,6 +263,7 @@ public class FragmentHomeChart extends AppCompatActivity {
 
     private void loadChart() {
 
+
         final int size = sanfList.size();
         if (size > 0) {
             for (int i = 0; i < size; i++) {
@@ -265,16 +274,45 @@ public class FragmentHomeChart extends AppCompatActivity {
 
         int x=1;
         if (cursor != null) {
+            colors = new ArrayList<>();
+            sizes = new ArrayList<>();
             while (cursor.moveToNext()) {
+                Sanf s;
+                if (cursor.getString(14).equals("0")) {
+                    s = new Sanf((int)Float.parseFloat(cursor.getString(12)),
+                            cursor.getString(1),
+                            cursor.getString(2),
+                            cursor.getString(4),
+                            cursor.getString(3),
+                            Float.parseFloat(cursor.getString(5))
+                    );
 
-                Sanf s = new Sanf(Float.parseFloat(cursor.getString(7)), cursor.getString(1), cursor.getString(2), cursor.getString(9), cursor.getString(8), Float.parseFloat(cursor.getString(5)));
-                s.setImageId(cursor.getString(12));
-                x++;
+                    colors.add(cursor.getString(8));
+                    sizes.add(cursor.getString(9));
+                    s.setImageId(cursor.getString(13));
+                    s.setPrice(Float.parseFloat(cursor.getString(7)));
+                    s.setIsOffer(0);
+                    x++;
+                }else if (cursor.getString(14).equals("1")) {
+                    s = new Sanf((int)Float.parseFloat(cursor.getString(12)),
+                            cursor.getString(1),
+                            Float.parseFloat(cursor.getString(5))
+                    );
+                    s.setIsOffer(1);
+                    s.setImage(cursor.getString(2));
+                }else {
+                    s = new Sanf((int)Float.parseFloat(cursor.getString(12)),
+                            cursor.getString(1),
+                            Float.parseFloat(cursor.getString(5))
+                    );
+                    s.setIsOffer(2);
+                    s.setImage(cursor.getString(2));
+                }
                 sanfList.add(s);
             }
         }
 
-        adapter = new ChartAdapter(this, sanfList);
+        adapter = new ChartAdapter(this, sanfList,colors, sizes);
         SlideInBottomAnimationAdapter alphaAdapter = new SlideInBottomAnimationAdapter(adapter);
         alphaAdapter.setDuration(3000);
         recyclerView.setAdapter(adapter);

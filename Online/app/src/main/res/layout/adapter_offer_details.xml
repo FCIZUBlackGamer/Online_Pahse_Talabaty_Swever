@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="200dp"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="5dp"
+    android:padding="3dp">
 
     <TextView
         android:id="@+id/name"
@@ -15,17 +17,6 @@
         android:textColor="@color/colorPrimaryLight"
         android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/pro_price"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:fontFamily="@font/changaextrabbold"
-        android:gravity="center_horizontal"
-        android:text="200 LE"
-        android:textColor="@color/colorPrimaryLight"
-        android:textSize="16sp" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,13 +24,13 @@
         android:paddingTop="20dp">
 
         <TextView
-            android:id="@+id/color"
+            android:id="@+id/pro_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/changaextrabbold"
             android:gravity="center_horizontal"
-            android:text="منتج 1"
+            android:text="200 LE"
             android:layout_alignParentLeft="true"
             android:textColor="@color/colorPrimaryLight"
             android:textSize="16sp" />
@@ -51,7 +42,7 @@
             android:layout_alignParentRight="true"
             android:fontFamily="@font/changaextrabbold"
             android:gravity="center_horizontal"
-            android:text="اللون: "
+            android:text="السعر: "
             android:textColor="@color/colorPrimaryLight"
             android:textSize="16sp" />
 
@@ -64,13 +55,13 @@
         android:paddingTop="20dp">
 
         <TextView
-            android:id="@+id/size"
+            android:id="@+id/amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/changaextrabbold"
             android:gravity="center_horizontal"
-            android:text="منتج 1"
+            android:text="2"
             android:layout_alignParentLeft="true"
             android:textColor="@color/colorPrimaryLight"
             android:textSize="16sp" />
@@ -82,7 +73,7 @@
             android:layout_alignParentRight="true"
             android:fontFamily="@font/changaextrabbold"
             android:gravity="center_horizontal"
-            android:text="الحجم: "
+            android:text="العدد: "
             android:textColor="@color/colorPrimaryLight"
             android:textSize="16sp" />
 

@@ -24,6 +24,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -44,6 +45,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.fourhcode.forhutils.FUtilsValidation;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -70,9 +72,9 @@ public class Register extends AppCompatActivity {
     final int CAMERA_PIC_REQUEST = 1337;
 
     List<ImageSource> Gallary;
-    String baseUrl = "http://www.selltlbaty.sweverteam.com/";
+    String baseUrl = "http://selltlbaty.rivile.com/";
     private String UPLOAD_URL = baseUrl + "Uploads/UploadAndro";
-    private String UPLOAD_LINK = "http://onlineapi.sweverteam.com/Login/AddUser";
+    private String UPLOAD_LINK = "http://onlineapi.rivile.com/Login/AddUser";
 
     private String KEY_IMAGE = "base64imageString";
     private String KEY_NAME = "name";
@@ -89,6 +91,10 @@ public class Register extends AppCompatActivity {
     ImageView close, minimize, cam, gal;
     FloatingActionButton appear;
     int close_type;
+
+    ProgressDialog progressDialog, progressDialog2;
+
+    int im = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -291,19 +297,83 @@ public class Register extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Todo: Validate Inputs
+                //Todo: Validate Inputs #Done
 
-                userModel.setCountryId(1);
-                userModel.setFirstName(fname.getText().toString());
-                userModel.setLastName(lname.getText().toString());
-                userModel.setDateOfBirth(date_of_birth.getText().toString());
-                userModel.setPassword(pass.getText().toString());
-                userModel.setMail(email.getText().toString());
-                userModel.setPhone(phone.getText().toString());
-                uploadImage();
+
+
+                if (FUtilsValidation.isPhone(phone.getText().toString())&&
+                        FUtilsValidation.isValidEmail(email,"صيغه بريد الكترونى خاطئه")&&
+                        !FUtilsValidation.isEmpty(fname,"ادخل اسم صحيح")&&
+                        !FUtilsValidation.isEmpty(lname,"ادخل اسم صحيح")&&
+                        !FUtilsValidation.isPasswordEqual(pass,repass,"ادخل اسم صحيح")&&
+                        !FUtilsValidation.isDateValid(date_of_birth.getText().toString(),"yyyy/mm/dd")&&
+                        !FUtilsValidation.isEmpty(fname,"ادخل اسم صحيح")&&
+                        im == 1) {
+                    userModel.setCountryId(1);
+                    userModel.setFirstName(fname.getText().toString());
+                    userModel.setLastName(lname.getText().toString());
+                    userModel.setDateOfBirth(date_of_birth.getText().toString());
+                    userModel.setPassword(pass.getText().toString());
+                    userModel.setMail(email.getText().toString());
+                    userModel.setPhone(phone.getText().toString());
+                    uploadImage();
+                }
             }
         });
     }
+
+//    private boolean valid(String fnam, String lnam, String pas, String ema, String pho) {
+//        boolean res = true;
+//        if (fnam.length() < 3){
+//            fname.setError("اسم غير صحيح");
+//            res = false;
+//        }if (lnam.length() < 3){
+//            lname.setError("اسم غير صحيح");
+//            res = false;
+//        }if (FUtilsValidation.isPhone(phone.getText().toString())){
+//            phone.setError("رقم هاتف خطأ");
+//            res = false;
+//        }if (pas.length() < 6){
+//            pass.setError("كلمه مرور ضعيفه");
+//            res = false;
+//        }if (ema.length() < 4 || !ema.contains("@")|| !ema.contains(".")){
+//            email.setError("ادخل بريد الكترونى صحيح");
+//            res = false;
+//        }if (date_of_birth.length() < 1){
+//            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//
+//            View layout = inflater.inflate(R.layout.toast_error,null);
+//
+//            TextView text = (TextView) layout.findViewById(R.id.txt);
+//
+//            text.setText("يرجى ادخال تاريخ ميلاد");
+//
+//            Toast toast = new Toast(Register.this);
+//            toast.setGravity(Gravity.BOTTOM, 0, 0);
+//            toast.setDuration(Toast.LENGTH_LONG);
+//            toast.setView(layout);
+//            toast.show();
+//
+//            res = false;
+//        }if (im != 1){
+//            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//
+//            View layout = inflater.inflate(R.layout.toast_error,null);
+//
+//            TextView text = (TextView) layout.findViewById(R.id.txt);
+//
+//            text.setText("يرجى ارفاق صوره الشخصيه");
+//
+//            Toast toast = new Toast(Register.this);
+//            toast.setGravity(Gravity.BOTTOM, 0, 0);
+//            toast.setDuration(Toast.LENGTH_LONG);
+//            toast.setView(layout);
+//            toast.show();
+//            res = false;
+//        }
+//
+//        return res;
+//    }
 
     private void uploadImage() {
         final Gson gson = new Gson();
@@ -312,13 +382,13 @@ public class Register extends AppCompatActivity {
         final String allImages = gson.toJson(imageStrings);
         Log.e("Start: ", allImages);
         //Showing the progress dialog
-        final ProgressDialog loading = ProgressDialog.show(this, "Uploading...", "Please wait...", false, false);
+        progressDialog = ProgressDialog.show(this, "Uploading...", "Please wait...", false, false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, UPLOAD_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
                         //Disimissing the progress dialog
-                        loading.dismiss();
+                        progressDialog.dismiss();
                         Log.e("Path: ", s);
                         try {
 
@@ -343,16 +413,27 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         //Dismissing the progress dialog
-                        loading.dismiss();
+                        progressDialog.dismiss();
 
                         //Showing toast
-//                        Toast.makeText(Register.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                        View layout = inflater.inflate(R.layout.toast_warning,null);
+
+                        TextView text = (TextView) layout.findViewById(R.id.txt);
+
                         if (volleyError instanceof ServerError)
-                            Log.e("Error: ", "Server Error");
+                            text.setText("خطأ فى الاتصال بالخادم");
                         else if (volleyError instanceof TimeoutError)
-                            Log.e("Error: ", "Timeout Error");
+                            text.setText("خطأ فى مدة الاتصال");
                         else if (volleyError instanceof NetworkError)
-                            Log.e("Error: ", "Bad Network");
+                            text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                        Toast toast = new Toast(Register.this);
+                        toast.setGravity(Gravity.BOTTOM, 0, 0);
+                        toast.setDuration(Toast.LENGTH_LONG);
+                        toast.setView(layout);
+                        toast.show();
                     }
                 }) {
             @Override
@@ -471,28 +552,53 @@ public class Register extends AppCompatActivity {
     private void uploadMontage(final String jsonInString) {
         Log.e("Connection UploadMontag", "Here");
         Log.e("Full Model",jsonInString);
-        final ProgressDialog loading = ProgressDialog.show(this, "Uploading...", "Please wait...", false, false);
+        progressDialog2 = ProgressDialog.show(this, "Uploading...", "Please wait...", false, false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, UPLOAD_LINK,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
                         //Disimissing the progress dialog
-                        loading.dismiss();
+                        progressDialog2.dismiss();
                         Log.e("Data: ", s);
                         if (s.equals("\"duplicate\"")){
-                            Toast toast = Toast.makeText(Register.this, " البريد الالكتروني او رقم التليفون مكرر  .. يرجي إعاده المحاوله", Toast.LENGTH_SHORT);
-                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                            v.setTextColor(Color.RED);
+                            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                            View layout = inflater.inflate(R.layout.toast_info,null);
+
+                            TextView text = (TextView) layout.findViewById(R.id.txt);
+                            text.setText(" البريد الالكتروني او رقم التليفون مكرر  .. يرجي إعاده المحاوله");
+
+                            Toast toast = new Toast(Register.this);
+                            toast.setGravity(Gravity.BOTTOM, 0, 0);
+                            toast.setDuration(Toast.LENGTH_LONG);
+                            toast.setView(layout);
                             toast.show();
+
                         }else if (s.equals("\"fail\"")){
-                            Toast toast = Toast.makeText(Register.this, "عذرا حدث خطأ أثناء اجراء العملية  .. يرجي المحاوله لاحقا", Toast.LENGTH_SHORT);
-                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                            v.setTextColor(Color.RED);
+                            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                            View layout = inflater.inflate(R.layout.toast_info,null);
+
+                            TextView text = (TextView) layout.findViewById(R.id.txt);
+                            text.setText("عذرا حدث خطأ أثناء اجراء العملية  .. يرجي المحاوله لاحقا");
+
+                            Toast toast = new Toast(Register.this);
+                            toast.setGravity(Gravity.BOTTOM, 0, 0);
+                            toast.setDuration(Toast.LENGTH_LONG);
+                            toast.setView(layout);
                             toast.show();
                         }else  {
-                            Toast toast = Toast.makeText(Register.this, "اسم المستخدم هو "+s, Toast.LENGTH_LONG);
-                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                            v.setTextColor(Color.GREEN);
+                            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                            View layout = inflater.inflate(R.layout.toast_info,null);
+
+                            TextView text = (TextView) layout.findViewById(R.id.txt);
+                            text.setText("اسم المستخدم هو "+s);
+
+                            Toast toast = new Toast(Register.this);
+                            toast.setGravity(Gravity.BOTTOM, 0, 0);
+                            toast.setDuration(Toast.LENGTH_LONG);
+                            toast.setView(layout);
                             toast.show();
                         }
                     }
@@ -501,16 +607,27 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         //Dismissing the progress dialog
-                        loading.dismiss();
+                        progressDialog2.dismiss();
 
                         //Showing toast
-//                        Toast.makeText(Register.this, volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                        View layout = inflater.inflate(R.layout.toast_warning,null);
+
+                        TextView text = (TextView) layout.findViewById(R.id.txt);
+
                         if (volleyError instanceof ServerError)
-                            Log.e("Error: ", "Server Error");
+                            text.setText("خطأ فى الاتصال بالخادم");
                         else if (volleyError instanceof TimeoutError)
-                            Log.e("Error: ", "Timeout Error");
+                            text.setText("خطأ فى مدة الاتصال");
                         else if (volleyError instanceof NetworkError)
-                            Log.e("Error: ", "Bad Network");
+                            text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                        Toast toast = new Toast(Register.this);
+                        toast.setGravity(Gravity.BOTTOM, 0, 0);
+                        toast.setDuration(Toast.LENGTH_LONG);
+                        toast.setView(layout);
+                        toast.show();
                     }
                 }) {
             @Override
@@ -538,5 +655,15 @@ public class Register extends AppCompatActivity {
                 2,  // maxNumRetries = 2 means no retry
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Volley.newRequestQueue(this).add(stringRequest);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }if (progressDialog2 != null && progressDialog2.isShowing()) {
+            progressDialog2.dismiss();
+        }
     }
 }

@@ -24,11 +24,24 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.Vholder> {
     List<Sanf> talabats;
     ChartDatabase chartDatabase;
     Cursor cursor;
+    ChartAdditionalDatabase chartAdditionalDatabase;
+    List<String> colors, sizes;
+
+    public ChartAdapter(Context context, List<Sanf> talabats, List<String> color, List<String> size) {
+        this.context = context;
+        this.talabats = talabats;
+        this.sizes = size;
+        this.colors = color;
+        chartDatabase = new ChartDatabase(context);
+        chartAdditionalDatabase = new ChartAdditionalDatabase(context);
+
+    }
 
     public ChartAdapter(Context context, List<Sanf> talabats) {
         this.context = context;
         this.talabats = talabats;
         chartDatabase = new ChartDatabase(context);
+        chartAdditionalDatabase = new ChartAdditionalDatabase(context);
 
     }
 
@@ -43,36 +56,55 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.Vholder> {
     public void onBindViewHolder(@NonNull Vholder holder, final int position) {
 
         holder.name.setText(talabats.get(position).getName());
-        if (talabats.get(position).getColor().length() > 0) {
-            holder.color.setBackgroundColor(Color.parseColor(talabats.get(position).getColor()));
+        Log.e("IsOffer",talabats.get(position).getIsOffer()+"");
+        if (talabats.get(position).getIsOffer() == 0) {
+            if (talabats.get(position).getColor().length() > 0) {
+                Log.e("Color Index "+position , colors.get(position));
+                Log.e("Size Index "+position , sizes.get(position));
+                holder.color.setBackgroundColor(Color.parseColor(colors.get(position)));
+            }
+
+            holder.state.setText(sizes.get(position));
+        }else {
+            holder.color.setText("----");
+            holder.state.setText("----");
+        }
+        try{
+            if (!talabats.get(position).getImage().isEmpty()) {
+                Picasso.with(context).load("http://selltlbaty.rivile.com/" + talabats.get(position).getImage()).into(holder.image);
+            }
+        }catch (Exception e){
+
         }
         holder.amount.setText(talabats.get(position).getAmount() + "");
-        holder.state.setText(talabats.get(position).getState());
-        if (!talabats.get(position).getImage().isEmpty()) {
-            Picasso.with(context).load(talabats.get(position).getImage()).into(holder.image);
-        }
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cursor = chartDatabase.getID(talabats.get(position).getImageId());
+                Log.e("IDDD",talabats.get(position).getId()+"");
+                cursor = chartDatabase.getID(talabats.get(position).getId()+"");
                 String id = null;
                 while (cursor.moveToNext()) {
                     Log.e("ID", cursor.getString(0));
                     id = cursor.getString(0);
                 }
-                try {
-                    talabats.remove(position);
-                    chartDatabase.DeleteData(id + "");
-                    Log.e("Id", id + "");
-                } catch (Exception e) {
-                    talabats.remove(position);
-                    Log.e("Id", id + "");
-                    notifyDataSetChanged();
-                    chartDatabase.DeleteData(id + "");
-                    Log.e("Id", id + "");
+                if (id != null) {
+                    if(chartDatabase.DeleteData(id + "")>0) {
+                        talabats.remove(position);
+                        sizes.remove(position);
+                        colors.remove(position);
+                        try {
+                            if (talabats.get(position).getIsOffer() == 2) {
+                                chartAdditionalDatabase.DeleteData(id);
+                            }
+                        }catch (Exception e){
+
+                        }
+                        Log.e("Id", id + "");
+                    }
                 }
                 notifyDataSetChanged();
+
             }
         });
 
@@ -91,7 +123,6 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.Vholder> {
         public Vholder(View itemView) {
             super(itemView);
             color = itemView.findViewById(R.id.color);
-
             name = itemView.findViewById(R.id.name);
             amount = itemView.findViewById(R.id.amount);
             state = itemView.findViewById(R.id.state);

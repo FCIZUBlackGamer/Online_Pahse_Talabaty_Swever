@@ -21,6 +21,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import talabaty.swever.com.online.Fields.MostTrend.Product;
+import talabaty.swever.com.online.OffersDetails.FragmentOfferDetails;
 import talabaty.swever.com.online.ProductDetails.FragmentProductDetails;
 import talabaty.swever.com.online.R;
 
@@ -31,10 +32,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Vholder>
     FragmentManager fragmentManager;
 
     private int lastPosition = -1;
+    int type = 0;
 
     public ProductAdapter(Context context, List<Product> products) {
         this.mContext = context;
         this.product = products;
+    }
+
+    public ProductAdapter(int Type, Context context, List<Product> products) {
+        this.mContext = context;
+        this.product = products;
+        type = Type;
     }
 
     @NonNull
@@ -67,8 +75,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Vholder>
         holder.action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentManager.beginTransaction()
-                        .replace(R.id.frame_home,new FragmentProductDetails().setId(product.get(position).getId(), product.get(position).getIsOffer())).addToBackStack("FragmentOfferDetails").commit();
+                if (type == 1) {
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.frame_home, new FragmentOfferDetails().setId(product.get(position).getId(), product.get(position).getIsOffer())).addToBackStack("FragmentOfferDetails").commit();
+                } else {
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.frame_home, new FragmentProductDetails().setId(product.get(position).getId(), product.get(position).getIsOffer())).addToBackStack("FragmentOfferDetails").commit();
+                }
             }
         });
 

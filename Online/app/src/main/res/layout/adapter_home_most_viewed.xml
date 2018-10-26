@@ -44,11 +44,11 @@
                     style="@style/Widget.AppCompat.RatingBar.Indicator"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
-                    android:layout_above="@id/details"
                     android:layout_gravity="center"
                     android:scaleX="0.85"
                     android:scaleY="0.85"
                     android:numStars="5"
+                    android:isIndicator="true"
                     android:progressTint="@color/colormontagat"
                     android:textAlignment="center" />
 

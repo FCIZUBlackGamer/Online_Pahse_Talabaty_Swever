@@ -1,6 +1,7 @@
 package talabaty.swever.com.online.Fields.MostTrend;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +60,7 @@ public class FragmentMostTrend extends Fragment {
     FragmentManager fragmentManager;
     LinearLayout linearLayout, layout;
 
-    ProgressDialog progressDialog;
+    ProgressDialog progressDialog, progressDialog2;
 
     // http://onlineapi.sweverteam.com/Products/MostVisited/list?type=1&x=0&count=10&token=?za[ZbGNz2B}MXYZ
     static String Type = "null";
@@ -133,26 +135,26 @@ public class FragmentMostTrend extends Fragment {
         }else {
             if (Type.equals("trend")) {
 
-                Link = "http://onlineapi.sweverteam.com/Products/MostVisited/list";
+                Link = "http://onlineapi.rivile.com/Products/MostVisited/list";
                 amount = 0;
                 linearLayout.setVisibility(View.VISIBLE);
                 loadData(0, "1");
             } else if (Type.equals("latest")) {
 
-                Link = "http://onlineapi.sweverteam.com/Products/List";
+                Link = "http://onlineapi.rivile.com/Products/List";
                 amount = 1;
                 linearLayout.setVisibility(View.VISIBLE);
                 layout.setVisibility(View.GONE);
                 loadData(0, "1");
             } else if (Type.equals("offers")) {
 
-                Link = "http://onlineapi.sweverteam.com/Offers/List";
+                Link = "http://onlineapi.rivile.com/Offers/List";
                 amount = 1;
                 linearLayout.setVisibility(View.VISIBLE);
                 loadOffers();
             } else {
 
-                Link = "http://onlineapi.sweverteam.com/Products/List";
+                Link = "http://onlineapi.rivile.com/Products/List";
                 amount = 0;
                 linearLayout.setVisibility(View.VISIBLE);
                 loadData(0, "1");
@@ -189,18 +191,29 @@ public class FragmentMostTrend extends Fragment {
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(progressDialog != null && progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }if(progressDialog2 != null && progressDialog2.isShowing()){
+            progressDialog2.dismiss();
+        }
+
+    }
+
     private void loadData(final int x, final String type) {
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("جارى تحميل البيانات ...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+        progressDialog2 = new ProgressDialog(getActivity());
+        progressDialog2.setMessage("جارى تحميل البيانات ...");
+        progressDialog2.setCancelable(false);
+        progressDialog2.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Link,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         int temp = 0;
 
-                        progressDialog.dismiss();
+                        progressDialog2.dismiss();
 
                         try {
 
@@ -226,7 +239,7 @@ public class FragmentMostTrend extends Fragment {
 
                                     Product r = new Product(object1.getInt("Id"),
                                             object1.getString("Name"),
-                                            "http://selltlbaty.sweverteam.com" + object1.getString("Photo"),
+                                            "http://selltlbaty.rivile.com" + object1.getString("Photo"),
                                             object1.getInt("Price"),
                                             object1.getInt("Sale"),
                                             object1.getInt("Rate")
@@ -259,9 +272,17 @@ public class FragmentMostTrend extends Fragment {
                                 });
                                 num.setText(page_num + "");
                             } else {
-                                Toast toast = Toast.makeText(getActivity(), "لا توجد منتجات جديده", Toast.LENGTH_SHORT);
-                                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                                v.setTextColor(Color.GREEN);
+                                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                                View layout = inflater.inflate(R.layout.toast_info,null);
+
+                                TextView text = (TextView) layout.findViewById(R.id.txt);
+                                text.setText("لا توجد بيانات");
+
+                                Toast toast = new Toast(getActivity());
+                                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                toast.setDuration(Toast.LENGTH_LONG);
+                                toast.setView(layout);
                                 toast.show();
                             }
                         } catch (JSONException e) {
@@ -272,13 +293,25 @@ public class FragmentMostTrend extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                progressDialog2.dismiss();
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                View layout = inflater.inflate(R.layout.toast_warning,null);
+
+                TextView text = (TextView) layout.findViewById(R.id.txt);
+
                 if (error instanceof ServerError)
-                    Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
-                else if (error instanceof NetworkError)
-                    Toast.makeText(getActivity(), "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى الاتصال بالخادم");
                 else if (error instanceof TimeoutError)
-                    Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى مدة الاتصال");
+                else if (error instanceof NetworkError)
+                    text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                Toast toast = new Toast(getActivity());
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
             }
         }) {
             @Override
@@ -340,7 +373,7 @@ public class FragmentMostTrend extends Fragment {
 
                                     Product r = new Product(object1.getInt("Id"),
                                             object1.getString("Name"),
-                                            "http://selltlbaty.sweverteam.com" + object1.getString("Photo"),
+                                            "http://selltlbaty.rivile.com" + object1.getString("Photo"),
                                             object1.getInt("Price"),
                                             object1.getInt("Sale"),
                                             object1.getInt("Rate")
@@ -368,9 +401,17 @@ public class FragmentMostTrend extends Fragment {
                                 });
                                 num.setText(page_num + "");
                             } else {
-                                Toast toast = Toast.makeText(getActivity(), "لا توجد منتجات جديده", Toast.LENGTH_SHORT);
-                                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                                v.setTextColor(Color.GREEN);
+                                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                                View layout = inflater.inflate(R.layout.toast_info,null);
+
+                                TextView text = (TextView) layout.findViewById(R.id.txt);
+                                text.setText("لا توجد بيانات");
+
+                                Toast toast = new Toast(getActivity());
+                                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                toast.setDuration(Toast.LENGTH_LONG);
+                                toast.setView(layout);
                                 toast.show();
                             }
                         } catch (JSONException e) {
@@ -382,12 +423,24 @@ public class FragmentMostTrend extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                View layout = inflater.inflate(R.layout.toast_warning,null);
+
+                TextView text = (TextView) layout.findViewById(R.id.txt);
+
                 if (error instanceof ServerError)
-                    Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
-                else if (error instanceof NetworkError)
-                    Toast.makeText(getActivity(), "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى الاتصال بالخادم");
                 else if (error instanceof TimeoutError)
-                    Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى مدة الاتصال");
+                else if (error instanceof NetworkError)
+                    text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                Toast toast = new Toast(getActivity());
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
             }
         }) {
             @Override

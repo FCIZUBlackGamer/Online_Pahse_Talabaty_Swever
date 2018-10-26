@@ -1,17 +1,15 @@
 package talabaty.swever.com.online.Category;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +40,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
 import talabaty.swever.com.online.Fields.MostTrend.MontagAdapter;
 import talabaty.swever.com.online.Fields.MostTrend.Product;
 import talabaty.swever.com.online.R;
@@ -61,6 +58,7 @@ public class FragmentHomeCategory extends Fragment {
     TextView phone, email, address, name;
     RatingBar bar;
     ImageView logo;
+    ProgressDialog progressDialog;
 
     public static FragmentHomeCategory setData(String phone, String email, String address, String name, String logo, float bar) {
         FragmentHomeCategory fragmentHomeContacts = new FragmentHomeCategory();
@@ -86,10 +84,10 @@ public class FragmentHomeCategory extends Fragment {
         item_num = page_num = 0;
         num.setText(1 + "");
         products = new ArrayList<>();
-        phone = view.findViewById(R.id.company_phone);
-        email = view.findViewById(R.id.company_email);
+//        phone = view.findViewById(R.id.company_phone);
+//        email = view.findViewById(R.id.company_email);
         name = view.findViewById(R.id.company_name);
-        address = view.findViewById(R.id.company_address);
+//        address = view.findViewById(R.id.company_address);
         bar = view.findViewById(R.id.company_rate);
         logo = view.findViewById(R.id.company_logo);
         return view;
@@ -100,14 +98,14 @@ public class FragmentHomeCategory extends Fragment {
         super.onStart();
 
         /** Basic Info*/
-        phone.setText(phon);
-        name.setText(nam);
-        email.setText(emai);
-        address.setText(addres);
-        bar.setRating(ba);
-        if (!log.isEmpty()) {
-            Picasso.with(getActivity()).load(log).into(logo);
-        }
+//        phone.setText(phon);
+//        name.setText(nam);
+//        email.setText(emai);
+//        address.setText(addres);
+//        bar.setRating(ba);
+//        if (!log.isEmpty()) {
+//            Picasso.with(getActivity()).load(log).into(logo);
+//        }
 
         temp_first = 0;
         temp_last = 10;
@@ -159,26 +157,26 @@ public class FragmentHomeCategory extends Fragment {
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(progressDialog != null && progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
+
+    }
+
     private void loadData(final int x, final String type) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        GifImageView gifImageView = new GifImageView(getActivity());
-        gifImageView.setImageResource(R.drawable.load);
-        builder.setCancelable(false);
-        builder.setView(gifImageView);
-        final AlertDialog dlg = builder.create();
-        dlg.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        dlg.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://onlineapi.sweverteam.com/Products/MostVisited?type=" + type + "&x=" + x + "&count=80",
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("جارى تحميل البيانات ...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://onlineapi.rivile.com/Products/MostVisited?type=" + type + "&x=" + x + "&count=80",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         int temp = 0;
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dlg.dismiss();
-                            }
-                        }, 5000);   //5 seconds
+                        progressDialog.dismiss();
                         try {
 
                             JSONObject object = new JSONObject(response);
@@ -203,7 +201,7 @@ public class FragmentHomeCategory extends Fragment {
 
                                     Product r = new Product(object1.getInt("Id"),
                                             object1.getString("Name"),
-                                            "http://selltlbaty.sweverteam.com" + object1.getString("Photo"),
+                                            "http://selltlbaty.rivile.com" + object1.getString("Photo"),
                                             object1.getInt("Price"),
                                             object1.getInt("Sale"),
                                             object1.getInt("Rate")
@@ -236,9 +234,17 @@ public class FragmentHomeCategory extends Fragment {
                                 });
                                 num.setText(page_num + "");
                             } else {
-                                Toast toast = Toast.makeText(getActivity(), "لا توجد منتجات جديده", Toast.LENGTH_SHORT);
-                                TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                                v.setTextColor(Color.GREEN);
+                                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                                View layout = inflater.inflate(R.layout.toast_info,null);
+
+                                TextView text = (TextView) layout.findViewById(R.id.txt);
+                                text.setText("لا توجد بيانات");
+
+                                Toast toast = new Toast(getActivity());
+                                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                toast.setDuration(Toast.LENGTH_LONG);
+                                toast.setView(layout);
                                 toast.show();
                             }
                         } catch (JSONException e) {
@@ -249,18 +255,25 @@ public class FragmentHomeCategory extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-                        dlg.dismiss();
-                    }
-                }, 5000);   //5 seconds
+                progressDialog.dismiss();
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                View layout = inflater.inflate(R.layout.toast_warning,null);
+
+                TextView text = (TextView) layout.findViewById(R.id.txt);
+
                 if (error instanceof ServerError)
-                    Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
-                else if (error instanceof NetworkError)
-                    Toast.makeText(getActivity(), "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى الاتصال بالخادم");
                 else if (error instanceof TimeoutError)
-                    Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى مدة الاتصال");
+                else if (error instanceof NetworkError)
+                    text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                Toast toast = new Toast(getActivity());
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
             }
         });
 //        Volley.newRequestQueue(getActivity()).add(stringRequest);

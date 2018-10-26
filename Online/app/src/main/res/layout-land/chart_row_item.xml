@@ -58,6 +58,10 @@
                     android:fontFamily="@font/changaregular"
                     android:textSize="16sp"/>
 
+                <View android:layout_height="match_parent"
+                    android:layout_width="3dp"
+                    android:background="@color/gray"/>
+
                 <TextView
                     android:layout_width="160dp"
                     android:maxLines="6"
@@ -68,7 +72,7 @@
                     android:textAlignment="center"
                     android:layout_gravity="center"
                     android:id="@+id/amount"
-                    android:text="3"
+                    android:text="------"
                     android:fontFamily="@font/changasemibold"
                     android:textSize="16sp"/>
 

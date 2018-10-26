@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,20 +56,28 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
     List<Product> product_List;
     List<Integer> subCatId;
     FrameLayout frameLayout;
+    private final OnItemClickListener listener;
+    ProgressDialog progressDialog, progressDialog2;
 
     private int lastPosition = -1;
+
+    public interface OnItemClickListener {
+        void onItemClick(Contact item);
+    }
 
     public ContactAdapter(Context context, List<Contact> contact) {
         this.context = context;
         contacts = new ArrayList<>();
         this.contacts = contact;
+        this.listener = null;
     }
 
-    public ContactAdapter(Context context, List<Contact> contact, FrameLayout frameLayout) {
+    public ContactAdapter(Context context, List<Contact> contact, FrameLayout frameLayout, OnItemClickListener listener) {
         this.context = context;
         contacts = new ArrayList<>();
         this.contacts = contact;
         this.frameLayout = frameLayout;
+        this.listener = listener;
     }
 
     @NonNull
@@ -84,23 +93,23 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
     public void onBindViewHolder(@NonNull Vholder holder, final int position) {
 
         setAnimation(holder.itemView, position);
-
+        holder.bind(contacts.get(position), listener);
         holder.name.setText(contacts.get(position).getName());
         if (!contacts.get(position).getCompany_logo().isEmpty()) {
             Picasso.with(context).load(contacts.get(position).getCompany_logo()).into(holder.logo);
         }
 
-        holder.move.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.select_dialog_item);
-                //Todo: First Connect To Api To get List Of SubCategory For One Contact
-                loadSubCategory(contacts.get(position).getId(), arrayAdapter);
-
-
-            }
-        });
+//        holder.move.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(context, android.R.layout.select_dialog_item);
+//                //Todo: First Connect To Api To get List Of SubCategory For One Contact
+//                loadSubCategory(contacts.get(position).getId(), arrayAdapter);
+//
+//
+//            }
+//        });
     }
 
     @Override
@@ -111,24 +120,33 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
     public class Vholder extends RecyclerView.ViewHolder {
         TextView name;
         ImageView logo;
-        Button move;
+//        Button move;
 
         public Vholder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.company_name);
             logo = itemView.findViewById(R.id.company_logo);
-            move = itemView.findViewById(R.id.move);
+//            move = itemView.findViewById(R.id.move);
+        }
+
+        public void bind(final Contact item, final OnItemClickListener listener) {
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(item);
+                }
+            });
         }
 
     }
 
     private void loadSubCategory(final int ID, final ArrayAdapter<String> arrayAdapter) {
         subCatId = new ArrayList<>();
-        final ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("جارى تحميل البيانات ...");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Categories/ListOfCategories",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Categories/ListOfCategories",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -170,8 +188,18 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
                                 builderSingle.show();
 
                             } else {
-                                Toast.makeText(context, "عذرا لا يوجد اقسام بداخل جهه العمل حاليا", Toast.LENGTH_SHORT).show();
-                            }
+                                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                                View layout = inflater.inflate(R.layout.toast_info,null);
+
+                                TextView text = (TextView) layout.findViewById(R.id.txt);
+                                text.setText("عذرا لا يوجد منتجات حاليا فى ذلك القسم");
+
+                                Toast toast = new Toast(context);
+                                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                toast.setDuration(Toast.LENGTH_LONG);
+                                toast.setView(layout);
+                                toast.show();                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -181,12 +209,24 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                View layout = inflater.inflate(R.layout.toast_warning,null);
+
+                TextView text = (TextView) layout.findViewById(R.id.txt);
+
                 if (error instanceof ServerError)
-                    Toast.makeText(context, "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
-                else if (error instanceof NetworkError)
-                    Toast.makeText(context, "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى الاتصال بالخادم");
                 else if (error instanceof TimeoutError)
-                    Toast.makeText(context, "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى مدة الاتصال");
+                else if (error instanceof NetworkError)
+                    text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                Toast toast = new Toast(context);
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
             }
         }) {
             @Override
@@ -206,16 +246,16 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
     }
 
     private void loadProductOfSubCategory(final int ID, final List<Product> product_List) {
-        final ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("جارى تحميل البيانات ...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Products/ListByCategory/",
+        progressDialog2 = new ProgressDialog(context);
+        progressDialog2.setMessage("جارى تحميل البيانات ...");
+        progressDialog2.setCancelable(false);
+        progressDialog2.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Products/ListByCategory/",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
-                        progressDialog.dismiss();
+                        progressDialog2.dismiss();
                         try {
 
                             JSONObject object = new JSONObject(response);
@@ -232,7 +272,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
                                     JSONObject object1 = array.getJSONObject(x);
                                     Product r = new Product(object1.getInt("Id"),
                                             object1.getString("Name"),
-                                            "http://selltlbaty.sweverteam.com" + object1.getString("Photo"),
+                                            "http://selltlbaty.rivile.com" + object1.getString("Photo"),
                                             (float) object1.getDouble("Price"),
                                             (float) object1.getDouble("Sale"),
                                             (float) object1.getDouble("Rate")
@@ -246,7 +286,18 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
                                         .replace(R.id.frame_pro, new FragmentMostTrend().setList(product_List)).commit();
 
                             } else {
-                                Toast.makeText(context, "عذرا لا يوجد منتجات حاليا فى ذلك القسم", Toast.LENGTH_SHORT).show();
+                                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                                View layout = inflater.inflate(R.layout.toast_info,null);
+
+                                TextView text = (TextView) layout.findViewById(R.id.txt);
+                                text.setText("عذرا لا يوجد منتجات حاليا فى ذلك القسم");
+
+                                Toast toast = new Toast(context);
+                                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                                toast.setDuration(Toast.LENGTH_LONG);
+                                toast.setView(layout);
+                                toast.show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -256,13 +307,25 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                progressDialog2.dismiss();
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                View layout = inflater.inflate(R.layout.toast_warning,null);
+
+                TextView text = (TextView) layout.findViewById(R.id.txt);
+
                 if (error instanceof ServerError)
-                    Toast.makeText(context, "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
-                else if (error instanceof NetworkError)
-                    Toast.makeText(context, "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى الاتصال بالخادم");
                 else if (error instanceof TimeoutError)
-                    Toast.makeText(context, "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى مدة الاتصال");
+                else if (error instanceof NetworkError)
+                    text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                Toast toast = new Toast(context);
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
             }
         }) {
             @Override

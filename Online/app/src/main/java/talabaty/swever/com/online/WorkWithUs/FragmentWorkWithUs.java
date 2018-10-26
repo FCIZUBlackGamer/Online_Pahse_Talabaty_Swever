@@ -1,7 +1,6 @@
 package talabaty.swever.com.online.WorkWithUs;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -20,11 +19,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -32,7 +32,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -62,11 +62,9 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import talabaty.swever.com.online.CategoryModel;
+import talabaty.swever.com.online.Home.Fragment_Home;
+import talabaty.swever.com.online.LoginDatabae;
 import talabaty.swever.com.online.R;
-import talabaty.swever.com.online.Register;
-import talabaty.swever.com.online.Switch_nav;
-import talabaty.swever.com.online.UserModel;
 
 import static android.app.Activity.RESULT_OK;
 import talabaty.swever.com.online.*;
@@ -81,7 +79,7 @@ public class FragmentWorkWithUs extends Fragment {
     private static final int CAMERA_REQUEST = 1888;
     private int PICK_IMAGE_REQUEST = 1;
 
-    String baseUrl = "http://www.selltlbaty.sweverteam.com/";
+    String baseUrl = "http://selltlbaty.rivile.com/";
     private String UPLOAD_URL = baseUrl + "Uploads/UploadAndro";
     private String KEY_IMAGE = "base64imageString";
     private String KEY_NAME = "name";
@@ -97,8 +95,14 @@ public class FragmentWorkWithUs extends Fragment {
     Cursor cursor;
 
     DatePickerDialog.OnDateSetListener DatePicker1;
+    ProgressDialog progressDialog, progressDialog2, progressDialog3, progressDialog4;
 
     boolean te = false;
+    int im = 0;
+
+    View Camera_view;
+    ImageView close, minimize, cam, gal;
+    FragmentManager fragmentManager;
 
 
     @Nullable
@@ -119,8 +123,7 @@ public class FragmentWorkWithUs extends Fragment {
         doc = view.findViewById(R.id.doc);
         delivery = view.findViewById(R.id.delivery);
         loginDatabae = new LoginDatabae(getActivity());
-
-
+        fragmentManager = getFragmentManager();
         return view;
     }
 
@@ -131,6 +134,7 @@ public class FragmentWorkWithUs extends Fragment {
         loadCategory();
 
         cats = values = new ArrayList<>();
+
         radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -145,26 +149,33 @@ public class FragmentWorkWithUs extends Fragment {
             }
         });
 
+        radiogroup.check(R.id.gold);
+        package_id.setVisibility(View.GONE);
+        packag = true;
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                cursor = loginDatabae.ShowData();
+                if (valid(phone.getText().toString(),
+                        national_id.getText().toString(),
+                        name.getText().toString())) {
+                    cursor = loginDatabae.ShowData();
 
-                withUsModel = new WorkWithUsModel();
-                if (doc.getSelectedItem().toString().equals("بطاقه هوية شخصيه")){
-                    withUsModel.setPhotoType(1);
-                }else {
-                    withUsModel.setPhotoType(2);
+                    withUsModel = new WorkWithUsModel();
+                    if (doc.getSelectedItem().toString().equals("بطاقه هوية شخصيه")) {
+                        withUsModel.setPhotoType(1);
+                    } else {
+                        withUsModel.setPhotoType(2);
+                    }
+                    withUsModel.setPhone(phone.getText().toString());
+                    withUsModel.setCountryId(1);
+                    withUsModel.setEndDate(end_date.getText().toString());
+                    withUsModel.setIdentityId(Long.parseLong(national_id.getText().toString()));
+                    while (cursor.moveToNext()) {
+                        withUsModel.setId(Integer.parseInt(cursor.getString(2)));
+                    }
+                    uploadImage();
                 }
-                withUsModel.setPhone(phone.getText().toString());
-                withUsModel.setCountryId(1);
-                withUsModel.setEndDate(end_date.getText().toString());
-                withUsModel.setIdentityId(Long.parseLong(national_id.getText().toString()));
-                while (cursor.moveToNext()) {
-                    withUsModel.setId(Integer.parseInt(cursor.getString(2)));
-                }
-                uploadImage();
             }
         });
 
@@ -196,37 +207,24 @@ public class FragmentWorkWithUs extends Fragment {
         id_open.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LinearLayout layout = new LinearLayout(getActivity());
-                layout.setOrientation(LinearLayout.VERTICAL);
-                Button cam = new Button(getActivity());
-                cam.setText("فتح الكاميرا");
-                cam.setWidth(20);
-                cam.setTextSize(24);
-                cam.setHeight(60);
-                Button gallary = new Button(getActivity());
-                gallary.setText("فتح المعرض");
-                gallary.setWidth(20);
-                gallary.setTextSize(24);
-                gallary.setHeight(60);
-                Button cancel = new Button(getActivity());
-                cancel.setText("إلغاء");
-                cancel.setWidth(20);
-                cancel.setTextSize(24);
-                cancel.setHeight(60);
+                final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                layout.addView(cam);
-                layout.addView(gallary);
-                layout.addView(cancel);
+                Camera_view = inflater.inflate(R.layout.camera_view, null);
+
+                close = Camera_view.findViewById(R.id.close);
+                minimize = Camera_view.findViewById(R.id.minimize);
+                minimize.setVisibility(View.GONE);
+                cam = Camera_view.findViewById(R.id.cam);
+                gal = Camera_view.findViewById(R.id.gal);
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setCancelable(false)
-                        .setTitle("ارفاق صوره")
-                        .setView(layout);
+                        .setView(Camera_view);
 
                 final AlertDialog dialog = builder.create();
                 dialog.show();
 
-                gallary.setOnClickListener(new View.OnClickListener() {
+                gal.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         openGalary();
@@ -242,14 +240,66 @@ public class FragmentWorkWithUs extends Fragment {
                     }
                 });
 
-                cancel.setOnClickListener(new View.OnClickListener() {
+                close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
+
                     }
                 });
             }
         });
+    }
+
+    private boolean valid(String ph, String nid, String nam) {
+        boolean res = true;
+        if (ph.length() != 11) {
+            phone.setError("رقم هاتف خطأ");
+            res = false;
+        }
+        if (nid.length() != 14) {
+            national_id.setError("رقم قومى خطأ");
+            res = false;
+        }
+        if (nam.length() < 3) {
+            name.setError("اسم غير صحيح");
+            res = false;
+        }
+        if (end_date.getText().length() < 1) {
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            View layout = inflater.inflate(R.layout.toast_error, null);
+
+            TextView text = (TextView) layout.findViewById(R.id.txt);
+
+            text.setText("يرجى ادخال تاريخ صلاحيه");
+
+            Toast toast = new Toast(getActivity());
+            toast.setGravity(Gravity.BOTTOM, 0, 0);
+            toast.setDuration(Toast.LENGTH_LONG);
+            toast.setView(layout);
+            toast.show();
+
+            res = false;
+        }
+        if (im != 1) {
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            View layout = inflater.inflate(R.layout.toast_error, null);
+
+            TextView text = (TextView) layout.findViewById(R.id.txt);
+
+            text.setText("يرجى ارفاق صوره الهويه الشخصيه");
+
+            Toast toast = new Toast(getActivity());
+            toast.setGravity(Gravity.BOTTOM, 0, 0);
+            toast.setDuration(Toast.LENGTH_LONG);
+            toast.setView(layout);
+            toast.show();
+            res = false;
+        }
+
+        return res;
     }
 
     private void uploadImage() {
@@ -260,13 +310,13 @@ public class FragmentWorkWithUs extends Fragment {
         final String allImages = gson.toJson(imageStrings);
         Log.e("Start: ", allImages);
         //Showing the progress dialog
-        final ProgressDialog loading = ProgressDialog.show(getActivity(), "Uploading...", "Please wait...", false, false);
+        progressDialog = ProgressDialog.show(getActivity(), "Uploading...", "Please wait...", false, false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, UPLOAD_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
                         //Disimissing the progress dialog
-                        loading.dismiss();
+                        progressDialog.dismiss();
                         Log.e("Path: ", s);
                         try {
 
@@ -324,16 +374,27 @@ public class FragmentWorkWithUs extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         //Dismissing the progress dialog
-                        loading.dismiss();
+                        progressDialog.dismiss();
 
                         //Showing toast
-//                        Toast.makeText(Register.getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                        View layout = inflater.inflate(R.layout.toast_warning, null);
+
+                        TextView text = (TextView) layout.findViewById(R.id.txt);
+
                         if (volleyError instanceof ServerError)
-                            Log.e("Error: ", "Server Error");
+                            text.setText("خطأ فى الاتصال بالخادم");
                         else if (volleyError instanceof TimeoutError)
-                            Log.e("Error: ", "Timeout Error");
+                            text.setText("خطأ فى مدة الاتصال");
                         else if (volleyError instanceof NetworkError)
-                            Log.e("Error: ", "Bad Network");
+                            text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                        Toast toast = new Toast(getActivity());
+                        toast.setGravity(Gravity.BOTTOM, 0, 0);
+                        toast.setDuration(Toast.LENGTH_LONG);
+                        toast.setView(layout);
+                        toast.show();
                     }
                 }) {
             @Override
@@ -423,10 +484,12 @@ public class FragmentWorkWithUs extends Fragment {
                 id_image.setImageBitmap(bitmap);
                 if (id_image.getDrawable() == null){
                     imageStrings.add(getStringImage(bitmap));
+                    im = 1;
                     Log.e("Image",imageStrings.get(0));
                     Log.e("Length",imageStrings.size()+"");
                 }else {
                     imageStrings.add(0,getStringImage(bitmap));
+                    im = 1;
                     Log.e("Image",imageStrings.get(0));
                     Log.e("Length",imageStrings.size()+"");
                 }
@@ -439,9 +502,11 @@ public class FragmentWorkWithUs extends Fragment {
             id_image.setImageBitmap(bitmap);
             if (id_image.getDrawable() == null){
                 imageStrings.add(getStringImage(bitmap));
+                im = 1;
                 Log.e("Image",imageStrings.get(0));
             }else {
                 imageStrings.add(0,getStringImage(bitmap));
+                im = 1;
                 Log.e("Image",imageStrings.get(0));
             }
 
@@ -473,32 +538,33 @@ public class FragmentWorkWithUs extends Fragment {
             }
         }
 
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("جارى تحميل البيانات ...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/SubScrip/Package",
+        progressDialog2 = new ProgressDialog(getActivity());
+        progressDialog2.setMessage("جارى تحميل البيانات ...");
+        progressDialog2.setCancelable(false);
+        progressDialog2.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/SubScrip/Package",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
 
+                            progressDialog2.dismiss();
                             JSONObject object = new JSONObject(response);
-                            JSONArray array = object.getJSONArray("package");
+                            JSONArray array = object.getJSONArray("List");
                             if (array.length() > 0) {
 
 
-                                for (int x=0; x<array.length(); x++){
+                                for (int x = 0; x < array.length(); x++) {
                                     JSONObject jsonObject = array.getJSONObject(x);
 
-                                    spin e = new spin(jsonObject.getInt("Id"),jsonObject.getInt("Value"));
+                                    spin e = new spin(jsonObject.getInt("Id"), jsonObject.getInt("Value"));
                                     spins.add(e);
                                 }
 //                                Log.e("Length", values.size()+"");
 
-                                for (int s=0; s<spins.size(); s++){
-                                    values.add(spins.get(s).getValue()+"");
-                                    Log.e("RR",spins.get(s).getId()+"");
+                                for (int s = 0; s < spins.size(); s++) {
+                                    values.add(spins.get(s).getValue() + "");
+                                    Log.e("RR", spins.get(s).getId() + "");
                                 }
                                 ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
                                         android.R.layout.simple_spinner_dropdown_item, values);
@@ -514,28 +580,41 @@ public class FragmentWorkWithUs extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                progressDialog2.dismiss();
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                View layout = inflater.inflate(R.layout.toast_warning, null);
+
+                TextView text = (TextView) layout.findViewById(R.id.txt);
+
                 if (error instanceof ServerError)
-                    Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
-                else if (error instanceof NetworkError)
-                    Toast.makeText(getActivity(), "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى الاتصال بالخادم");
                 else if (error instanceof TimeoutError)
-                    Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى مدة الاتصال");
+                else if (error instanceof NetworkError)
+                    text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                Toast toast = new Toast(getActivity());
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> map = new HashMap<>();
-                map.put("token","?za[ZbGNz2B}MXYZ");
+                HashMap<String, String> map = new HashMap<>();
+                map.put("token", "?za[ZbGNz2B}MXYZ");
                 return map;
             }
         };
-        progressDialog.dismiss();
 //        Volley.newRequestQueue(getActivity()).add(stringRequest);
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 2,  // maxNumRetries = 2 means no retry
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Volley.newRequestQueue(getActivity()).add(stringRequest);
+
     }
 
     private void loadCategory() {
@@ -548,18 +627,19 @@ public class FragmentWorkWithUs extends Fragment {
             }
         }
 
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("جارى تحميل البيانات ...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/SubScrip/Categories",
+        progressDialog3 = new ProgressDialog(getActivity());
+        progressDialog3.setMessage("جارى تحميل البيانات ...");
+        progressDialog3.setCancelable(false);
+        progressDialog3.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Fields/List",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
 
+                            progressDialog3.dismiss();
                             JSONObject object = new JSONObject(response);
-                            JSONArray array = object.getJSONArray("package");
+                            JSONArray array = object.getJSONArray("Fields");
                             if (array.length() > 0) {
 
 
@@ -589,12 +669,25 @@ public class FragmentWorkWithUs extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                progressDialog3.dismiss();
+                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                View layout = inflater.inflate(R.layout.toast_warning, null);
+
+                TextView text = (TextView) layout.findViewById(R.id.txt);
+
                 if (error instanceof ServerError)
-                    Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
-                else if (error instanceof NetworkError)
-                    Toast.makeText(getActivity(), "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى الاتصال بالخادم");
                 else if (error instanceof TimeoutError)
-                    Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى مدة الاتصال");
+                else if (error instanceof NetworkError)
+                    text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                Toast toast = new Toast(getActivity());
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
             }
         }){
             @Override
@@ -604,7 +697,7 @@ public class FragmentWorkWithUs extends Fragment {
                 return map;
             }
         };
-        progressDialog.dismiss();
+        progressDialog3.dismiss();
 //        Volley.newRequestQueue(getActivity()).add(stringRequest);
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
@@ -633,28 +726,57 @@ public class FragmentWorkWithUs extends Fragment {
         }else {
             te = true;
         }
-        final ProgressDialog loading = ProgressDialog.show(getActivity(), "Uploading...", "Please wait...", false, false);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/SubScrip/Edit",
+        progressDialog4 = ProgressDialog.show(getActivity(), "Uploading...", "Please wait...", false, false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/SubScrip/Edit",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
                         //Disimissing the progress dialog
-                        loading.dismiss();
+                        progressDialog4.dismiss();
                         Log.e("Data: ", s);
                         if (s.equals("\"Success\"")){
-                            Toast toast = Toast.makeText(getActivity(), " تم الإشتراك بنجاح ", Toast.LENGTH_SHORT);
-                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                            v.setTextColor(Color.GREEN);
+
+                            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                            View layout = inflater.inflate(R.layout.toast_info, null);
+
+                            TextView text = (TextView) layout.findViewById(R.id.txt);
+                            text.setText(" تم الإشتراك بنجاح ");
+
+                            Toast toast = new Toast(getActivity());
+                            toast.setGravity(Gravity.BOTTOM, 0, 0);
+                            toast.setDuration(Toast.LENGTH_LONG);
+                            toast.setView(layout);
                             toast.show();
-                        }else if (s.equals("\"duplicated\"")){
-                            Toast toast = Toast.makeText(getActivity(), "اسم هه عمل مكرر يرجى اختيار اسم جديد و المحاوله مره اخرى", Toast.LENGTH_SHORT);
-                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                            v.setTextColor(Color.RED);
+
+                            getActivity().startActivity(new Intent(getActivity(), Switch_nav.class));
+
+
+                        } else if (s.equals("\"الاسم مكرر\"")) {
+                            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                            View layout = inflater.inflate(R.layout.toast_warning, null);
+
+                            TextView text = (TextView) layout.findViewById(R.id.txt);
+                            text.setText("اسم جهه عمل مكرر يرجى اختيار اسم جديد و المحاوله مره اخرى");
+
+                            Toast toast = new Toast(getActivity());
+                            toast.setGravity(Gravity.BOTTOM, 0, 0);
+                            toast.setDuration(Toast.LENGTH_LONG);
+                            toast.setView(layout);
                             toast.show();
                         }else{
-                            Toast toast = Toast.makeText(getActivity(), "عذرا حدث خطأ أثناء اجراء العملية  .. يرجي المحاوله لاحقا", Toast.LENGTH_SHORT);
-                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-                            v.setTextColor(Color.RED);
+                            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                            View layout = inflater.inflate(R.layout.toast_warning, null);
+
+                            TextView text = (TextView) layout.findViewById(R.id.txt);
+                            text.setText("عذرا حدث خطأ أثناء اجراء العملية  .. يرجي المحاوله لاحقا");
+
+                            Toast toast = new Toast(getActivity());
+                            toast.setGravity(Gravity.BOTTOM, 0, 0);
+                            toast.setDuration(Toast.LENGTH_LONG);
+                            toast.setView(layout);
                             toast.show();
                         }
 
@@ -664,16 +786,27 @@ public class FragmentWorkWithUs extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         //Dismissing the progress dialog
-                        loading.dismiss();
+                        progressDialog4.dismiss();
 
                         //Showing toast
-//                        Toast.makeText(getActivity(), volleyError.getMessage(), Toast.LENGTH_LONG).show();
+                        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                        View layout = inflater.inflate(R.layout.toast_warning, null);
+
+                        TextView text = (TextView) layout.findViewById(R.id.txt);
+
                         if (volleyError instanceof ServerError)
-                            Log.e("Error: ", "Server Error");
+                            text.setText("خطأ فى الاتصال بالخادم");
                         else if (volleyError instanceof TimeoutError)
-                            Log.e("Error: ", "Timeout Error");
+                            text.setText("خطأ فى مدة الاتصال");
                         else if (volleyError instanceof NetworkError)
-                            Log.e("Error: ", "Bad Network");
+                            text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                        Toast toast = new Toast(getActivity());
+                        toast.setGravity(Gravity.BOTTOM, 0, 0);
+                        toast.setDuration(Toast.LENGTH_LONG);
+                        toast.setView(layout);
+                        toast.show();
                     }
                 }) {
             @Override
@@ -715,5 +848,22 @@ public class FragmentWorkWithUs extends Fragment {
                 2,  // maxNumRetries = 2 means no retry
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Volley.newRequestQueue(getActivity()).add(stringRequest);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        if (progressDialog2 != null && progressDialog2.isShowing()) {
+            progressDialog2.dismiss();
+        }
+        if (progressDialog3 != null && progressDialog3.isShowing()) {
+            progressDialog3.dismiss();
+        }
+        if (progressDialog4 != null && progressDialog4.isShowing()) {
+            progressDialog4.dismiss();
+        }
     }
 }

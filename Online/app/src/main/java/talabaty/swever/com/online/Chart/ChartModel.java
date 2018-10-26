@@ -1,7 +1,10 @@
 package talabaty.swever.com.online.Chart;
 
 
-public class ChartModel {
+import java.io.Serializable;
+import java.util.List;
+
+public class ChartModel implements Serializable{
     public int Id ;
     public int Amount ;
     public double Price ;
@@ -11,6 +14,12 @@ public class ChartModel {
     public int Color ;
     public int ShopId ; // Contact Id For That Product
     public double distance ;
+    //0is not offer
+    //1 is offer
+    //2 is dash
+    //3 is addition
+    public int IsOffer ;
+    public List<AdditionalModel> AdditionList ;
 
     public ChartModel(){
         ShopId = 0;
@@ -40,6 +49,10 @@ public class ChartModel {
         ShopId = shopId;
     }
 
+    public List<AdditionalModel> getAdditionList() {
+        return AdditionList;
+    }
+
     public void setSize(int size) {
         Size = size;
     }
@@ -50,5 +63,21 @@ public class ChartModel {
 
     public void setPrice(double price) {
         Price = price;
+    }
+
+    public void setAdditionList(List<AdditionalModel> additionList) {
+        AdditionList = additionList;
+    }
+
+    public void setIsOffer(int isOffer) {
+        IsOffer = isOffer;
+    }
+
+    public int getIsOffer() {
+        return IsOffer;
+    }
+
+    public int getId() {
+        return Id;
     }
 }

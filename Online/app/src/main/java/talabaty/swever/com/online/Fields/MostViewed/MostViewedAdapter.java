@@ -25,17 +25,17 @@ public class MostViewedAdapter extends BaseAdapter {
     Context context;
     List<Contact> contacts;
     FragmentManager fragmentManager;
-    int shopId = -1;
+    int isBaseFood = -1;
 
     public MostViewedAdapter(Context context, List<Contact> contacts) {
         this.context = context;
         this.contacts = contacts;
     }
 
-    public MostViewedAdapter(Context context, List<Contact> contacts, int shopId) {
+    public MostViewedAdapter(Context context, List<Contact> contacts, int isBaseFood) {
         this.context = context;
         this.contacts = contacts;
-        this.shopId = shopId;
+        this.isBaseFood = isBaseFood;
     }
 
     @Override
@@ -85,15 +85,15 @@ public class MostViewedAdapter extends BaseAdapter {
         viewHolder.move.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (shopId == -1) {
+                if (isBaseFood == -1) {
                     fragmentManager.beginTransaction()
                             .replace(R.id.frame_home, new FragmentHomeContacts().setData(contacts.get(position).getId(),contacts.get(position).getPhone(), contacts.get(position).getEmail(),
                                     contacts.get(position).getLocation(), contacts.get(position).getName(), contacts.get(position).getCompany_logo(),
                                     contacts.get(position).getRate())).addToBackStack("FragmentHomeContacts").commit();
-//                } else {
-//                    fragmentManager.beginTransaction()
-//                            .replace(R.id.frame_home,new FragmentPrepareFood().setData(contacts.get(position).getId())).addToBackStack("FragmentPrepareFood").commit();
-//                }
+                } else {
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.frame_home,new FragmentPrepareFood().setData(contacts.get(position).getId())).addToBackStack("FragmentPrepareFood").commit();
+                }
             }
         });
         return convertView;

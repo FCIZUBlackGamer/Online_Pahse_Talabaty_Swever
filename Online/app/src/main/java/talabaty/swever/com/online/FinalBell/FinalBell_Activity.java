@@ -3,6 +3,7 @@ package talabaty.swever.com.online.FinalBell;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -17,6 +18,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -54,9 +57,15 @@ import java.util.List;
 import java.util.Map;
 
 import pl.droidsonroids.gif.GifImageView;
+import talabaty.swever.com.online.Chart.ChartAdditionalDatabase;
+import talabaty.swever.com.online.Chart.ChartDatabase;
+import talabaty.swever.com.online.Chart.ChartModel;
 import talabaty.swever.com.online.Chart.Models.Bell;
+import talabaty.swever.com.online.Login;
 import talabaty.swever.com.online.LoginDatabae;
 import talabaty.swever.com.online.R;
+import talabaty.swever.com.online.Register;
+import talabaty.swever.com.online.Switch_nav;
 
 public class FinalBell_Activity extends AppCompatActivity {
     TextView name, addres, phone;
@@ -65,15 +74,23 @@ public class FinalBell_Activity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     List<Bell> bellList;
+    List<ChartModel> modelList;
 
     LoginDatabae loginDatabae ;
     Cursor userId;
+    String user_id;
 
     String addresString , RegionString, CityString, StateString;
 
     Button finish;
     Intent intent;
     Date date = new Date();
+
+    ChartDatabase chartDatabase;
+    ChartAdditionalDatabase chartAdditionalDatabase;
+
+    ProgressDialog progressDialog;
+
 
 
     @Override
@@ -95,19 +112,29 @@ public class FinalBell_Activity extends AppCompatActivity {
 
         intent = getIntent();
         bellList = (ArrayList<Bell>)intent.getSerializableExtra("model");
+        modelList = (ArrayList<ChartModel>)intent.getSerializableExtra("mod");
         addresString = intent.getStringExtra("Address");
         RegionString = intent.getStringExtra("Region");
         CityString = intent.getStringExtra("City");
         StateString = intent.getStringExtra("State");
+        chartAdditionalDatabase = new ChartAdditionalDatabase(this);
+        chartDatabase = new ChartDatabase(this);
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        name.setText("My Name"); /** From Internal Database */
+        while (userId.moveToNext()){
+            user_id = userId.getString(2);
+            name.setText(userId.getString(1)); /** From Internal Database */
+        }
+
+
         addres.setText(bellList.get(0).getAddress());
         phone.setText(bellList.get(0).getPhone());
+
+
 
         Bitmap bitmap = null;
         try {
@@ -124,52 +151,76 @@ public class FinalBell_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Gson gson = new Gson();
-                uploadChart(gson.toJson(bellList), addresString, RegionString, CityString, StateString, date);
+                uploadChart(gson.toJson(modelList), addresString, RegionString, CityString, StateString, date);
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(progressDialog != null && progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
+
     }
 
     @SuppressLint("NewApi")
     private void uploadChart(final String mod, final String addres, final String Region, final String City, final String State, final Date date) {
 
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(FinalBell_Activity.this);
-        GifImageView gifImageView = new GifImageView(FinalBell_Activity.this);
-        gifImageView.setImageResource(R.drawable.load);
-        builder.setCancelable(false);
-        builder.setView(gifImageView);
-        final AlertDialog dlg = builder.create();
-        dlg .getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        dlg.show();
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/Order/Order",
+        progressDialog = new ProgressDialog(FinalBell_Activity.this);
+        progressDialog.setMessage("جارى تحميل البيانات ...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Order/Order",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-                                dlg.dismiss();
-                            }
-                        }, 5000);   //5 seconds
+                        progressDialog.dismiss();
                         Log.e("Result",response);
+                        try{
+                            JSONObject object = new JSONObject(response);
+                            JSONArray array = object.getJSONArray("List");
+                            if (array.length()>0){
+                                //Empty DataBase Cart & Additions
+                                chartDatabase.DeleteData();
+                                chartAdditionalDatabase.DeleteData();
+                                //Send Message To User
+                                sendMessage("طلباتى","تم تنفيذ الطلب وجارى المتابعه");
+                                Intent intent = new Intent(FinalBell_Activity.this, Switch_nav.class);
+
+                                startActivity(intent);
+                                finish();
+                            }
+                        }catch (Exception e){
+
+                        }
+
+
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-                        dlg.dismiss();
-                    }
-                }, 5000);   //5 seconds
+                progressDialog.dismiss();
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                View layout = inflater.inflate(R.layout.toast_warning,null);
+
+                TextView text = (TextView) layout.findViewById(R.id.txt);
+
                 if (error instanceof ServerError)
-                    Toast.makeText(FinalBell_Activity.this, "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
-                else if (error instanceof NetworkError)
-                    Toast.makeText(FinalBell_Activity.this, "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى الاتصال بالخادم");
                 else if (error instanceof TimeoutError)
-                    Toast.makeText(FinalBell_Activity.this, "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
+                    text.setText("خطأ فى مدة الاتصال");
+                else if (error instanceof NetworkError)
+                    text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                Toast toast = new Toast(FinalBell_Activity.this);
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
             }
         }) {
             @Override
@@ -177,6 +228,7 @@ public class FinalBell_Activity extends AppCompatActivity {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("token", "?za[ZbGNz2B}MXYZ");
                 map.put("Order", mod + "");
+                Log.e("Order", mod + "");
                 map.put("Address", addres + "");
                 Log.e("Adress", addres + "");
                 map.put("Region", Region + "");
@@ -185,7 +237,7 @@ public class FinalBell_Activity extends AppCompatActivity {
                 Log.e("City", City + "");
                 map.put("State", State + "");
                 Log.e("State", State + "");
-                map.put("UserId", userId.getString(2)+"");
+                map.put("UserId", user_id+"");
                 map.put("Date", new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(date) + "");
                 return map;
             }
@@ -198,6 +250,85 @@ public class FinalBell_Activity extends AppCompatActivity {
         Volley.newRequestQueue(FinalBell_Activity.this).add(stringRequest);
     }
 
+    private void sendMessage(final String sub, final String message){
+        final StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Order/Send",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        Log.e("Result",response);
+                        if (response.equals("\"Success\"")){
+//                            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//
+//                            View layout = inflater.inflate(R.layout.toast_info,null);
+//
+//                            TextView text = (TextView) layout.findViewById(R.id.txt);
+//                            text.setText("تم ارسال راله");
+//
+//                            Toast toast = new Toast(getApplicationContext());
+//                            toast.setGravity(Gravity.BOTTOM, 0, 0);
+//                            toast.setDuration(Toast.LENGTH_LONG);
+//                            toast.setView(layout);
+//                            toast.show();
+                        }else  {
+//                            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//
+//                            View layout = inflater.inflate(R.layout.toast_info,null);
+//
+//                            TextView text = (TextView) layout.findViewById(R.id.txt);
+//                            text.setText("");
+//
+//                            Toast toast = new Toast(getApplicationContext());
+//                            toast.setGravity(Gravity.BOTTOM, 0, 0);
+//                            toast.setDuration(Toast.LENGTH_LONG);
+//                            toast.setView(layout);
+//                            toast.show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                View layout = inflater.inflate(R.layout.toast_warning,null);
+
+                TextView text = (TextView) layout.findViewById(R.id.txt);
+
+                if (error instanceof ServerError)
+                    text.setText("خطأ فى الاتصال بالخادم");
+                else if (error instanceof TimeoutError)
+                    text.setText("خطأ فى مدة الاتصال");
+                else if (error instanceof NetworkError)
+                    text.setText("شبكه الانترنت ضعيفه حاليا");
+
+                Toast toast = new Toast(FinalBell_Activity.this);
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.setDuration(Toast.LENGTH_LONG);
+                toast.setView(layout);
+                toast.show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("token", "?za[ZbGNz2B}MXYZ");
+                map.put("Sub", sub + "");
+                Log.e("Sub", sub + "");
+                map.put("Mes", message + "");
+                Log.e("Mes", message + "");
+                map.put("UserId", user_id+"");
+                return map;
+            }
+        };
+//        Volley.newRequestQueue(getActivity()).add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                2,  // maxNumRetries = 2 means no retry
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Volley.newRequestQueue(FinalBell_Activity.this).add(stringRequest);
+    }
     private static final int WHITE = 0xFFFFFFFF;
     private static final int BLACK = 0xFF000000;
 
