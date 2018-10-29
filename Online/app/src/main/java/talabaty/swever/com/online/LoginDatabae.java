@@ -26,12 +26,23 @@ public class LoginDatabae extends SQLiteOpenHelper{
 
     private static final String IMAGE = "image"; //http://www.selltlbaty.sweverteam.com/
 
+    private static final String AccountType = "account_type";
+
+    private static final String Mail = "mail";
+
     private static final int DATABASE_VERSION = 2;
     Context cont;
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table " +TABLE_NAME +
-            "( " + UID + " integer primary key , " + NAME + " varchar(255) not null, " + USER_ID + " varchar(255) , " + PHONE + " varchar(20) , " + TYPE + " varchar(255) not null, " + IMAGE + " varchar(255) );";
+            "( " + UID + " integer primary key , "
+            + NAME + " varchar(255) not null, "
+            + USER_ID + " varchar(255) , "
+            + PHONE + " varchar(20) , "
+            + TYPE + " varchar(255) not null, "
+            + IMAGE + " varchar(255), "
+            + AccountType + " varchar(255) , "
+            + Mail + " varchar(255) );";
 
     // Database Deletion
     private static final String DATABASE_DROP = "drop table if exists "+TABLE_NAME+";";
@@ -45,7 +56,7 @@ public class LoginDatabae extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         try {
             db.execSQL(DATABASE_CREATE);
-            db.execSQL("insert into " + TABLE_NAME + " ( " + UID + ", " + NAME + ", " + USER_ID + ", " + PHONE + ", " + TYPE + "," + IMAGE +  ") values ( '1', 'e', '0', '0', '0', '0');");
+            db.execSQL("insert into " + TABLE_NAME + " ( " + UID + ", " + NAME + ", " + USER_ID + ", " + PHONE + ", " + TYPE + "," + IMAGE + "," + AccountType +  "," + Mail +  ") values ( '1', 'e', '0', '0', '0', '0', '0', '0');");
             // Toast.makeText(cont,"تم إنشاء سله تسوق", Toast.LENGTH_SHORT).show();
         }catch (SQLException e)
         {
@@ -87,7 +98,7 @@ public class LoginDatabae extends SQLiteOpenHelper{
         return cursor;
     }
 
-    public boolean UpdateData (String id, String name, String userid ,String phone, String type, String image)
+    public boolean UpdateData (String id, String name, String userid ,String phone, String type, String image, String AccountTyp, String Mal)
     {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -97,6 +108,20 @@ public class LoginDatabae extends SQLiteOpenHelper{
         contentValues.put(PHONE,phone);
         contentValues.put(TYPE,type);
         contentValues.put(IMAGE,image);
+        contentValues.put(AccountType,AccountTyp);
+        contentValues.put(Mail,Mal);
+        sqLiteDatabase.update(TABLE_NAME,contentValues,"id = "+Integer.parseInt( id ),null);
+
+        return true;
+    }
+
+    public boolean UpdateData (String id,
+                               String AccountTyp)
+    {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(UID,id);
+        contentValues.put(AccountType,AccountTyp);
         sqLiteDatabase.update(TABLE_NAME,contentValues,"id = "+Integer.parseInt( id ),null);
 
         return true;

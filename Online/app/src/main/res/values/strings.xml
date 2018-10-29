@@ -18,6 +18,14 @@
         <item>بالمحافظه</item>
 
     </string-array>
+
+    <string-array name="worktype">
+        <item>سوبر ماركت</item>
+        <item>مطعم</item>
+        <item>أخرى</item>
+
+    </string-array>
+
     <string name="title_activity_fragment_contact_us">Map</string>
 
     <string-array name="num">

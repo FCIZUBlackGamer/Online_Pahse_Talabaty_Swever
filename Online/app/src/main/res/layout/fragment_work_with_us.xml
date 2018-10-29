@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:text="فصى"
                 android:id="@+id/salver"
-                android:gravity="end|center"
+                android:gravity="start|center"
                 android:fontFamily="@font/changamedium"
                 android:textSize="16sp"/>
             <RadioButton
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:text="ذهبى"
                 android:id="@+id/gold"
-                android:gravity="end|center"
+                android:gravity="start|center"
                 android:fontFamily="@font/changamedium"
                 android:textSize="16sp"/>
 
@@ -94,6 +94,7 @@
             android:entries="@array/del"
             android:background="@drawable/background_edittext"
             android:fontFamily="@font/changamedium" />
+
 
         <Button
             android:id="@+id/id_open"
@@ -173,6 +174,36 @@
             android:fontFamily="@font/changamedium"
             android:hint="تاريخ انتهاء الاشتراك"
             android:padding="10dp" />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/changamedium"
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            android:text="العنوان" />
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <fragment
+                android:id="@+id/place_autocomplete_fragment"
+                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_below="@id/place_autocomplete_fragment" />
+
+
+        </RelativeLayout>
 
         <Button
             android:id="@+id/save"

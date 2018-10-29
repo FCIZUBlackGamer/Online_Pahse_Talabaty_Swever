@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -72,11 +73,15 @@ public class Switch_nav extends AppCompatActivity
     Cursor cursor;
 
     ProgressDialog progressDialog;
+    String AccountType;
+    View parentLayout ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bundle = savedInstanceState;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        parentLayout = findViewById(android.R.id.content);
         setUi();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -116,10 +121,22 @@ public class Switch_nav extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View view = navigationView.getHeaderView(0);
+        TextView email, job;
         imageView = view.findViewById(R.id.imageView);
-        user_name = view.findViewById(R.id.textView);
+        email = view.findViewById(R.id.textView);
+        job = view.findViewById(R.id.job);
+        user_name = view.findViewById(R.id.name);
         while (cursor.moveToNext()) {
             user_name.setText(cursor.getString(1));
+            email.setText(cursor.getString(7));
+            Log.e("UserId",cursor.getString(2));
+            AccountType = cursor.getString(6);
+            if (AccountType.equals("2")){
+                job.setText("مدير");
+                job.setVisibility(View.VISIBLE);
+            }else {
+                job.setVisibility(View.GONE);
+            }
             if (!cursor.getString(5).isEmpty()) {
                 Picasso.with(this)
                         .load(cursor.getString(5))
@@ -228,8 +245,14 @@ public class Switch_nav extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_home,new FragmentMostViewed().setType("normal")).addToBackStack("FragmentMostViewed").commit();
         } else if (id == R.id.nav_work_with_us) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_home,new FragmentWorkWithUs()).addToBackStack("FragmentWorkWithUs").commit();
+            if (AccountType.equals("0")) {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frame_home, new FragmentWorkWithUs()).addToBackStack("FragmentWorkWithUs").commit();
+            }else {
+                Snackbar.make(parentLayout,"لا يمكن انشاء حساب اخر", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                        .show();
+            }
         } else if (id == R.id.nav_call_us) {
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_home,new FragmentContactUs()).addToBackStack("FragmentContactUs").commit();
@@ -239,7 +262,7 @@ public class Switch_nav extends AppCompatActivity
             startActivity(new Intent(Switch_nav.this,FragmentHomeChart.class));
         } else if (id == R.id.nav_logout) {
             //Todo: Action Logout
-            loginDatabae.UpdateData("1","c","c","c","0","");
+            loginDatabae.UpdateData("1","c","c","c","0","","0","0");
             startActivity(new Intent(Switch_nav.this, Login.class));
         }else {
             String cat_name = item.getTitle().toString();

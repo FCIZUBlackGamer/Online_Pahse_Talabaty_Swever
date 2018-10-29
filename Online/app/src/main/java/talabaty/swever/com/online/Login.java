@@ -112,13 +112,18 @@ public class Login extends AppCompatActivity {
                                     JSONObject object = new JSONObject(response);
                                     //JSONArray array = object.getJSONArray("user");
                                     String id = object.getInt("Id") + "";
-                                    Log.e("ID", id);
+                                    Log.e("Response", response);
                                     String name = object.getString("FirstName").toString() + object.getString("LastName").toString();
                                     String photo = object.getString("Photo").toString();
                                     String phone = object.getString("Phone").toString();
+                                    String AccountType = object.getString("AccountType").toString();
+                                    String email = object.getString("Mail").toString();
 
-                                    loginDatabae.UpdateData("1", name, id, phone, "1", "http://selltlbaty.rivile.com/" + photo);
+                                    try {
+                                        loginDatabae.UpdateData("1", name, id, phone, "1", "http://selltlbaty.rivile.com/" + photo, AccountType, email);
+                                    }catch (Exception e){
 
+                                    }
 
 
                                     progressDialog.dismiss();
