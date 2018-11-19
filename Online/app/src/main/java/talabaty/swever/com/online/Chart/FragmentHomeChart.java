@@ -1,5 +1,6 @@
 package talabaty.swever.com.online.Chart;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -9,9 +10,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -264,13 +269,14 @@ public class FragmentHomeChart extends AppCompatActivity {
     private void loadChart() {
 
 
-        final int size = sanfList.size();
-        if (size > 0) {
-            for (int i = 0; i < size; i++) {
-                sanfList.remove(0);
-            }
-            adapter.notifyItemRangeRemoved(0, size);
-        }
+//        final int size = sanfList.size();
+//        if (size > 0) {
+//            for (int i = 0; i < size; i++) {
+//                sanfList.remove(0);
+//            }
+//            adapter.notifyItemRangeRemoved(0, size);
+//        }
+        sanfList = new ArrayList<>();
 
         int x=1;
         if (cursor != null) {
@@ -299,6 +305,8 @@ public class FragmentHomeChart extends AppCompatActivity {
                             Float.parseFloat(cursor.getString(5))
                     );
                     s.setIsOffer(1);
+                    colors.add("");
+                    sizes.add("");
                     s.setImage(cursor.getString(2));
                 }else {
                     s = new Sanf((int)Float.parseFloat(cursor.getString(12)),
@@ -306,16 +314,33 @@ public class FragmentHomeChart extends AppCompatActivity {
                             Float.parseFloat(cursor.getString(5))
                     );
                     s.setIsOffer(2);
+                    colors.add("");
+                    sizes.add("");
                     s.setImage(cursor.getString(2));
                 }
                 sanfList.add(s);
             }
+            adapter = new ChartAdapter(this, sanfList, colors, sizes);
+            SlideInBottomAnimationAdapter alphaAdapter = new SlideInBottomAnimationAdapter(adapter);
+            alphaAdapter.setDuration(3000);
+            recyclerView.setAdapter(adapter);
+        } else {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            View layout = inflater.inflate(R.layout.toast_warning, null);
+
+            TextView text = (TextView) layout.findViewById(R.id.txt);
+
+            text.setText("لا توجد مشتريات حاليا");
+
+            Toast toast = new Toast(this);
+            toast.setGravity(Gravity.BOTTOM, 0, 0);
+            toast.setDuration(Toast.LENGTH_LONG);
+            toast.setView(layout);
+            toast.show();
         }
 
-        adapter = new ChartAdapter(this, sanfList,colors, sizes);
-        SlideInBottomAnimationAdapter alphaAdapter = new SlideInBottomAnimationAdapter(adapter);
-        alphaAdapter.setDuration(3000);
-        recyclerView.setAdapter(adapter);
+
     }
 
 //    private void fillCitys(String capital) {

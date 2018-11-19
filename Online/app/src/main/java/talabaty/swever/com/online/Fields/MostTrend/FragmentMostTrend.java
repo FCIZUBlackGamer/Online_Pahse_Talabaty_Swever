@@ -220,13 +220,14 @@ public class FragmentMostTrend extends Fragment {
                             JSONObject object = new JSONObject(response);
                             JSONArray array = object.getJSONArray("List");
                             if (array.length() > 0) {
-                                final int size = products.size();
-                                if (size > 0) {
-                                    for (int i = 0; i < size; i++) {
-                                        products.remove(0);
-                                    }
-                                    booksAdapter.notifyDataSetChanged();
-                                }
+//                                final int size = products.size();
+//                                if (size > 0) {
+//                                    for (int i = 0; i < size; i++) {
+//                                        products.remove(0);
+//                                    }
+//                                    booksAdapter.notifyDataSetChanged();
+//                                }
+                                products = new ArrayList<>();
 
                                 for (int x = 0; x < array.length(); x++) {
                                     JSONObject object1 = array.getJSONObject(x);
@@ -235,7 +236,6 @@ public class FragmentMostTrend extends Fragment {
                                     } else if (x == array.length() - 1) {
                                         temp_last = object1.getInt("Id");
                                     }
-
 
                                     Product r = new Product(object1.getInt("Id"),
                                             object1.getString("Name"),
@@ -247,7 +247,6 @@ public class FragmentMostTrend extends Fragment {
                                     r.setIsOffer(0);
                                     products.add(r);
                                     temp = object1.getInt("Id");
-
 
                                 }
                                 if (type.equals("1")) {
@@ -354,13 +353,14 @@ public class FragmentMostTrend extends Fragment {
                             JSONObject object = new JSONObject(response);
                             JSONArray array = object.getJSONArray("List");
                             if (array.length() > 0) {
-                                final int size = products.size();
-                                if (size > 0) {
-                                    for (int i = 0; i < size; i++) {
-                                        products.remove(0);
-                                    }
-                                    booksAdapter.notifyDataSetChanged();
-                                }
+//                                final int size = products.size();
+//                                if (size > 0) {
+//                                    for (int i = 0; i < size; i++) {
+//                                        products.remove(0);
+//                                    }
+//                                    booksAdapter.notifyDataSetChanged();
+//                                }
+                                products = new ArrayList<>();
 
                                 for (int x = 0; x < array.length(); x++) {
                                     JSONObject object1 = array.getJSONObject(x);

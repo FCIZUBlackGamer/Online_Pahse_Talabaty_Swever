@@ -129,6 +129,8 @@ public class FragmentProductDetails extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Log.e("Offer Type", offer_type+"");
+        Log.e("Product Id", id+"");
         if (offer_type == 0)
         {
             Link = "http://onlineapi.rivile.com/Products/ShowMore";
@@ -348,7 +350,7 @@ public class FragmentProductDetails extends Fragment {
 
                                     /** Color List*/
                                     indexListcolor = new ArrayList<>();
-                                    JSONArray color = new JSONArray(array.getString("Color"));
+                                    JSONArray color = array.getString("Color").equals("null") ?new JSONArray():new JSONArray(array.getString("Color"));
                                     if (color.length() > 0) {
                                         for (int i = 0; i < color.length(); i++) {
                                             JSONObject object2 = color.getJSONObject(i);
@@ -360,7 +362,7 @@ public class FragmentProductDetails extends Fragment {
                                     }
                                     /** Size List*/
                                     indexListsize = new ArrayList<>();
-                                    JSONArray size = new JSONArray(array.getString("Size"));
+                                    JSONArray size = array.getString("Size").equals("null") ?new JSONArray():new JSONArray(array.getString("Size"));
                                     if (size.length() > 0) {
                                         for (int i = 0; i < size.length(); i++) {
                                             JSONObject object2 = size.getJSONObject(i);
@@ -373,6 +375,7 @@ public class FragmentProductDetails extends Fragment {
                                     /** Image List*/
                                     JSONArray image = new JSONArray(array.getString("Gallery"));
                                     if (image.length() > 0) {
+                                        Log.e("Images", image.length()+"");
                                         List<Integer> ids = new ArrayList<>();
                                         for (int i = 0; i < image.length(); i++) {
                                             JSONObject object2 = image.getJSONObject(i);
@@ -502,14 +505,15 @@ public class FragmentProductDetails extends Fragment {
 
     private void loadImages(List<String> list, List<Integer> ids) {
 
-        final int size = sanfList.size();
-        if (size > 0) {
-            for (int i = 0; i < size; i++) {
-                sanfList.remove(0);
-            }
-            adapter.notifyItemRangeRemoved(0, size);
-
-        }
+//        final int size = sanfList.size();
+//        if (size > 0) {
+//            for (int i = 0; i < size; i++) {
+//                sanfList.remove(0);
+//            }
+//            adapter.notifyItemRangeRemoved(0, size);
+//
+//        }
+        sanfList = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i++) {
             Sanf sanf = new Sanf();

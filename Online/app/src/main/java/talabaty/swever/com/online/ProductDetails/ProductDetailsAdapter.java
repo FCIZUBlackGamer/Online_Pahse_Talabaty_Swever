@@ -38,10 +38,8 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<ProductDetailsAd
     public void onBindViewHolder(@NonNull Vholder holder, final int position) {
 
         if (!talabats.get(position).getImage().isEmpty()) {
-            Picasso.with(context).load("http://onlineapi.rivile.com/" + talabats.get(position).getImage()).into(holder.image);
+            Picasso.with(context).load(talabats.get(position).getImage()).into(holder.image);
         }
-
-
     }
 
     @Override

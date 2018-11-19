@@ -71,7 +71,8 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.Vholder> {
         }
         try{
             if (!talabats.get(position).getImage().isEmpty()) {
-                Picasso.with(context).load("http://selltlbaty.rivile.com/" + talabats.get(position).getImage()).into(holder.image);
+                //Log.e("Image in Chart",talabats.get(position).getImage());
+                Picasso.with(context).load(talabats.get(position).getImage()).into(holder.image);
             }
         }catch (Exception e){
 
@@ -91,8 +92,13 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.Vholder> {
                 if (id != null) {
                     if(chartDatabase.DeleteData(id + "")>0) {
                         talabats.remove(position);
-                        sizes.remove(position);
-                        colors.remove(position);
+                        try {
+                            sizes.remove(position);
+                            colors.remove(position);
+                        }catch (Exception e){
+
+                        }
+
                         try {
                             if (talabats.get(position).getIsOffer() == 2) {
                                 chartAdditionalDatabase.DeleteData(id);
