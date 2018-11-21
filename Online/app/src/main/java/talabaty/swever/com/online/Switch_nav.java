@@ -51,11 +51,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import talabaty.swever.com.online.Chart.FragmentHomeChart;
 import talabaty.swever.com.online.ContactUs.FragmentContactUs;
 import talabaty.swever.com.online.Fields.FragmentFields;
-import talabaty.swever.com.online.Fields.MostTrend.FragmentMostTrend;
+import talabaty.swever.com.online.Fields.FragmentMotageHome;
 import talabaty.swever.com.online.Fields.MostViewed.FragmentMostViewed;
 import talabaty.swever.com.online.Home.Fragment_Home;
 import talabaty.swever.com.online.NearestContacts.ContactInfo;
-import talabaty.swever.com.online.SubCategory.FragmentSubCategory;
 import talabaty.swever.com.online.WorkWithUs.FragmentWorkWithUs;
 
 public class Switch_nav extends AppCompatActivity
@@ -116,7 +115,7 @@ public class Switch_nav extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
+/** make the application rtl */
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -126,6 +125,7 @@ public class Switch_nav extends AppCompatActivity
         email = view.findViewById(R.id.textView);
         job = view.findViewById(R.id.job);
         user_name = view.findViewById(R.id.name);
+        /** Load Navigator Date From SQLITE */
         while (cursor.moveToNext()) {
             user_name.setText(cursor.getString(1));
             email.setText(cursor.getString(7));
@@ -143,7 +143,7 @@ public class Switch_nav extends AppCompatActivity
                         .into(imageView);
             }
         }
-        loadCategory();
+//        loadCategory();
         //loadContacts();
 
     }
@@ -222,6 +222,7 @@ public class Switch_nav extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
+            /** home page */
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_home,new Fragment_Home()).addToBackStack("Fragment_Home").commit();
         }
@@ -230,21 +231,27 @@ public class Switch_nav extends AppCompatActivity
 //                    .replace(R.id.frame_home,new FragmentMostTrend().setType("offers")).addToBackStack("FragmentMostTrend").commit();
 //        }
         else if (id == R.id.nav_new_food) {
+            /** make new food جهز وجبتى */
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_home,new FragmentMostViewed().setType("prepare_food")).addToBackStack("FragmentMostViewed").commit();
         } else if (id == R.id.nav_nearest) {
+            /** الاقرب*/
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_home,new FragmentMostViewed().setType("nearest")).addToBackStack("FragmentMostViewed").commit();
         } else if (id == R.id.nav_montag) {
+            /** Montage page */
             fragmentManager.beginTransaction()
-                    .replace(R.id.frame_home,new FragmentMostTrend()).addToBackStack("FragmentMostTrend").commit();
+                    .replace(R.id.frame_home,new FragmentMotageHome()).addToBackStack("FragmentMotageHome").commit();
         } else if (id == R.id.nav_category) {
+            /** Category page */
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_home,new FragmentFields()).addToBackStack("FragmentFields").commit();
         } else if (id == R.id.nav_contact) {
+            /** جهات العمل */
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_home,new FragmentMostViewed().setType("normal")).addToBackStack("FragmentMostViewed").commit();
         } else if (id == R.id.nav_work_with_us) {
+            /**  اشترك معنا 0 يعني مسجلش قبل كده 1 يعني هو مسجل بالفعل ومينفعش يسجل تانى  */
             if (AccountType.equals("0")) {
                 fragmentManager.beginTransaction()
                         .replace(R.id.frame_home, new FragmentWorkWithUs()).addToBackStack("FragmentWorkWithUs").commit();
@@ -254,6 +261,7 @@ public class Switch_nav extends AppCompatActivity
                         .show();
             }
         } else if (id == R.id.nav_call_us) {
+            /** تواصل معنا */
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_home,new FragmentContactUs()).addToBackStack("FragmentContactUs").commit();
         } else if (id == R.id.nav_car_shop) {
@@ -264,19 +272,20 @@ public class Switch_nav extends AppCompatActivity
             //Todo: Action Logout
             loginDatabae.UpdateData("1","c","c","c","0","","0","0");
             startActivity(new Intent(Switch_nav.this, Login.class));
-        }else {
-            String cat_name = item.getTitle().toString();
-            int cat_id = 0;
-            for (int x=0; x<categoryModelList.size(); x++){
-                if (categoryModelList.get(x).getName().equals(cat_name)){
-                    cat_id = categoryModelList.get(x).getId();
-                    Log.e("Cat Id",cat_id+"");
-                }
-            }
-            // Todo: use cat_id to push api
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_home,new FragmentSubCategory().setId(cat_id)).addToBackStack("FragmentSubCategory").commit();
         }
+//        else {
+//            String cat_name = item.getTitle().toString();
+//            int cat_id = 0;
+//            for (int x=0; x<categoryModelList.size(); x++){
+//                if (categoryModelList.get(x).getName().equals(cat_name)){
+//                    cat_id = categoryModelList.get(x).getId();
+//                    Log.e("Cat Id",cat_id+"");
+//                }
+//            }
+//            // Todo: use cat_id to push api
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.frame_home,new FragmentSubCategory().setId(cat_id)).addToBackStack("FragmentSubCategory").commit();
+//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -287,83 +296,83 @@ public class Switch_nav extends AppCompatActivity
         getSupportActionBar().setTitle(title);
     }
 
-    private void loadCategory() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressDialog = new ProgressDialog(Switch_nav.this);
-                progressDialog.setMessage("جارى تحميل البيانات ...");
-                progressDialog.setCancelable(false);
-                progressDialog.show();
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Fields/List",
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-
-                                progressDialog.dismiss();
-                                try {
-
-                                    JSONObject object = new JSONObject(response);
-                                    JSONArray array = object.getJSONArray("Fields");
-                                    if (array.length() > 0) {
-                                        Menu menu = navigationView.getMenu();
-                                        Menu submenu = menu.addSubMenu("مجالات");
-                                        for (int x = 0; x < array.length(); x++) {
-                                            JSONObject object1 = array.getJSONObject(x);
-
-                                            CategoryModel categoryModel = new CategoryModel(object1.getInt("Id"),object1.getString("Name"),"http://selltlbaty.sweverteam.com"+object1.getString("Photo"));
-                                            submenu.add(object1.getString("Name"));
-                                            categoryModelList.add(categoryModel);
-                                        }
-                                        navigationView.invalidate();
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                        progressDialog.dismiss();
-                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                        View layout = inflater.inflate(R.layout.toast_warning, null);
-
-                        TextView text = (TextView) layout.findViewById(R.id.txt);
-
-                        if (error instanceof ServerError)
-                            text.setText("خطأ فى الاتصال بالخادم");
-                        else if (error instanceof TimeoutError)
-                            text.setText("خطأ فى مدة الاتصال");
-                        else if (error instanceof NetworkError)
-                            text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                        Toast toast = new Toast(Switch_nav.this);
-                        toast.setGravity(Gravity.BOTTOM, 0, 0);
-                        toast.setDuration(Toast.LENGTH_LONG);
-                        toast.setView(layout);
-                        toast.show();
-                    }
-                }){
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        HashMap<String,String> map = new HashMap<>();
-                        map.put("token","?za[ZbGNz2B}MXYZ");
-                        return map;
-                    }
-                };
-//        Volley.newRequestQueue(getActivity()).add(stringRequest);
-                stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                        DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                        3,  // maxNumRetries = 2 means no retry
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                Volley.newRequestQueue(Switch_nav.this).add(stringRequest);
-            }
-        });
-
-    }
+//    private void loadCategory() {
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                progressDialog = new ProgressDialog(Switch_nav.this);
+//                progressDialog.setMessage("جارى تحميل البيانات ...");
+//                progressDialog.setCancelable(false);
+//                progressDialog.show();
+//                StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Fields/List",
+//                        new Response.Listener<String>() {
+//                            @Override
+//                            public void onResponse(String response) {
+//
+//                                progressDialog.dismiss();
+//                                try {
+//
+//                                    JSONObject object = new JSONObject(response);
+//                                    JSONArray array = object.getJSONArray("Fields");
+//                                    if (array.length() > 0) {
+//                                        Menu menu = navigationView.getMenu();
+//                                        Menu submenu = menu.addSubMenu("مجالات");
+//                                        for (int x = 0; x < array.length(); x++) {
+//                                            JSONObject object1 = array.getJSONObject(x);
+//
+//                                            CategoryModel categoryModel = new CategoryModel(object1.getInt("Id"),object1.getString("Name"),"http://selltlbaty.sweverteam.com"+object1.getString("Photo"));
+//                                            submenu.add(object1.getString("Name"));
+//                                            categoryModelList.add(categoryModel);
+//                                        }
+//                                        navigationView.invalidate();
+//                                    }
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//
+//                            }
+//                        }, new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//
+//                        progressDialog.dismiss();
+//                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//
+//                        View layout = inflater.inflate(R.layout.toast_warning, null);
+//
+//                        TextView text = (TextView) layout.findViewById(R.id.txt);
+//
+//                        if (error instanceof ServerError)
+//                            text.setText("خطأ فى الاتصال بالخادم");
+//                        else if (error instanceof TimeoutError)
+//                            text.setText("خطأ فى مدة الاتصال");
+//                        else if (error instanceof NetworkError)
+//                            text.setText("شبكه الانترنت ضعيفه حاليا");
+//
+//                        Toast toast = new Toast(Switch_nav.this);
+//                        toast.setGravity(Gravity.BOTTOM, 0, 0);
+//                        toast.setDuration(Toast.LENGTH_LONG);
+//                        toast.setView(layout);
+//                        toast.show();
+//                    }
+//                }){
+//                    @Override
+//                    protected Map<String, String> getParams() throws AuthFailureError {
+//                        HashMap<String,String> map = new HashMap<>();
+//                        map.put("token","?za[ZbGNz2B}MXYZ");
+//                        return map;
+//                    }
+//                };
+////        Volley.newRequestQueue(getActivity()).add(stringRequest);
+//                stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+//                        DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+//                        3,  // maxNumRetries = 2 means no retry
+//                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//                Volley.newRequestQueue(Switch_nav.this).add(stringRequest);
+//            }
+//        });
+//
+//    }
 
     @Override
     public void onPause() {

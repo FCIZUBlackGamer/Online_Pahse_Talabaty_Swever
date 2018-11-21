@@ -218,7 +218,7 @@ public class Register extends AppCompatActivity {
             }
         });
 
-
+/** in case user pressed minimize button */
         appear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -400,8 +400,9 @@ public class Register extends AppCompatActivity {
                             }
                             
                             final String jsonInString = gson.toJson(userModel);
-                            Log.e("Data", jsonInString);
-                            Log.e("Gallary", gson.toJson(Gallary));
+//                            Log.e("Data", jsonInString);
+//                            Log.e("Gallary", gson.toJson(Gallary));
+                            /** upload all data after upload images */
                             uploadMontage(jsonInString);
                         } catch (JSONException e) {
                             e.printStackTrace();

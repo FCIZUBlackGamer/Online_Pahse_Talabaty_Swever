@@ -68,21 +68,22 @@ public class Fragment_Home extends Fragment {
 //        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         inflate = inflater;
         containe = container;
+        /** Set Ui View */
         setUi(inflate, containe);
-
+/** display products in rec view */
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewproducts = view.findViewById(R.id.rec_product);
         frameLayout = view.findViewById(R.id.frame_pro);
         recyclerViewproducts.setLayoutManager(layoutManager);
         recyclerViewproducts.setItemAnimator(new FadeInDownAnimator(new OvershootInterpolator(1f)));
         productList = new ArrayList<>();
-
+/** display contacts in rec view */
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewcontact = view.findViewById(R.id.rec_contact);
         recyclerViewcontact.setLayoutManager(layoutManager1);
         recyclerViewcontact.setItemAnimator(new FadeInUpAnimator(new OvershootInterpolator(1f)));
         contactList = new ArrayList<>();
-
+/** display offers in rec view */
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewoffers = view.findViewById(R.id.rec_offers);
         recyclerViewoffers.setLayoutManager(layoutManager2);
@@ -144,13 +145,14 @@ public class Fragment_Home extends Fragment {
                             final JSONArray array = object.getJSONArray("List");
                             if (array.length() > 0) {
 
-                                final int size = productList.size();
-                                if (size > 0) {
-                                    for (int i = 0; i < size; i++) {
-                                        productList.remove(0);
-                                        adapterproducts.notifyItemRemoved(i);
-                                    }
-                                }
+//                                final int size = productList.size();
+//                                if (size > 0) {
+//                                    for (int i = 0; i < size; i++) {
+//                                        productList.remove(0);
+//                                        adapterproducts.notifyItemRemoved(i);
+//                                    }
+//                                }
+                                productList = new ArrayList<>();
 
                                 for (int x = 0; x < array.length(); x++) {
                                     JSONObject object1 = array.getJSONObject(x);
@@ -251,13 +253,14 @@ public class Fragment_Home extends Fragment {
                             final JSONArray array = object.getJSONArray("Offers");
                             if (array.length() > 0) {
 
-                                final int size = offerList.size();
-                                if (size > 0) {
-                                    for (int i = 0; i < size; i++) {
-                                        offerList.remove(0);
-                                        adapteroffers.notifyItemRemoved(i);
-                                    }
-                                }
+//                                final int size = offerList.size();
+//                                if (size > 0) {
+//                                    for (int i = 0; i < size; i++) {
+//                                        offerList.remove(0);
+//                                        adapteroffers.notifyItemRemoved(i);
+//                                    }
+//                                }
+                                productList = new ArrayList<>();
 
                                 for (int x = 0; x < array.length(); x++) {
                                     JSONObject object1 = array.getJSONObject(x);
@@ -370,13 +373,14 @@ public class Fragment_Home extends Fragment {
                             JSONObject object = new JSONObject(response);
                             JSONArray array = object.getJSONArray("List");
                             if (array.length() > 0) {
-                                final int size = contactList.size();
-                                if (size > 0) {
-                                    for (int i = 0; i < size; i++) {
-                                        contactList.remove(0);
-                                    }
-                                    adaptercontact.notifyDataSetChanged();
-                                }
+//                                final int size = contactList.size();
+//                                if (size > 0) {
+//                                    for (int i = 0; i < size; i++) {
+//                                        contactList.remove(0);
+//                                    }
+//                                    adaptercontact.notifyDataSetChanged();
+//                                }
+                                productList = new ArrayList<>();
 
                                 for (int x = 0; x < array.length(); x++) {
                                     JSONObject object1 = array.getJSONObject(x);

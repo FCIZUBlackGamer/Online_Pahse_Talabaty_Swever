@@ -182,13 +182,14 @@ public class FragmentHomeCategory extends Fragment {
                             JSONObject object = new JSONObject(response);
                             JSONArray array = object.getJSONArray("List");
                             if (array.length() > 0) {
-                                final int size = products.size();
-                                if (size > 0) {
-                                    for (int i = 0; i < size; i++) {
-                                        products.remove(0);
-                                    }
-                                    booksAdapter.notifyDataSetChanged();
-                                }
+//                                final int size = products.size();
+//                                if (size > 0) {
+//                                    for (int i = 0; i < size; i++) {
+//                                        products.remove(0);
+//                                    }
+//                                    booksAdapter.notifyDataSetChanged();
+//                                }
+                                products = new ArrayList<>();
 
                                 for (int x = 0; x < array.length(); x++) {
                                     JSONObject object1 = array.getJSONObject(x);

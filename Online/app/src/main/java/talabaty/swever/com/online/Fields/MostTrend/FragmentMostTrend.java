@@ -106,8 +106,6 @@ public class FragmentMostTrend extends Fragment {
         temp_last = 10;
         page_num = 0;
 
-        ((Switch_nav) getActivity())
-                .setActionBarTitle("المنتجات ");
         if (product_List!= null){
 //            for (Fragment fragment:getActivity().getSupportFragmentManager().getFragments()) {
 //                getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
@@ -134,20 +132,20 @@ public class FragmentMostTrend extends Fragment {
 
         }else {
             if (Type.equals("trend")) {
-
+/** الاكثر زياره لجهات العمل*/
                 Link = "http://onlineapi.rivile.com/Products/MostVisited/list";
                 amount = 0;
                 linearLayout.setVisibility(View.VISIBLE);
                 loadData(0, "1");
             } else if (Type.equals("latest")) {
-
+/** الاجدد من المنتجات*/
                 Link = "http://onlineapi.rivile.com/Products/List";
                 amount = 1;
                 linearLayout.setVisibility(View.VISIBLE);
                 layout.setVisibility(View.GONE);
                 loadData(0, "1");
             } else if (Type.equals("offers")) {
-
+/** العروض*/
                 Link = "http://onlineapi.rivile.com/Offers/List";
                 amount = 1;
                 linearLayout.setVisibility(View.VISIBLE);
@@ -264,7 +262,7 @@ public class FragmentMostTrend extends Fragment {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                         Product book = products.get(position);
-
+/** عرض تفاصيل المنتج*/
                                         fragmentManager.beginTransaction()
                                                 .replace(R.id.frame_home, new FragmentProductDetails().setId(book.getId(),0)).addToBackStack("FragmentOfferDetails").commit();
                                     }

@@ -97,6 +97,7 @@ public class FragmentHomeChart extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         colors = sizes = new ArrayList<>();
+        /**  تحميل المنتجات التى تم شرائها من ال sqlite*/
         loadChart();
 //        capital.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
@@ -128,6 +129,7 @@ public class FragmentHomeChart extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (sanfList.size()>0) {
+                    /** لو المنتجات اللى ف السله اكتر من 0*/
                     fragmentManager.beginTransaction()
                             .replace(R.id.frame_home, new FinishChart()).addToBackStack("FinishChart").commit();
                 }else {
