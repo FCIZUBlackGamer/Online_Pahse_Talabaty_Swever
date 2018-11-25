@@ -187,14 +187,14 @@ public class FragmentMostViewed extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
-        //Todo: Edit Links To Be For Contact Not Products (Also Add LoadData() To Load Contact)
+/** الاكثر زياره*/
         if (Type.equals("trend")) {
             ((Switch_nav) getActivity())
                     .setActionBarTitle("الأكثر زيارة");
             Link = "http://onlineapi.rivile.com/shops/MostVisited/list";
             loadContact(0,"1");
         } else if (Type.equals("nearest")) {
+            /** الاقرب**/
             ((Switch_nav) getActivity())
                     .setActionBarTitle("الأقرب");
             Link = "http://onlineapi.rivile.com/shops/list";
@@ -237,14 +237,11 @@ public class FragmentMostViewed extends Fragment {
             }
 
         } else if (Type.equals("normal")){
-            ((Switch_nav) getActivity())
-                    .setActionBarTitle("جهات العمل ");
+            /** المنتجات العاديه*/
             Link = "http://onlineapi.rivile.com/shops/list";
             loadContact(0,"1");
         } else if (Type.equals("prepare_food")){
-            ((Switch_nav) getActivity())
-                    .setActionBarTitle("جهات العمل ");
-            //Todo: Edit Api Link and Response Data .... and don't forget the adapter
+            /** جهز وجبتى**/
             Link = "http://onlineapi.rivile.com/BeTheChef/ShopList";
             loadContactOffersPrepareFood();
         }
@@ -267,14 +264,16 @@ public class FragmentMostViewed extends Fragment {
                             JSONArray array = object.getJSONArray("List");
                             if (array.length() > 0) {
 
-                                final int size = contacts.size();
-                                if (size > 0) {
-                                    for (int i = 0; i < size; i++) {
-                                        contacts.remove(0);
+//                                final int size = contacts.size();
+//                                if (size > 0) {
+//                                    for (int i = 0; i < size; i++) {
+//                                        contacts.remove(0);
+//
+//                                    }
+//                                    mostViewedAdapter.notifyDataSetChanged();
+//                                }
 
-                                    }
-                                    mostViewedAdapter.notifyDataSetChanged();
-                                }
+                                contacts = new ArrayList<>();
 
                                 if (state == null) {
                                     for (int x = 0; x < array.length(); x++) {
@@ -294,6 +293,7 @@ public class FragmentMostViewed extends Fragment {
 
                                     }
                                 }else {
+                                    showSettingsAlert();
                                     state = state.trim().toLowerCase();
                                     String shop_address = "";
 
@@ -415,15 +415,15 @@ public class FragmentMostViewed extends Fragment {
                             JSONArray array = object.getJSONArray("List");
                             if (array.length() > 0) {
 
-                                final int size = contacts.size();
-                                if (size > 0) {
-                                    for (int i = 0; i < size; i++) {
-                                        contacts.remove(0);
-
-                                    }
-                                    mostViewedAdapter.notifyDataSetChanged();
-                                }
-
+//                                final int size = contacts.size();
+//                                if (size > 0) {
+//                                    for (int i = 0; i < size; i++) {
+//                                        contacts.remove(0);
+//
+//                                    }
+//                                    mostViewedAdapter.notifyDataSetChanged();
+//                                }
+                                contacts = new ArrayList<>();
 
                                 for (int x = 0; x < array.length(); x++) {
                                     JSONObject object1 = array.getJSONObject(x);

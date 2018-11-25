@@ -61,10 +61,14 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.Vholder> {
             if (talabats.get(position).getColor().length() > 0) {
                 Log.e("Color Index "+position , colors.get(position));
                 Log.e("Size Index "+position , sizes.get(position));
-                holder.color.setBackgroundColor(Color.parseColor(colors.get(position)));
+                if (!colors.get(position).isEmpty()) {
+                    holder.color.setBackgroundColor(Color.parseColor(colors.get(position)));
+                }
             }
 
-            holder.state.setText(sizes.get(position));
+            if (!sizes.get(position).isEmpty()) {
+                holder.state.setText(sizes.get(position));
+            }
         }else {
             holder.color.setText("----");
             holder.state.setText("----");
@@ -93,8 +97,13 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.Vholder> {
                     if(chartDatabase.DeleteData(id + "")>0) {
                         talabats.remove(position);
                         try {
-                            sizes.remove(position);
-                            colors.remove(position);
+                            if (!sizes.get(position).isEmpty()) {
+                                sizes.remove(position);
+                            }
+                            if (!colors.get(position).isEmpty()) {
+                                colors.remove(position);
+                            }
+
                         }catch (Exception e){
 
                         }
