@@ -1,15 +1,15 @@
-package talabaty.swever.com.online.Chart;
+package talabaty.swever.com.online.Cart;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +25,7 @@ import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import talabaty.swever.com.online.R;
 
-public class FragmentHomeChart extends AppCompatActivity {
+public class FragmentHomeCart extends AppCompatActivity {
 
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
@@ -43,9 +43,9 @@ public class FragmentHomeChart extends AppCompatActivity {
 //    EditText place;
 //    ImageButton ignore;
 
-    ChartDatabase chartDatabase;
+    CartDatabase cartDatabase;
     Cursor cursor;
-    List<ChartModel> modelList;
+    List<CartModel> modelList;
     List<String> colors, sizes;
 
 //    List<State> states;
@@ -68,8 +68,8 @@ public class FragmentHomeChart extends AppCompatActivity {
 //        recyclerView.setLayoutManager(layoutManager);
 //        sanfList = new ArrayList<>();
 //        modelList = new ArrayList<>();
-//        chartDatabase = new ChartDatabase(getActivity());
-//        cursor = chartDatabase.ShowData();
+//        cartDatabase = new CartDatabase(getActivity());
+//        cursor = cartDatabase.ShowData();
 //        fragmentManager = getFragmentManager();
 //        return view;
 //    }
@@ -88,8 +88,8 @@ public class FragmentHomeChart extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         sanfList = new ArrayList<>();
         modelList = new ArrayList<>();
-        chartDatabase = new ChartDatabase(this);
-        cursor = chartDatabase.ShowData();
+        cartDatabase = new CartDatabase(this);
+        cursor = cartDatabase.ShowData();
         fragmentManager = getSupportFragmentManager();
     }
 
@@ -131,7 +131,7 @@ public class FragmentHomeChart extends AppCompatActivity {
                 if (sanfList.size()>0) {
                     /** لو المنتجات اللى ف السله اكتر من 0*/
                     fragmentManager.beginTransaction()
-                            .replace(R.id.frame_home, new FinishChart()).addToBackStack("FinishChart").commit();
+                            .replace(R.id.frame_home, new FinishCart()).addToBackStack("FinishCart").commit();
                 }else {
                     Snackbar.make(v,"لا توجد مشتريات حاليا", Snackbar.LENGTH_SHORT).show();
                 }
@@ -149,7 +149,7 @@ public class FragmentHomeChart extends AppCompatActivity {
 //        region = confirm.findViewById(R.id.region);
 //        ignore = confirm.findViewById(R.id.close);
 //        delivery_placesList = delivery_optionsList = indexOfdelivery_placesList = indexOfdelivery_optionsList = new ArrayList<>();
-//        cursor = chartDatabase.ShowData();
+//        cursor = cartDatabase.ShowData();
 //        int tota = 0;
 //        while (cursor.moveToNext()) {
 //            tota += Integer.parseInt(cursor.getString(6));
@@ -177,9 +177,9 @@ public class FragmentHomeChart extends AppCompatActivity {
 //            @Override
 //            public void onClick(View v) {
 //                //Todo: Buy Products
-//                cursor = chartDatabase.ShowData();
+//                cursor = cartDatabase.ShowData();
 //                while (cursor.moveToNext()) {
-//                    ChartModel model = new ChartModel();
+//                    CartModel model = new CartModel();
 //                    model.setId(Integer.parseInt(cursor.getString(0)));
 //                    model.setID(Integer.parseInt(cursor.getString(1)));
 //                    model.setAmount(Integer.parseInt(cursor.getString(4)));
@@ -322,7 +322,7 @@ public class FragmentHomeChart extends AppCompatActivity {
                 }
                 sanfList.add(s);
             }
-            adapter = new ChartAdapter(this, sanfList, colors, sizes);
+            adapter = new CartAdapter(this, sanfList, colors, sizes);
             SlideInBottomAnimationAdapter alphaAdapter = new SlideInBottomAnimationAdapter(adapter);
             alphaAdapter.setDuration(3000);
             recyclerView.setAdapter(adapter);

@@ -1,26 +1,22 @@
 package talabaty.swever.com.online;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -48,16 +44,16 @@ import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import talabaty.swever.com.online.Chart.FragmentHomeChart;
+import talabaty.swever.com.online.Cart.FragmentHomeCart;
 import talabaty.swever.com.online.ContactUs.FragmentContactUs;
 import talabaty.swever.com.online.Fields.FragmentFields;
 import talabaty.swever.com.online.Fields.FragmentMotageHome;
 import talabaty.swever.com.online.Fields.MostViewed.FragmentMostViewed;
-import talabaty.swever.com.online.Home.Fragment_Home;
+import talabaty.swever.com.online.Home.FragmentHome;
 import talabaty.swever.com.online.NearestContacts.ContactInfo;
 import talabaty.swever.com.online.WorkWithUs.FragmentWorkWithUs;
 
-public class Switch_nav extends AppCompatActivity
+public class SwitchNav extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FragmentManager fragmentManager;
@@ -91,7 +87,7 @@ public class Switch_nav extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         categoryModelList = new ArrayList<>();
         contactInfos = new ArrayList<>();
-        final Fragment fragment = new Fragment_Home();
+        final Fragment fragment = new FragmentHome();
         fragmentManager.beginTransaction()
                 .add(R.id.frame_home,fragment).commit();
         setActionBarTitle("الرئيسيه");
@@ -104,8 +100,8 @@ public class Switch_nav extends AppCompatActivity
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
 //                fragmentManager.beginTransaction()
-//                        .replace(R.id.frame_home,new FragmentHomeChart()).addToBackStack("FragmentHomeChart").commit();
-                startActivity(new Intent(Switch_nav.this,FragmentHomeChart.class));
+//                        .replace(R.id.frame_home,new FragmentHomeCart()).addToBackStack("FragmentHomeCart").commit();
+                startActivity(new Intent(SwitchNav.this, FragmentHomeCart.class));
 
             }
         });
@@ -138,8 +134,7 @@ public class Switch_nav extends AppCompatActivity
                 job.setVisibility(View.GONE);
             }
             if (!cursor.getString(5).isEmpty()) {
-                Picasso.with(this)
-                        .load(cursor.getString(5))
+                Picasso.get().load(cursor.getString(5))
                         .into(imageView);
             }
         }
@@ -155,7 +150,7 @@ public class Switch_nav extends AppCompatActivity
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        ((android.support.v4.widget.DrawerLayout)findViewById(R.id.drawer_layout)).removeAllViews();
+        ((DrawerLayout)findViewById(R.id.drawer_layout)).removeAllViews();
         super.onConfigurationChanged(newConfig);
 
         // Checks the orientation of the screen
@@ -224,7 +219,7 @@ public class Switch_nav extends AppCompatActivity
         if (id == R.id.nav_home) {
             /** home page */
             fragmentManager.beginTransaction()
-                    .replace(R.id.frame_home,new Fragment_Home()).addToBackStack("Fragment_Home").commit();
+                    .replace(R.id.frame_home,new FragmentHome()).addToBackStack("FragmentHome").commit();
         }
 //        else if (id == R.id.nav_new_offers) {
 //            fragmentManager.beginTransaction()
@@ -266,12 +261,12 @@ public class Switch_nav extends AppCompatActivity
                     .replace(R.id.frame_home,new FragmentContactUs()).addToBackStack("FragmentContactUs").commit();
         } else if (id == R.id.nav_car_shop) {
 //            fragmentManager.beginTransaction()
-//                    .replace(R.id.frame_home,new FragmentHomeChart()).addToBackStack("FragmentHomeChart").commit();
-            startActivity(new Intent(Switch_nav.this,FragmentHomeChart.class));
+//                    .replace(R.id.frame_home,new FragmentHomeCart()).addToBackStack("FragmentHomeCart").commit();
+            startActivity(new Intent(SwitchNav.this, FragmentHomeCart.class));
         } else if (id == R.id.nav_logout) {
             //Todo: Action Logout
             loginDatabae.UpdateData("1","c","c","c","0","","0","0");
-            startActivity(new Intent(Switch_nav.this, Login.class));
+            startActivity(new Intent(SwitchNav.this, Login.class));
         }
 //        else {
 //            String cat_name = item.getTitle().toString();
@@ -300,7 +295,7 @@ public class Switch_nav extends AppCompatActivity
 //        runOnUiThread(new Runnable() {
 //            @Override
 //            public void run() {
-//                progressDialog = new ProgressDialog(Switch_nav.this);
+//                progressDialog = new ProgressDialog(SwitchNav.this);
 //                progressDialog.setMessage("جارى تحميل البيانات ...");
 //                progressDialog.setCancelable(false);
 //                progressDialog.show();
@@ -349,7 +344,7 @@ public class Switch_nav extends AppCompatActivity
 //                        else if (error instanceof NetworkError)
 //                            text.setText("شبكه الانترنت ضعيفه حاليا");
 //
-//                        Toast toast = new Toast(Switch_nav.this);
+//                        Toast toast = new Toast(SwitchNav.this);
 //                        toast.setGravity(Gravity.BOTTOM, 0, 0);
 //                        toast.setDuration(Toast.LENGTH_LONG);
 //                        toast.setView(layout);
@@ -368,7 +363,7 @@ public class Switch_nav extends AppCompatActivity
 //                        DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
 //                        3,  // maxNumRetries = 2 means no retry
 //                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-//                Volley.newRequestQueue(Switch_nav.this).add(stringRequest);
+//                Volley.newRequestQueue(SwitchNav.this).add(stringRequest);
 //            }
 //        });
 //
@@ -383,7 +378,7 @@ public class Switch_nav extends AppCompatActivity
     }
     //Todo: For The Nearest Contacts To My Current Location
     private void loadContacts() {
-        final ProgressDialog progressDialog = new ProgressDialog(Switch_nav.this);
+        final ProgressDialog progressDialog = new ProgressDialog(SwitchNav.this);
         progressDialog.setMessage("جارى تحميل جهات العمل الأقرب ...");
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -434,11 +429,11 @@ public class Switch_nav extends AppCompatActivity
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
                 if (error instanceof ServerError)
-                    Toast.makeText(Switch_nav.this, "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SwitchNav.this, "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
                 else if (error instanceof NetworkError)
-                    Toast.makeText(Switch_nav.this, "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SwitchNav.this, "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
                 else if (error instanceof TimeoutError)
-                    Toast.makeText(Switch_nav.this, "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SwitchNav.this, "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -457,6 +452,6 @@ public class Switch_nav extends AppCompatActivity
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 2,  // maxNumRetries = 2 means no retry
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(Switch_nav.this).add(stringRequest);
+        Volley.newRequestQueue(SwitchNav.this).add(stringRequest);
     }
 }

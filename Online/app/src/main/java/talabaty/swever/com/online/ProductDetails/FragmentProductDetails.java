@@ -7,12 +7,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -45,8 +45,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import talabaty.swever.com.online.Chart.ChartDatabase;
-import talabaty.swever.com.online.Chart.Sanf;
+import talabaty.swever.com.online.Cart.CartDatabase;
+import talabaty.swever.com.online.Cart.Sanf;
 import talabaty.swever.com.online.R;
 
 public class FragmentProductDetails extends Fragment {
@@ -70,7 +70,7 @@ public class FragmentProductDetails extends Fragment {
 
     Button add;
 
-    ChartDatabase chartDatabase;
+    CartDatabase cartDatabase;
 
     TextView title, price;
     Spinner amount;
@@ -120,7 +120,7 @@ public class FragmentProductDetails extends Fragment {
         colorList = new ArrayList<>();
         sizeList = new ArrayList<>();
         indexListcolor = indexListsize = new ArrayList<>();
-        chartDatabase = new ChartDatabase(getActivity());
+        cartDatabase = new CartDatabase(getActivity());
         context = getContext();
         return view;
     }
@@ -288,7 +288,7 @@ public class FragmentProductDetails extends Fragment {
             public void onClick(View v) {
                 long res;
 
-                res = chartDatabase.InsertData(title.getText().toString(),
+                res = cartDatabase.InsertData(title.getText().toString(),
                         image,
                         imageid,
                         finalcolindex + "",

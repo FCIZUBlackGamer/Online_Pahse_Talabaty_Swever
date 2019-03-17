@@ -1,24 +1,20 @@
 package talabaty.swever.com.online.Fields;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import talabaty.swever.com.online.Fields.MostTrend.Product;
 import talabaty.swever.com.online.R;
-import talabaty.swever.com.online.SubCategory.FragmentSubCategory;
 
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.VHolder> {
@@ -53,7 +49,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.VHolde
         holder.name.setText(categoryList.get(position).getName());
 
         if (!categoryList.get(position).getImage().isEmpty()) {
-            Picasso.with(mContext).load(categoryList.get(position).getImage()).into(holder.image);
+            Picasso.get().load(categoryList.get(position).getImage()).into(holder.image);
         }
         /**
          * fragmentManager.beginTransaction()

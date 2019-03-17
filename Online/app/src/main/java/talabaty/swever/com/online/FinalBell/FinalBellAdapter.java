@@ -1,25 +1,18 @@
 package talabaty.swever.com.online.FinalBell;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import talabaty.swever.com.online.Chart.ChartDatabase;
-import talabaty.swever.com.online.Chart.Models.Bell;
-import talabaty.swever.com.online.Chart.Sanf;
+import talabaty.swever.com.online.Cart.Models.Bell;
 import talabaty.swever.com.online.R;
 
 public class FinalBellAdapter extends RecyclerView.Adapter<FinalBellAdapter.Vholder> {

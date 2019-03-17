@@ -8,12 +8,12 @@ import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,9 +50,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import talabaty.swever.com.online.Chart.ChartDatabase;
-import talabaty.swever.com.online.Chart.Models.OperOrderModel;
-import talabaty.swever.com.online.Chart.Sanf;
+import talabaty.swever.com.online.Cart.CartDatabase;
+import talabaty.swever.com.online.Cart.Models.OperOrderModel;
+import talabaty.swever.com.online.Cart.Sanf;
 import talabaty.swever.com.online.R;
 
 public class FragmentOfferDetails extends Fragment {
@@ -66,7 +65,7 @@ public class FragmentOfferDetails extends Fragment {
 
     Button add;
 
-    ChartDatabase chartDatabase;
+    CartDatabase cartDatabase;
 
     TextView title, price, desc;
     RatingBar ratingBar;
@@ -110,7 +109,7 @@ public class FragmentOfferDetails extends Fragment {
 
 
         sanfList = new ArrayList<>();
-        chartDatabase = new ChartDatabase(getActivity());
+        cartDatabase = new CartDatabase(getActivity());
         return view;
     }
 
@@ -399,10 +398,10 @@ public class FragmentOfferDetails extends Fragment {
 
                                     if (array.getString("Photo").isEmpty() || array.getString("Photo") == null) {
                                         image_string = "https://vignette.wikia.nocookie.net/simpsons/images/6/60/No_Image_Available.png";
-                                        Picasso.with(getActivity()).load("https://vignette.wikia.nocookie.net/simpsons/images/6/60/No_Image_Available.png").into(OperOffer_image);
+                                        Picasso.get().load("https://vignette.wikia.nocookie.net/simpsons/images/6/60/No_Image_Available.png").into(OperOffer_image);
                                     } else {
                                         image_string = "http://selltlbaty.rivile.com" + array.getString("Photo");
-                                        Picasso.with(getActivity()).load("http://selltlbaty.rivile.com" + array.getString("Photo")).into(OperOffer_image);
+                                        Picasso.get().load("http://selltlbaty.rivile.com" + array.getString("Photo")).into(OperOffer_image);
                                     }
 
 
@@ -434,7 +433,7 @@ public class FragmentOfferDetails extends Fragment {
                                                 long res = 0;
                                                 try {
                                                     String[] real_price = price.getText().toString().split(" ");
-                                                    res = chartDatabase.InsertData(title.getText().toString(),
+                                                    res = cartDatabase.InsertData(title.getText().toString(),
                                                             image_string, "", "", "", amount.getSelectedItem().toString() + "",
                                                             "ممتازة", real_price[0], "", "", contact_name, address, id + "", "1");
 

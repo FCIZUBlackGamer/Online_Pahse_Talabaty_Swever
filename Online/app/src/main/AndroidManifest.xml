@@ -23,7 +23,8 @@
         android:roundIcon="@mipmap/logo"
 
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".Login"
             android:configChanges="orientation">
             <intent-filter>
@@ -33,15 +34,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Switch_nav"
+            android:name=".SwitchNav"
             android:label="@string/title_activity_switch_nav"
             android:theme="@style/AppTheme"
             android:configChanges="keyboardHidden|orientation"/>
 
-        <activity android:name=".FinalBell.FinalBell_Activity"
-            android:configChanges="keyboardHidden|orientation"></activity>
+        <activity
+            android:name=".FinalBell.FinalBellActivity"
+            android:configChanges="keyboardHidden|orientation" />
 
-        <activity android:name=".Chart.FragmentHomeChart"
+        <activity android:name=".Cart.FragmentHomeCart"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="landscape"/>
         <!--

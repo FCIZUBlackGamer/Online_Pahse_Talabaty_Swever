@@ -6,13 +6,12 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,7 +55,7 @@ public class Login extends AppCompatActivity {
         cursor = loginDatabae.ShowData();
         while (cursor.moveToNext()) {
             if (!cursor.getString(0).equals("") && cursor.getString(4).equals("1")) {
-                Intent intent = new Intent(Login.this, Switch_nav.class);
+                Intent intent = new Intent(Login.this, SwitchNav.class);
 //                intent.putExtra("fragment", "mabi3at");
                 startActivity(intent);
                 finish();
@@ -127,7 +126,7 @@ public class Login extends AppCompatActivity {
 
 
                                     progressDialog.dismiss();
-                                    Intent intent = new Intent(Login.this, Switch_nav.class);
+                                    Intent intent = new Intent(Login.this, SwitchNav.class);
 
                                     startActivity(intent);
                                     finish();

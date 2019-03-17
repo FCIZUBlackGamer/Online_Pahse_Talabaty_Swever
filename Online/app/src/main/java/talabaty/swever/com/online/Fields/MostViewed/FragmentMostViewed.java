@@ -5,19 +5,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AlertDialog;
+
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,7 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.OvershootInterpolator;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -47,18 +44,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
-import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import talabaty.swever.com.online.Contact.FragmentHomeContacts;
 import talabaty.swever.com.online.R;
-import talabaty.swever.com.online.Switch_nav;
+import talabaty.swever.com.online.SwitchNav;
 import talabaty.swever.com.online.PrepareFood.*;
 
 public class FragmentMostViewed extends Fragment {
@@ -189,13 +183,13 @@ public class FragmentMostViewed extends Fragment {
         super.onStart();
 /** الاكثر زياره*/
         if (Type.equals("trend")) {
-            ((Switch_nav) getActivity())
+            ((SwitchNav) getActivity())
                     .setActionBarTitle("الأكثر زيارة");
             Link = "http://onlineapi.rivile.com/shops/MostVisited/list";
             loadContact(0,"1");
         } else if (Type.equals("nearest")) {
             /** الاقرب**/
-            ((Switch_nav) getActivity())
+            ((SwitchNav) getActivity())
                     .setActionBarTitle("الأقرب");
             Link = "http://onlineapi.rivile.com/shops/list";
 

@@ -4,12 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +39,7 @@ import java.util.Map;
 
 import talabaty.swever.com.online.R;
 import talabaty.swever.com.online.SubCategory.FragmentSubCategory;
-import talabaty.swever.com.online.Switch_nav;
+import talabaty.swever.com.online.SwitchNav;
 
 public class FragmentFields extends Fragment {
 
@@ -70,7 +70,7 @@ public class FragmentFields extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        ((Switch_nav) getActivity())
+        ((SwitchNav) getActivity())
                 .setActionBarTitle("مجالات ");
 //        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 //            @Override

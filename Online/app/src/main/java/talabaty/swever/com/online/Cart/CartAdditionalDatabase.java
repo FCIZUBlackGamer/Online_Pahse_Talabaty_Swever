@@ -1,4 +1,4 @@
-package talabaty.swever.com.online.Chart;
+package talabaty.swever.com.online.Cart;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
-public class ChartAdditionalDatabase extends SQLiteOpenHelper{
+public class CartAdditionalDatabase extends SQLiteOpenHelper{
 
     private static final String DATABASE_NAME = "Addition";
 
@@ -38,7 +38,7 @@ public class ChartAdditionalDatabase extends SQLiteOpenHelper{
     // Database Deletion
     private static final String DATABASE_DROP = "drop table if exists "+TABLE_NAME+";";
 
-    public ChartAdditionalDatabase(Context context) {
+    public CartAdditionalDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.cont = context;
     }

@@ -1,8 +1,8 @@
 package talabaty.swever.com.online.Fields.MostViewed;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +79,7 @@ public class MostViewedAdapter extends BaseAdapter {
         viewHolder.bar.setRating(product.getRate());
 
         if (!product.getCompany_logo().isEmpty()) {
-            Picasso.with(context).load(product.getCompany_logo()).into(viewHolder.logo);
+           Picasso.get().load(product.getCompany_logo()).into(viewHolder.logo);
         }
 
         viewHolder.move.setOnClickListener(new View.OnClickListener() {

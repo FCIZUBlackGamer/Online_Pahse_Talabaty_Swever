@@ -3,11 +3,11 @@ package talabaty.swever.com.online.SubCategory;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -96,7 +95,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
         holder.bind(contacts.get(position), listener);
         holder.name.setText(contacts.get(position).getName());
         if (!contacts.get(position).getCompany_logo().isEmpty()) {
-            Picasso.with(context).load(contacts.get(position).getCompany_logo()).into(holder.logo);
+           Picasso.get().load(contacts.get(position).getCompany_logo()).into(holder.logo);
         }
 
 //        holder.move.setOnClickListener(new View.OnClickListener() {

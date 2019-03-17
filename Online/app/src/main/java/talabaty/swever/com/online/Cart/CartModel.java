@@ -1,10 +1,10 @@
-package talabaty.swever.com.online.Chart;
+package talabaty.swever.com.online.Cart;
 
 
 import java.io.Serializable;
 import java.util.List;
 
-public class ChartModel implements Serializable{
+public class CartModel implements Serializable{
     public int Id ;
     public int Amount ;
     public double Price ;
@@ -21,7 +21,7 @@ public class ChartModel implements Serializable{
     public int IsOffer ;
     public List<AdditionalModel> AdditionList ;
 
-    public ChartModel(){
+    public CartModel(){
         ShopId = 0;
     }
 

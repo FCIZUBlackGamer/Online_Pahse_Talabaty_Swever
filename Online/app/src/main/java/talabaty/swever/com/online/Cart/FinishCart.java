@@ -1,4 +1,4 @@
-package talabaty.swever.com.online.Chart;
+package talabaty.swever.com.online.Cart;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -6,28 +6,23 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -41,12 +36,10 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
@@ -55,7 +48,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -70,8 +62,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
-import com.itextpdf.text.pdf.BarcodeEAN;
-import com.itextpdf.text.pdf.PdfContentByte;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,8 +70,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -89,7 +77,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import pl.droidsonroids.gif.GifImageView;
 import talabaty.swever.com.online.R;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -97,12 +84,12 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.Context.LOCATION_SERVICE;
 import static com.android.volley.VolleyLog.TAG;
 
-import talabaty.swever.com.online.Chart.Models.*;
+import talabaty.swever.com.online.Cart.Models.*;
 import talabaty.swever.com.online.FinalBell.*;
 import talabaty.swever.com.online.*;
 
 //talabaty-213109
-public class FinishChart extends Fragment implements OnMapReadyCallback,
+public class FinishCart extends Fragment implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         android.location.LocationListener,
@@ -112,9 +99,9 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
     TextView total;
     Button conf;
     Cursor cursor, cursorUserId;
-    ChartDatabase chartDatabase;
-    ChartAdditionalDatabase chartAdditionalDatabase;
-    List<ChartModel> modelList;
+    CartDatabase cartDatabase;
+    CartAdditionalDatabase cartAdditionalDatabase;
+    List<CartModel> modelList;
     Location location;
 
     LoginDatabae loginDatabae ;
@@ -141,7 +128,7 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
     Location first, last;
     ProgressDialog progressDialog;
     LatLng latLng;
-    ChartModel model;
+    CartModel model;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -150,9 +137,9 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
         view = inflater.inflate(R.layout.dialog_chart_buy, container, false);
 
         Log.e("Fragment", "Found");
-        chartDatabase = new ChartDatabase(getActivity());
-        chartAdditionalDatabase = new ChartAdditionalDatabase(getActivity());
-        cursor = chartDatabase.ShowData();
+        cartDatabase = new CartDatabase(getActivity());
+        cartAdditionalDatabase = new CartAdditionalDatabase(getActivity());
+        cursor = cartDatabase.ShowData();
         modelList = new ArrayList<>();
 
         loginDatabae = new LoginDatabae(getActivity());
@@ -282,9 +269,9 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
             @Override
             public void onClick(View v) {
                 //Todo: Buy Products
-                cursor = chartDatabase.ShowData();
+                cursor = cartDatabase.ShowData();
                 while (cursor.moveToNext()) {
-                    model = new ChartModel();
+                    model = new CartModel();
                     model.setId((int)Float.parseFloat(cursor.getString(12)));
                     Log.e("ID",model.getId()+"");
                     try {
@@ -301,8 +288,8 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
                         int id = model.getId();
                         List<AdditionalModel> list = new ArrayList<>();
                         Log.e("FinishCartId",id+"");
-                        chartAdditionalDatabase = new ChartAdditionalDatabase(getActivity());
-                        Cursor curso = chartAdditionalDatabase.ShowData(id+"");
+                        cartAdditionalDatabase = new CartAdditionalDatabase(getActivity());
+                        Cursor curso = cartAdditionalDatabase.ShowData(id+"");
                         while (curso.moveToNext()){
                             list.add(new AdditionalModel(curso.getString(2),
                                     curso.getString(3),
@@ -675,7 +662,7 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
     }
 
     @SuppressLint("NewApi")
-    private void uploadChart(final String mod, final String addres, final String Region, final String City, final String State, final Date date, final List<ChartModel> models) {
+    private void uploadChart(final String mod, final String addres, final String Region, final String City, final String State, final Date date, final List<CartModel> models) {
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("جارى حجز الطلب ...");
@@ -755,7 +742,7 @@ public class FinishChart extends Fragment implements OnMapReadyCallback,
                                 }
 
 
-                                Intent intent = new Intent(getActivity() ,FinalBell_Activity.class);
+                                Intent intent = new Intent(getActivity() , FinalBellActivity.class);
                                 intent.putExtra("model",(Serializable) bellList);
                                 intent.putExtra("mod",(Serializable) models);
                                 intent.putExtra("Address", addres + "");

@@ -1,13 +1,12 @@
 package talabaty.swever.com.online.PrepareFood;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +14,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import talabaty.swever.com.online.Chart.Sanf;
+import talabaty.swever.com.online.Cart.Sanf;
 import talabaty.swever.com.online.R;
 
 public class PrepareFoodAdapter extends BaseAdapter {
@@ -62,7 +61,7 @@ public class PrepareFoodAdapter extends BaseAdapter {
         viewHolder.pricee.setText(String.valueOf(product.getPrice()) + " LE");
 
         if (!product.getImage().isEmpty()) {
-            Picasso.with(context).load(product.getImage()).into(viewHolder.imagee);
+           Picasso.get().load(product.getImage()).into(viewHolder.imagee);
         }
 
 //        viewHolder.action.setOnClickListener(new View.OnClickListener() {

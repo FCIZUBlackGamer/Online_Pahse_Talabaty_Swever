@@ -1,10 +1,10 @@
-package talabaty.swever.com.online.Chart;
+package talabaty.swever.com.online.Cart;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,30 +18,30 @@ import java.util.List;
 
 import talabaty.swever.com.online.R;
 
-public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.Vholder> {
+public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Vholder> {
 
     Context context;
     List<Sanf> talabats;
-    ChartDatabase chartDatabase;
+    CartDatabase cartDatabase;
     Cursor cursor;
-    ChartAdditionalDatabase chartAdditionalDatabase;
+    CartAdditionalDatabase cartAdditionalDatabase;
     List<String> colors, sizes;
 
-    public ChartAdapter(Context context, List<Sanf> talabats, List<String> color, List<String> size) {
+    public CartAdapter(Context context, List<Sanf> talabats, List<String> color, List<String> size) {
         this.context = context;
         this.talabats = talabats;
         this.sizes = size;
         this.colors = color;
-        chartDatabase = new ChartDatabase(context);
-        chartAdditionalDatabase = new ChartAdditionalDatabase(context);
+        cartDatabase = new CartDatabase(context);
+        cartAdditionalDatabase = new CartAdditionalDatabase(context);
 
     }
 
-    public ChartAdapter(Context context, List<Sanf> talabats) {
+    public CartAdapter(Context context, List<Sanf> talabats) {
         this.context = context;
         this.talabats = talabats;
-        chartDatabase = new ChartDatabase(context);
-        chartAdditionalDatabase = new ChartAdditionalDatabase(context);
+        cartDatabase = new CartDatabase(context);
+        cartAdditionalDatabase = new CartAdditionalDatabase(context);
 
     }
 
@@ -76,7 +76,7 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.Vholder> {
         try{
             if (!talabats.get(position).getImage().isEmpty()) {
                 //Log.e("Image in Chart",talabats.get(position).getImage());
-                Picasso.with(context).load(talabats.get(position).getImage()).into(holder.image);
+               Picasso.get().load(talabats.get(position).getImage()).into(holder.image);
             }
         }catch (Exception e){
 
@@ -87,14 +87,14 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.Vholder> {
             @Override
             public void onClick(View v) {
                 Log.e("IDDD",talabats.get(position).getId()+"");
-                cursor = chartDatabase.getID(talabats.get(position).getId()+"");
+                cursor = cartDatabase.getID(talabats.get(position).getId()+"");
                 String id = null;
                 while (cursor.moveToNext()) {
                     Log.e("ID", cursor.getString(0));
                     id = cursor.getString(0);
                 }
                 if (id != null) {
-                    if(chartDatabase.DeleteData(id + "")>0) {
+                    if(cartDatabase.DeleteData(id + "")>0) {
                         talabats.remove(position);
                         try {
                             if (!sizes.get(position).isEmpty()) {
@@ -110,7 +110,7 @@ public class ChartAdapter extends RecyclerView.Adapter<ChartAdapter.Vholder> {
 
                         try {
                             if (talabats.get(position).getIsOffer() == 2) {
-                                chartAdditionalDatabase.DeleteData(id);
+                                cartAdditionalDatabase.DeleteData(id);
                             }
                         }catch (Exception e){
 

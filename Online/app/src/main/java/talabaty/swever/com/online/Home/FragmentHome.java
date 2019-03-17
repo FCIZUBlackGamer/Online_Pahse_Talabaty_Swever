@@ -1,14 +1,14 @@
 package talabaty.swever.com.online.Home;
 
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +48,7 @@ import talabaty.swever.com.online.R;
 import talabaty.swever.com.online.SubCategory.ContactAdapter;
 import talabaty.swever.com.online.SubCategory.ProductAdapter;
 
-public class Fragment_Home extends Fragment {
+public class FragmentHome extends Fragment {
 
     RecyclerView recyclerViewcontact, recyclerViewproducts, recyclerViewoffers;
     RecyclerView.Adapter adaptercontact, adapterproducts, adapteroffers;

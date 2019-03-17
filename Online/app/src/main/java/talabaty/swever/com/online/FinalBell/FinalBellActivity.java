@@ -1,22 +1,18 @@
 package talabaty.swever.com.online.FinalBell;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
-import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -44,10 +40,8 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,25 +50,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import pl.droidsonroids.gif.GifImageView;
-import talabaty.swever.com.online.Chart.ChartAdditionalDatabase;
-import talabaty.swever.com.online.Chart.ChartDatabase;
-import talabaty.swever.com.online.Chart.ChartModel;
-import talabaty.swever.com.online.Chart.Models.Bell;
-import talabaty.swever.com.online.Login;
+import talabaty.swever.com.online.Cart.CartAdditionalDatabase;
+import talabaty.swever.com.online.Cart.CartDatabase;
+import talabaty.swever.com.online.Cart.CartModel;
+import talabaty.swever.com.online.Cart.Models.Bell;
 import talabaty.swever.com.online.LoginDatabae;
 import talabaty.swever.com.online.R;
-import talabaty.swever.com.online.Register;
-import talabaty.swever.com.online.Switch_nav;
+import talabaty.swever.com.online.SwitchNav;
 
-public class FinalBell_Activity extends AppCompatActivity {
+public class FinalBellActivity extends AppCompatActivity {
     TextView name, addres, phone;
     ImageView barcode;
 
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     List<Bell> bellList;
-    List<ChartModel> modelList;
+    List<CartModel> modelList;
 
     LoginDatabae loginDatabae ;
     Cursor userId;
@@ -86,8 +77,8 @@ public class FinalBell_Activity extends AppCompatActivity {
     Intent intent;
     Date date = new Date();
 
-    ChartDatabase chartDatabase;
-    ChartAdditionalDatabase chartAdditionalDatabase;
+    CartDatabase cartDatabase;
+    CartAdditionalDatabase cartAdditionalDatabase;
 
     ProgressDialog progressDialog;
 
@@ -107,18 +98,18 @@ public class FinalBell_Activity extends AppCompatActivity {
         barcode = findViewById(R.id.barcode);
         finish = findViewById(R.id.ok);
 
-        loginDatabae = new LoginDatabae(FinalBell_Activity.this);
+        loginDatabae = new LoginDatabae(FinalBellActivity.this);
         userId = loginDatabae.ShowData();
 
         intent = getIntent();
         bellList = (ArrayList<Bell>)intent.getSerializableExtra("model");
-        modelList = (ArrayList<ChartModel>)intent.getSerializableExtra("mod");
+        modelList = (ArrayList<CartModel>)intent.getSerializableExtra("mod");
         addresString = intent.getStringExtra("Address");
         RegionString = intent.getStringExtra("Region");
         CityString = intent.getStringExtra("City");
         StateString = intent.getStringExtra("State");
-        chartAdditionalDatabase = new ChartAdditionalDatabase(this);
-        chartDatabase = new ChartDatabase(this);
+        cartAdditionalDatabase = new CartAdditionalDatabase(this);
+        cartDatabase = new CartDatabase(this);
 
     }
 
@@ -168,7 +159,7 @@ public class FinalBell_Activity extends AppCompatActivity {
     @SuppressLint("NewApi")
     private void uploadChart(final String mod, final String addres, final String Region, final String City, final String State, final Date date) {
 
-        progressDialog = new ProgressDialog(FinalBell_Activity.this);
+        progressDialog = new ProgressDialog(FinalBellActivity.this);
         progressDialog.setMessage("جارى تحميل البيانات ...");
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -183,11 +174,11 @@ public class FinalBell_Activity extends AppCompatActivity {
                             JSONArray array = object.getJSONArray("List");
                             if (array.length()>0){
                                 //Empty DataBase Cart & Additions
-                                chartDatabase.DeleteData();
-                                chartAdditionalDatabase.DeleteData();
+                                cartDatabase.DeleteData();
+                                cartAdditionalDatabase.DeleteData();
                                 //Send Message To User
                                 sendMessage("طلباتى","تم تنفيذ الطلب وجارى المتابعه");
-                                Intent intent = new Intent(FinalBell_Activity.this, Switch_nav.class);
+                                Intent intent = new Intent(FinalBellActivity.this, SwitchNav.class);
 
                                 startActivity(intent);
                                 finish();
@@ -216,7 +207,7 @@ public class FinalBell_Activity extends AppCompatActivity {
                 else if (error instanceof NetworkError)
                     text.setText("شبكه الانترنت ضعيفه حاليا");
 
-                Toast toast = new Toast(FinalBell_Activity.this);
+                Toast toast = new Toast(FinalBellActivity.this);
                 toast.setGravity(Gravity.BOTTOM, 0, 0);
                 toast.setDuration(Toast.LENGTH_LONG);
                 toast.setView(layout);
@@ -247,7 +238,7 @@ public class FinalBell_Activity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 2,  // maxNumRetries = 2 means no retry
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(FinalBell_Activity.this).add(stringRequest);
+        Volley.newRequestQueue(FinalBellActivity.this).add(stringRequest);
     }
 
     private void sendMessage(final String sub, final String message){
@@ -303,7 +294,7 @@ public class FinalBell_Activity extends AppCompatActivity {
                 else if (error instanceof NetworkError)
                     text.setText("شبكه الانترنت ضعيفه حاليا");
 
-                Toast toast = new Toast(FinalBell_Activity.this);
+                Toast toast = new Toast(FinalBellActivity.this);
                 toast.setGravity(Gravity.BOTTOM, 0, 0);
                 toast.setDuration(Toast.LENGTH_LONG);
                 toast.setView(layout);
@@ -327,7 +318,7 @@ public class FinalBell_Activity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 2,  // maxNumRetries = 2 means no retry
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(FinalBell_Activity.this).add(stringRequest);
+        Volley.newRequestQueue(FinalBellActivity.this).add(stringRequest);
     }
     private static final int WHITE = 0xFFFFFFFF;
     private static final int BLACK = 0xFF000000;

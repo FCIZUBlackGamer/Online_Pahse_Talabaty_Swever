@@ -1,4 +1,4 @@
-package talabaty.swever.com.online.Chart.Models;
+package talabaty.swever.com.online.Cart.Models;
 
 import java.io.Serializable;
 

@@ -23,13 +23,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.core.content.ContextCompat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
@@ -93,7 +93,7 @@ import java.util.Map;
 
 import talabaty.swever.com.online.LoginDatabae;
 import talabaty.swever.com.online.R;
-import talabaty.swever.com.online.Switch_nav;
+import talabaty.swever.com.online.SwitchNav;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -1083,7 +1083,7 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
                             toast.setView(layout);
                             toast.show();
 
-                            getActivity().startActivity(new Intent(getActivity(), Switch_nav.class));
+                            getActivity().startActivity(new Intent(getActivity(), SwitchNav.class));
 
 
                         } else if (s.equals("\"الاسم مكرر\"")) {
@@ -1373,7 +1373,7 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
     }
 
     public void showSettingsAlert() {
-        android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(getActivity());
+        androidx.appcompat.app.AlertDialog.Builder alertDialog = new androidx.appcompat.app.AlertDialog.Builder(getActivity());
 
         // Setting Dialog Title
         alertDialog.setTitle("GPS is settings");

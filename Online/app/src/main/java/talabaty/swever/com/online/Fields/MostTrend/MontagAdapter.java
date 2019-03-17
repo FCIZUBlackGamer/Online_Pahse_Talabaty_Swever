@@ -1,8 +1,8 @@
 package talabaty.swever.com.online.Fields.MostTrend;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +80,7 @@ public class MontagAdapter extends BaseAdapter {
             viewHolder.sell_image.setVisibility(View.INVISIBLE);
         }
         if (!product.getImage_url().isEmpty()) {
-            Picasso.with(mContext).load(product.getImage_url()).into(viewHolder.image);
+            Picasso.get().load(product.getImage_url()).into(viewHolder.image);
         }
 
         viewHolder.action.setOnClickListener(new View.OnClickListener() {

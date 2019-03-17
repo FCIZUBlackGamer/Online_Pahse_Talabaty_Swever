@@ -4,14 +4,12 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
@@ -47,9 +45,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import talabaty.swever.com.online.Chart.ChartAdditionalDatabase;
-import talabaty.swever.com.online.Chart.ChartDatabase;
-import talabaty.swever.com.online.Chart.Sanf;
+import talabaty.swever.com.online.Cart.CartAdditionalDatabase;
+import talabaty.swever.com.online.Cart.CartDatabase;
+import talabaty.swever.com.online.Cart.Sanf;
 import talabaty.swever.com.online.R;
 
 public class FragmentPrepareFood extends Fragment {
@@ -63,8 +61,8 @@ public class FragmentPrepareFood extends Fragment {
     static int shopId;
     ProgressDialog progressDialog;
     int amount = 0;
-    ChartDatabase chartDatabase;
-    ChartAdditionalDatabase chartAdditionalDatabase;
+    CartDatabase cartDatabase;
+    CartAdditionalDatabase cartAdditionalDatabase;
 
     public static FragmentPrepareFood setData(int shopI){
         FragmentPrepareFood fragmentPrepareFood = new FragmentPrepareFood();
@@ -87,8 +85,8 @@ public class FragmentPrepareFood extends Fragment {
         gridView = (GridView) view.findViewById(R.id.gridview);
         fragmentManager = getFragmentManager();
         sanfList = new ArrayList<>();
-        chartDatabase = new ChartDatabase(getActivity());
-        chartAdditionalDatabase = new ChartAdditionalDatabase(getActivity());
+        cartDatabase = new CartDatabase(getActivity());
+        cartAdditionalDatabase = new CartAdditionalDatabase(getActivity());
         return view;
     }
 
@@ -104,7 +102,7 @@ public class FragmentPrepareFood extends Fragment {
             long res;
             //String[] real_price = price.getText().toString().split(" ");
 
-            res = chartDatabase.InsertData(sanf.getName()+"",
+            res = cartDatabase.InsertData(sanf.getName()+"",
                     sanf.getImage()+"", "", "", "", sanf.getAmount() + "",
                     "ممتازة", sanf.getPrice() + "", "", "", "",/* in this case we assign address to state*/ sanf.getState()+"", sanf.getId() + "", "2");
 
@@ -114,19 +112,19 @@ public class FragmentPrepareFood extends Fragment {
             Log.e("InsertedRes", res + "");
             //temp_id = sanf.getId();
             boolean s;
-            s = chartAdditionalDatabase.InsertData(sanf.getAdditionList().get(0).getName(),
+            s = cartAdditionalDatabase.InsertData(sanf.getAdditionList().get(0).getName(),
                     String.valueOf(sanf.getAdditionList().get(0).getPrice()),
                     String.valueOf(sanf.getAdditionList().get(0).getId()),
                     String.valueOf(sanf.getId())
             );
-//            Cursor cursor = chartAdditionalDatabase.ShowData(sanf.getId()+"");
+//            Cursor cursor = cartAdditionalDatabase.ShowData(sanf.getId()+"");
 //            int x = 0;
 //            while (cursor.moveToNext()){
-//                Log.e("chartAdditionalDatabase"+x,cursor.getString(0));
-//                Log.e("chartAdditionalDatabase"+x,cursor.getString(1));
-//                Log.e("chartAdditionalDatabase"+x,cursor.getString(2));
-//                Log.e("chartAdditionalDatabase"+x,cursor.getString(3));
-//                Log.e("chartAdditionalDatabase"+x,cursor.getString(4));
+//                Log.e("cartAdditionalDatabase"+x,cursor.getString(0));
+//                Log.e("cartAdditionalDatabase"+x,cursor.getString(1));
+//                Log.e("cartAdditionalDatabase"+x,cursor.getString(2));
+//                Log.e("cartAdditionalDatabase"+x,cursor.getString(3));
+//                Log.e("cartAdditionalDatabase"+x,cursor.getString(4));
 //                x++;
 //            }
 //            Log.e("X=",x+"");
