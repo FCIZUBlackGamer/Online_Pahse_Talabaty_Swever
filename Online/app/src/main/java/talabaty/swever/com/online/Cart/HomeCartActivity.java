@@ -1,22 +1,21 @@
 package talabaty.swever.com.online.Cart;
 
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +23,9 @@ import java.util.List;
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator;
 import talabaty.swever.com.online.R;
+import talabaty.swever.com.online.Utils.AppToastUtil;
 
-public class FragmentHomeCart extends AppCompatActivity {
+public class HomeCartActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
@@ -60,7 +60,7 @@ public class FragmentHomeCart extends AppCompatActivity {
 //    @Override
 //    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//        View view = inflater.inflate(R.layout.fragment_home_chart, container, false);
+//        View view = inflater.inflate(R.layout.fragment_home_cart, container, false);
 //        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 //        recyclerView = (RecyclerView) view.findViewById(R.id.rec);
 //        buy = view.findViewById(R.id.buy);
@@ -78,8 +78,8 @@ public class FragmentHomeCart extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        setContentView(R.layout.fragment_home_chart);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        setContentView(R.layout.fragment_home_cart);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recyclerView = (RecyclerView) findViewById(R.id.rec);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new FadeInDownAnimator(new OvershootInterpolator(1f)));
@@ -98,7 +98,7 @@ public class FragmentHomeCart extends AppCompatActivity {
         super.onStart();
         colors = sizes = new ArrayList<>();
         /**  تحميل المنتجات التى تم شرائها من ال sqlite*/
-        loadChart();
+        loadCart();
 //        capital.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
 //            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -128,12 +128,12 @@ public class FragmentHomeCart extends AppCompatActivity {
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sanfList.size()>0) {
+                if (sanfList.size() > 0) {
                     /** لو المنتجات اللى ف السله اكتر من 0*/
                     fragmentManager.beginTransaction()
                             .replace(R.id.frame_home, new FinishCart()).addToBackStack("FinishCart").commit();
-                }else {
-                    Snackbar.make(v,"لا توجد مشتريات حاليا", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    Snackbar.make(v, "لا توجد مشتريات حاليا", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -141,7 +141,7 @@ public class FragmentHomeCart extends AppCompatActivity {
 
 //    private void openConfirmation() {
 //        final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        confirm = inflater.inflate(R.layout.dialog_chart_buy,null);
+//        confirm = inflater.inflate(R.layout.dialog_cart_buy,null);
 //        total = confirm.findViewById(R.id.total);
 //        conf = confirm.findViewById(R.id.send);
 //        capital = confirm.findViewById(R.id.capital);
@@ -191,12 +191,12 @@ public class FragmentHomeCart extends AppCompatActivity {
 //                }
 //                Gson gson = new Gson();
 //                String mod = gson.toJson(modelList);
-//                uploadChart(mod,place.getText().toString(),regionsId.get(regionNames.indexOf(region.getSelectedItem().toString())));
+//                uploadCart(mod,place.getText().toString(),regionsId.get(regionNames.indexOf(region.getSelectedItem().toString())));
 //            }
 //        });
 //    }
 
-//    private void uploadChart(final String mod, final String addres, final int regionId) {
+//    private void uploadCart(final String mod, final String addres, final int regionId) {
 //        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
 //        progressDialog.setMessage("جارى تحميل البيانات ...");
 //        progressDialog.setCancelable(false);
@@ -224,11 +224,11 @@ public class FragmentHomeCart extends AppCompatActivity {
 //            public void onErrorResponse(VolleyError error) {
 //                progressDialog.dismiss();
 //                if (error instanceof ServerError)
-//                    Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
+//                    AppToastUtil.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", AppToastUtil.LENGTH_SHORT).show();
 //                else if (error instanceof NetworkError)
-//                    Toast.makeText(getActivity(), "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
+//                    AppToastUtil.makeText(getActivity(), "خطأ فى شبكه الانترنت", AppToastUtil.LENGTH_SHORT).show();
 //                else if (error instanceof TimeoutError)
-//                    Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
+//                    AppToastUtil.makeText(getActivity(), "خطأ فى مده الانتظار", AppToastUtil.LENGTH_SHORT).show();
 //            }
 //        }){
 //            @Override
@@ -268,7 +268,7 @@ public class FragmentHomeCart extends AppCompatActivity {
 //        });
 //    }
 
-    private void loadChart() {
+    private void loadCart() {
 
 
 //        final int size = sanfList.size();
@@ -280,14 +280,14 @@ public class FragmentHomeCart extends AppCompatActivity {
 //        }
         sanfList = new ArrayList<>();
 
-        int x=1;
+        int x = 1;
         if (cursor != null) {
             colors = new ArrayList<>();
             sizes = new ArrayList<>();
             while (cursor.moveToNext()) {
                 Sanf s;
                 if (cursor.getString(14).equals("0")) {
-                    s = new Sanf((int)Float.parseFloat(cursor.getString(12)),
+                    s = new Sanf((int) Float.parseFloat(cursor.getString(12)),
                             cursor.getString(1),
                             cursor.getString(2),
                             cursor.getString(4),
@@ -301,8 +301,8 @@ public class FragmentHomeCart extends AppCompatActivity {
                     s.setPrice(Float.parseFloat(cursor.getString(7)));
                     s.setIsOffer(0);
                     x++;
-                }else if (cursor.getString(14).equals("1")) {
-                    s = new Sanf((int)Float.parseFloat(cursor.getString(12)),
+                } else if (cursor.getString(14).equals("1")) {
+                    s = new Sanf((int) Float.parseFloat(cursor.getString(12)),
                             cursor.getString(1),
                             Float.parseFloat(cursor.getString(5))
                     );
@@ -310,8 +310,8 @@ public class FragmentHomeCart extends AppCompatActivity {
                     colors.add("");
                     sizes.add("");
                     s.setImage(cursor.getString(2));
-                }else {
-                    s = new Sanf((int)Float.parseFloat(cursor.getString(12)),
+                } else {
+                    s = new Sanf((int) Float.parseFloat(cursor.getString(12)),
                             cursor.getString(1),
                             Float.parseFloat(cursor.getString(5))
                     );
@@ -327,22 +327,8 @@ public class FragmentHomeCart extends AppCompatActivity {
             alphaAdapter.setDuration(3000);
             recyclerView.setAdapter(adapter);
         } else {
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            View layout = inflater.inflate(R.layout.toast_warning, null);
-
-            TextView text = (TextView) layout.findViewById(R.id.txt);
-
-            text.setText("لا توجد مشتريات حاليا");
-
-            Toast toast = new Toast(this);
-            toast.setGravity(Gravity.BOTTOM, 0, 0);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
+            AppToastUtil.showWarningToast("لا توجد مشتريات حاليا", AppToastUtil.LENGTH_LONG, HomeCartActivity.this);
         }
-
-
     }
 
 //    private void fillCitys(String capital) {
@@ -430,11 +416,11 @@ public class FragmentHomeCart extends AppCompatActivity {
 //            @Override
 //            public void onErrorResponse(VolleyError error) {
 //                if (error instanceof ServerError)
-//                    Toast.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
+//                    AppToastUtil.makeText(getActivity(), "خطأ إثناء الاتصال بالخادم", AppToastUtil.LENGTH_SHORT).show();
 //                else if (error instanceof NetworkError)
-//                    Toast.makeText(getActivity(), "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
+//                    AppToastUtil.makeText(getActivity(), "خطأ فى شبكه الانترنت", AppToastUtil.LENGTH_SHORT).show();
 //                else if (error instanceof TimeoutError)
-//                    Toast.makeText(getActivity(), "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
+//                    AppToastUtil.makeText(getActivity(), "خطأ فى مده الانتظار", AppToastUtil.LENGTH_SHORT).show();
 //            }
 //        });
 //        int socketTimeout = 30000;

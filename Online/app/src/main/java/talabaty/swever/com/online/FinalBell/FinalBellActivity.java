@@ -2,7 +2,6 @@ package talabaty.swever.com.online.FinalBell;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -14,22 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
@@ -57,6 +49,7 @@ import talabaty.swever.com.online.Cart.Models.Bell;
 import talabaty.swever.com.online.LoginDatabae;
 import talabaty.swever.com.online.R;
 import talabaty.swever.com.online.SwitchNav;
+import talabaty.swever.com.online.Utils.AppToastUtil;
 
 public class FinalBellActivity extends AppCompatActivity {
     TextView name, addres, phone;
@@ -67,11 +60,11 @@ public class FinalBellActivity extends AppCompatActivity {
     List<Bell> bellList;
     List<CartModel> modelList;
 
-    LoginDatabae loginDatabae ;
+    LoginDatabae loginDatabae;
     Cursor userId;
     String user_id;
 
-    String addresString , RegionString, CityString, StateString;
+    String addresString, RegionString, CityString, StateString;
 
     Button finish;
     Intent intent;
@@ -83,13 +76,12 @@ public class FinalBellActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final_bell);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView = (RecyclerView) findViewById(R.id.rec);
+        recyclerView = findViewById(R.id.rec);
         recyclerView.setLayoutManager(layoutManager);
         bellList = new ArrayList<>();
         name = findViewById(R.id.name);
@@ -102,8 +94,8 @@ public class FinalBellActivity extends AppCompatActivity {
         userId = loginDatabae.ShowData();
 
         intent = getIntent();
-        bellList = (ArrayList<Bell>)intent.getSerializableExtra("model");
-        modelList = (ArrayList<CartModel>)intent.getSerializableExtra("mod");
+        bellList = (ArrayList<Bell>) intent.getSerializableExtra("model");
+        modelList = (ArrayList<CartModel>) intent.getSerializableExtra("mod");
         addresString = intent.getStringExtra("Address");
         RegionString = intent.getStringExtra("Region");
         CityString = intent.getStringExtra("City");
@@ -116,7 +108,7 @@ public class FinalBellActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        while (userId.moveToNext()){
+        while (userId.moveToNext()) {
             user_id = userId.getString(2);
             name.setText(userId.getString(1)); /** From Internal Database */
         }
@@ -124,7 +116,6 @@ public class FinalBellActivity extends AppCompatActivity {
 
         addres.setText(bellList.get(0).getAddress());
         phone.setText(bellList.get(0).getPhone());
-
 
 
         Bitmap bitmap = null;
@@ -138,84 +129,63 @@ public class FinalBellActivity extends AppCompatActivity {
 
         loadBell();
 
-        finish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Gson gson = new Gson();
-                uploadChart(gson.toJson(modelList), addresString, RegionString, CityString, StateString, date);
-            }
+        finish.setOnClickListener(v -> {
+            Gson gson = new Gson();
+            uploadCart(gson.toJson(modelList), addresString, RegionString, CityString, StateString, date);
         });
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if(progressDialog != null && progressDialog.isShowing()){
+        if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
-
     }
-
     @SuppressLint("NewApi")
-    private void uploadChart(final String mod, final String addres, final String Region, final String City, final String State, final Date date) {
+    private void uploadCart(final String mod, final String addres, final String Region, final String City, final String State, final Date date) {
 
         progressDialog = new ProgressDialog(FinalBellActivity.this);
         progressDialog.setMessage("جارى تحميل البيانات ...");
         progressDialog.setCancelable(false);
         progressDialog.show();
         final StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Order/Order",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progressDialog.dismiss();
-                        Log.e("Result",response);
-                        try{
-                            JSONObject object = new JSONObject(response);
-                            JSONArray array = object.getJSONArray("List");
-                            if (array.length()>0){
-                                //Empty DataBase Cart & Additions
-                                cartDatabase.DeleteData();
-                                cartAdditionalDatabase.DeleteData();
-                                //Send Message To User
-                                sendMessage("طلباتى","تم تنفيذ الطلب وجارى المتابعه");
-                                Intent intent = new Intent(FinalBellActivity.this, SwitchNav.class);
+                response -> {
+                    progressDialog.dismiss();
+                    Log.e("Result", response);
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONArray array = object.getJSONArray("List");
+                        if (array.length() > 0) {
+                            //Empty DataBase Cart & Additions
+                            cartDatabase.DeleteData();
+                            cartAdditionalDatabase.DeleteData();
+                            //Send Message To User
+                            sendMessage("طلباتى", "تم تنفيذ الطلب وجارى المتابعه");
+                            Intent intent = new Intent(FinalBellActivity.this, SwitchNav.class);
 
-                                startActivity(intent);
-                                finish();
-                            }
-                        }catch (Exception e){
-
+                            startActivity(intent);
+                            finish();
                         }
-
-
+                    } catch (Exception e) {
 
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                }, error -> {
+            progressDialog.dismiss();
 
-                View layout = inflater.inflate(R.layout.toast_warning,null);
+            String WarningMessage = null;
+            if (error instanceof ServerError)
+                WarningMessage = "خطأ فى الاتصال بالخادم";
+            else if (error instanceof TimeoutError)
+                WarningMessage = "خطأ فى مدة الاتصال";
+            else if (error instanceof NetworkError)
+                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
 
-                TextView text = (TextView) layout.findViewById(R.id.txt);
-
-                if (error instanceof ServerError)
-                    text.setText("خطأ فى الاتصال بالخادم");
-                else if (error instanceof TimeoutError)
-                    text.setText("خطأ فى مدة الاتصال");
-                else if (error instanceof NetworkError)
-                    text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                Toast toast = new Toast(FinalBellActivity.this);
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
-                toast.setView(layout);
-                toast.show();
-            }
+            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                    AppToastUtil.LENGTH_LONG, FinalBellActivity.this);
         }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("token", "?za[ZbGNz2B}MXYZ");
                 map.put("Order", mod + "");
@@ -228,7 +198,7 @@ public class FinalBellActivity extends AppCompatActivity {
                 Log.e("City", City + "");
                 map.put("State", State + "");
                 Log.e("State", State + "");
-                map.put("UserId", user_id+"");
+                map.put("UserId", user_id + "");
                 map.put("Date", new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(date) + "");
                 return map;
             }
@@ -241,14 +211,12 @@ public class FinalBellActivity extends AppCompatActivity {
         Volley.newRequestQueue(FinalBellActivity.this).add(stringRequest);
     }
 
-    private void sendMessage(final String sub, final String message){
+    private void sendMessage(final String sub, final String message) {
         final StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Order/Send",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progressDialog.dismiss();
-                        Log.e("Result",response);
-                        if (response.equals("\"Success\"")){
+                response -> {
+                    progressDialog.dismiss();
+                    Log.e("Result", response);
+                    if (response.equals("\"Success\"")) {
 //                            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //
 //                            View layout = inflater.inflate(R.layout.toast_info,null);
@@ -256,12 +224,12 @@ public class FinalBellActivity extends AppCompatActivity {
 //                            TextView text = (TextView) layout.findViewById(R.id.txt);
 //                            text.setText("تم ارسال راله");
 //
-//                            Toast toast = new Toast(getApplicationContext());
+//                            AppToastUtil toast = new AppToastUtil(getApplicationContext());
 //                            toast.setGravity(Gravity.BOTTOM, 0, 0);
-//                            toast.setDuration(Toast.LENGTH_LONG);
+//                            toast.setDuration(AppToastUtil.LENGTH_LONG);
 //                            toast.setView(layout);
 //                            toast.show();
-                        }else  {
+                    } else {
 //                            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //
 //                            View layout = inflater.inflate(R.layout.toast_info,null);
@@ -269,47 +237,36 @@ public class FinalBellActivity extends AppCompatActivity {
 //                            TextView text = (TextView) layout.findViewById(R.id.txt);
 //                            text.setText("");
 //
-//                            Toast toast = new Toast(getApplicationContext());
+//                            AppToastUtil toast = new AppToastUtil(getApplicationContext());
 //                            toast.setGravity(Gravity.BOTTOM, 0, 0);
-//                            toast.setDuration(Toast.LENGTH_LONG);
+//                            toast.setDuration(AppToastUtil.LENGTH_LONG);
 //                            toast.setView(layout);
 //                            toast.show();
-                        }
-
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                View layout = inflater.inflate(R.layout.toast_warning,null);
+                }, error -> {
+            progressDialog.dismiss();
 
-                TextView text = (TextView) layout.findViewById(R.id.txt);
+            String WarningMessage = null;
+            if (error instanceof ServerError)
+                WarningMessage = "خطأ فى الاتصال بالخادم";
+            else if (error instanceof TimeoutError)
+                WarningMessage = "خطأ فى مدة الاتصال";
+            else if (error instanceof NetworkError)
+                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
 
-                if (error instanceof ServerError)
-                    text.setText("خطأ فى الاتصال بالخادم");
-                else if (error instanceof TimeoutError)
-                    text.setText("خطأ فى مدة الاتصال");
-                else if (error instanceof NetworkError)
-                    text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                Toast toast = new Toast(FinalBellActivity.this);
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
-                toast.setView(layout);
-                toast.show();
-            }
+            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                    AppToastUtil.LENGTH_LONG, FinalBellActivity.this);
         }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("token", "?za[ZbGNz2B}MXYZ");
                 map.put("Sub", sub + "");
                 Log.e("Sub", sub + "");
                 map.put("Mes", message + "");
                 Log.e("Mes", message + "");
-                map.put("UserId", user_id+"");
+                map.put("UserId", user_id + "");
                 return map;
             }
         };
@@ -320,6 +277,7 @@ public class FinalBellActivity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Volley.newRequestQueue(FinalBellActivity.this).add(stringRequest);
     }
+
     private static final int WHITE = 0xFFFFFFFF;
     private static final int BLACK = 0xFF000000;
 
@@ -332,7 +290,7 @@ public class FinalBellActivity extends AppCompatActivity {
         Map<EncodeHintType, Object> hints = null;
         String encoding = guessAppropriateEncoding(contentsToEncode);
         if (encoding != null) {
-                hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
+            hints = new EnumMap<>(EncodeHintType.class);
             hints.put(EncodeHintType.CHARACTER_SET, encoding);
         }
         MultiFormatWriter writer = new MultiFormatWriter();
@@ -370,7 +328,7 @@ public class FinalBellActivity extends AppCompatActivity {
     }
 
     private void loadBell() {
-        adapter = new FinalBellAdapter(this,bellList);
+        adapter = new FinalBellAdapter(this, bellList);
         recyclerView.setAdapter(adapter);
     }
 }

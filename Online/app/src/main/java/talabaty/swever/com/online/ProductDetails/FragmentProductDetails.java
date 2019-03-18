@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,7 +24,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.Request;
@@ -48,6 +46,7 @@ import java.util.Map;
 import talabaty.swever.com.online.Cart.CartDatabase;
 import talabaty.swever.com.online.Cart.Sanf;
 import talabaty.swever.com.online.R;
+import talabaty.swever.com.online.Utils.AppToastUtil;
 
 public class FragmentProductDetails extends Fragment {
 
@@ -101,19 +100,19 @@ public class FragmentProductDetails extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.rec);
-        recyclerView_color = (RecyclerView) view.findViewById(R.id.rec_color);
-        recyclerView_size = (RecyclerView) view.findViewById(R.id.rec_size);
+        recyclerView = view.findViewById(R.id.rec);
+        recyclerView_color = view.findViewById(R.id.rec_color);
+        recyclerView_size = view.findViewById(R.id.rec_size);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView_color.setLayoutManager(layoutManager1);
         recyclerView_size.setLayoutManager(layoutManager2);
 
 
-        add = (Button) view.findViewById(R.id.add);
-        title = (TextView) view.findViewById(R.id.title);
-        price = (TextView) view.findViewById(R.id.price);
-        company_rate = (RatingBar) view.findViewById(R.id.company_rate);
-        amount = (Spinner) view.findViewById(R.id.spin_amount);
+        add = view.findViewById(R.id.add);
+        title = view.findViewById(R.id.title);
+        price = view.findViewById(R.id.price);
+        company_rate = view.findViewById(R.id.company_rate);
+        amount = view.findViewById(R.id.spin_amount);
 
 
         sanfList = new ArrayList<>();
@@ -175,69 +174,38 @@ public class FragmentProductDetails extends Fragment {
                                                     rate_num = (float) res.getDouble("Rate");
 
                                                     if (result.equals("Success")) {
-                                                        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                                        AppToastUtil.showInfoToast("تمت العملية بنجاح",
+                                                                AppToastUtil.LENGTH_LONG, getContext());
 
-                                                        View layout = inflater.inflate(R.layout.toast_info, null);
-
-                                                        TextView text = (TextView) layout.findViewById(R.id.txt);
-                                                        text.setText("تمت العملية بنجاح");
-
-                                                        Toast toast = new Toast(getActivity());
-                                                        toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                                        toast.setDuration(Toast.LENGTH_LONG);
-                                                        toast.setView(layout);
-                                                        toast.show();
                                                         company_rate.setRating(rate_num);
 
                                                     } else {
-
-                                                        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                                                        View layout = inflater.inflate(R.layout.toast_warning, null);
-
-                                                        TextView text = (TextView) layout.findViewById(R.id.txt);
-                                                        text.setText("عذرا حدث خطأ أثناء اجراء العملية  .. يرجي المحاوله لاحقا");
-
-                                                        Toast toast = new Toast(getActivity());
-                                                        toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                                        toast.setDuration(Toast.LENGTH_LONG);
-                                                        toast.setView(layout);
-                                                        toast.show();
+                                                        AppToastUtil.showInfoToast("عذرا حدث خطأ أثناء اجراء العملية  .. يرجي المحاوله لاحقا",
+                                                                AppToastUtil.LENGTH_LONG, getContext());
                                                     }
                                                 } catch (JSONException e) {
 
                                                 }
-
                                             }
-                                        }, new Response.ErrorListener() {
+                                        }, error -> {
+                                            progressDialog.dismiss();
+
+                                            String WarningMessage = null;
+                                            if (error instanceof ServerError)
+                                                WarningMessage = "خطأ فى الاتصال بالخادم";
+                                            else if (error instanceof TimeoutError)
+                                                WarningMessage = "خطأ فى مدة الاتصال";
+                                            else if (error instanceof NetworkError)
+                                                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
+
+                                            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                                                    AppToastUtil.LENGTH_LONG, getContext());
+                                        }) {
                                     @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                        progressDialog.dismiss();
-                                        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                                        View layout = inflater.inflate(R.layout.toast_warning, null);
-
-                                        TextView text = (TextView) layout.findViewById(R.id.txt);
-
-                                        if (error instanceof ServerError)
-                                            text.setText("خطأ فى الاتصال بالخادم");
-                                        else if (error instanceof TimeoutError)
-                                            text.setText("خطأ فى مدة الاتصال");
-                                        else if (error instanceof NetworkError)
-                                            text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                                        Toast toast = new Toast(getActivity());
-                                        toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                        toast.setDuration(Toast.LENGTH_LONG);
-                                        toast.setView(layout);
-                                        toast.show();
-                                    }
-                                }) {
-                                    @Override
-                                    protected Map<String, String> getParams() throws AuthFailureError {
+                                    protected Map<String, String> getParams() {
                                         HashMap<String, String> map = new HashMap<>();
                                         map.put("Id", id + "");
-                                        map.put("vote", (int) rate_num + "");
+                                        map.put("vote", rate_num + "");
                                         map.put("token", "?za[ZbGNz2B}MXYZ");
                                         return map;
                                     }
@@ -324,122 +292,98 @@ public class FragmentProductDetails extends Fragment {
         progressDialog2.setCancelable(false);
         progressDialog2.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Link,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progressDialog2.dismiss();
-                        try {
+                response -> {
+                    progressDialog2.dismiss();
+                    try {
 
-                            JSONObject object = new JSONObject(response);
-                            JSONObject array = object.getJSONObject("details");
-                            if (array.length() > 0) {
-                                for (int x = 0; x < array.length(); x++) {
+                        JSONObject object = new JSONObject(response);
+                        JSONObject array = object.getJSONObject("details");
+                        if (array.length() > 0) {
+                            for (int x = 0; x < array.length(); x++) {
 
-                                    List<String> codeList = new ArrayList<>();
-                                    List<String> sourceList = new ArrayList<>();
-                                    List<String> sizeList = new ArrayList<>();
+                                List<String> codeList = new ArrayList<>();
+                                List<String> sourceList = new ArrayList<>();
+                                List<String> sizeList = new ArrayList<>();
 
-                                    title.setText(array.getString("Name"));
-                                    company_rate.setRating((float) array.getDouble("Rate"));
-                                    price.setText(array.getDouble("Price") + " LE");
+                                title.setText(array.getString("Name"));
+                                company_rate.setRating((float) array.getDouble("Rate"));
+                                price.setText(array.getDouble("Price") + " LE");
 
-                                    contact_name = array.getString("ShopName");
-                                    address = array.getString("Address");
+                                contact_name = array.getString("ShopName");
+                                address = array.getString("Address");
 
 
 
-                                    /** Color List*/
-                                    indexListcolor = new ArrayList<>();
-                                    JSONArray color = array.getString("Color").equals("null") ?new JSONArray():new JSONArray(array.getString("Color"));
-                                    if (color.length() > 0) {
-                                        for (int i = 0; i < color.length(); i++) {
-                                            JSONObject object2 = color.getJSONObject(i);
-                                            codeList.add(object2.getString("Photo"));
-                                            indexListcolor.add(object2.getInt("Id"));
+                                /** Color List*/
+                                indexListcolor = new ArrayList<>();
+                                JSONArray color = array.getString("Color").equals("null") ?new JSONArray():new JSONArray(array.getString("Color"));
+                                if (color.length() > 0) {
+                                    for (int i = 0; i < color.length(); i++) {
+                                        JSONObject object2 = color.getJSONObject(i);
+                                        codeList.add(object2.getString("Photo"));
+                                        indexListcolor.add(object2.getInt("Id"));
 //                                            Log.e("ColorId",object2.getInt("Id")+"");
-                                        }
-                                        loadColor(codeList, indexListcolor);
                                     }
-                                    /** Size List*/
-                                    indexListsize = new ArrayList<>();
-                                    JSONArray size = array.getString("Size").equals("null") ?new JSONArray():new JSONArray(array.getString("Size"));
-                                    if (size.length() > 0) {
-                                        for (int i = 0; i < size.length(); i++) {
-                                            JSONObject object2 = size.getJSONObject(i);
-                                            sizeList.add(object2.getString("Photo"));
-                                            indexListsize.add(object2.getInt("Id"));
-//                                            Log.e("SizeId",object2.getInt("Id")+"");
-                                        }
-                                        loadSize(sizeList, indexListsize);
-                                    }
-                                    /** Image List*/
-                                    JSONArray image = new JSONArray(array.getString("Gallery"));
-                                    if (image.length() > 0) {
-                                        Log.e("Images", image.length()+"");
-                                        List<Integer> ids = new ArrayList<>();
-                                        for (int i = 0; i < image.length(); i++) {
-                                            JSONObject object2 = image.getJSONObject(i);
-                                            ids.add(object2.getInt("Id"));
-//                                            Log.e("ImageId",object2.getInt("Id")+"");
-                                            sourceList.add("http://www.selltlbaty.rivile.com"+object2.getString("Photo"));
-                                        }
-                                        loadImages(sourceList, ids);
-                                    }else {
-                                        List<Integer> ids = new ArrayList<>();
-                                            ids.add(0);
-                                            sourceList.add("https://vignette.wikia.nocookie.net/simpsons/images/6/60/No_Image_Available.png");
-
-                                        loadImages(sourceList, ids);
-                                    }
-
+                                    loadColor(codeList, indexListcolor);
                                 }
-                                incremwntView();
-                            } else {
-                                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                /** Size List*/
+                                indexListsize = new ArrayList<>();
+                                JSONArray size = array.getString("Size").equals("null") ?new JSONArray():new JSONArray(array.getString("Size"));
+                                if (size.length() > 0) {
+                                    for (int i = 0; i < size.length(); i++) {
+                                        JSONObject object2 = size.getJSONObject(i);
+                                        sizeList.add(object2.getString("Photo"));
+                                        indexListsize.add(object2.getInt("Id"));
+//                                            Log.e("SizeId",object2.getInt("Id")+"");
+                                    }
+                                    loadSize(sizeList, indexListsize);
+                                }
+                                /** Image List*/
+                                JSONArray image = new JSONArray(array.getString("Gallery"));
+                                if (image.length() > 0) {
+                                    Log.e("Images", image.length()+"");
+                                    List<Integer> ids = new ArrayList<>();
+                                    for (int i = 0; i < image.length(); i++) {
+                                        JSONObject object2 = image.getJSONObject(i);
+                                        ids.add(object2.getInt("Id"));
+//                                            Log.e("ImageId",object2.getInt("Id")+"");
+                                        sourceList.add("http://www.selltlbaty.rivile.com"+object2.getString("Photo"));
+                                    }
+                                    loadImages(sourceList, ids);
+                                }else {
+                                    List<Integer> ids = new ArrayList<>();
+                                        ids.add(0);
+                                        sourceList.add("https://vignette.wikia.nocookie.net/simpsons/images/6/60/No_Image_Available.png");
 
-                                View layout = inflater.inflate(R.layout.toast_info, null);
+                                    loadImages(sourceList, ids);
+                                }
 
-                                TextView text = (TextView) layout.findViewById(R.id.txt);
-                                text.setText("لا توجد بيانات");
-
-                                Toast toast = new Toast(getActivity());
-                                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                toast.setDuration(Toast.LENGTH_LONG);
-                                toast.setView(layout);
-                                toast.show();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            incremwntView();
+                        } else {
+                            AppToastUtil.showInfoToast("لا توجد بيانات",
+                                    AppToastUtil.LENGTH_LONG, getContext());
                         }
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
+
+                }, error -> {
+                    progressDialog2.dismiss();
+
+                    String WarningMessage = null;
+                    if (error instanceof ServerError)
+                        WarningMessage = "خطأ فى الاتصال بالخادم";
+                    else if (error instanceof TimeoutError)
+                        WarningMessage = "خطأ فى مدة الاتصال";
+                    else if (error instanceof NetworkError)
+                        WarningMessage = "شبكه الانترنت ضعيفه حاليا";
+
+                    if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                            AppToastUtil.LENGTH_LONG, getContext());
+                }) {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog2.dismiss();
-
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                View layout = inflater.inflate(R.layout.toast_warning, null);
-
-                TextView text = (TextView) layout.findViewById(R.id.txt);
-
-                if (error instanceof ServerError)
-                    text.setText("خطأ فى الاتصال بالخادم");
-                else if (error instanceof TimeoutError)
-                    text.setText("خطأ فى مدة الاتصال");
-                else if (error instanceof NetworkError)
-                    text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                Toast toast = new Toast(getActivity());
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
-                toast.setView(layout);
-                toast.show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("Id", id + "");
                 map.put("token", "?za[ZbGNz2B}MXYZ");
@@ -486,7 +430,7 @@ public class FragmentProductDetails extends Fragment {
                     }
                 }) {
                     @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
+                    protected Map<String, String> getParams() {
                         HashMap<String, String> map = new HashMap<>();
                         map.put("Id", id + "");
                         map.put("token", "?za[ZbGNz2B}MXYZ");

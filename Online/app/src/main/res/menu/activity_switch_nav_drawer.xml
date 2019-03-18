@@ -51,7 +51,7 @@
             android:title="أتصل بنا" />
         <item
             android:id="@+id/nav_car_shop"
-            android:icon="@drawable/chart"
+            android:icon="@drawable/cart"
             android:fontFamily="@font/changamedium"
             android:title="عربه الشراء" />
         <item

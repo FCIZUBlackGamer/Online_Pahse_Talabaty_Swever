@@ -1,31 +1,27 @@
 package talabaty.swever.com.online.Home;
 
 import androidx.fragment.app.FragmentManager;
+
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.Gravity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -47,9 +43,9 @@ import talabaty.swever.com.online.Fields.MostViewed.Contact;
 import talabaty.swever.com.online.R;
 import talabaty.swever.com.online.SubCategory.ContactAdapter;
 import talabaty.swever.com.online.SubCategory.ProductAdapter;
+import talabaty.swever.com.online.Utils.AppToastUtil;
 
 public class FragmentHome extends Fragment {
-
     RecyclerView recyclerViewcontact, recyclerViewproducts, recyclerViewoffers;
     RecyclerView.Adapter adaptercontact, adapterproducts, adapteroffers;
     List<Contact> contactList;
@@ -61,7 +57,6 @@ public class FragmentHome extends Fragment {
     FrameLayout frameLayout;
     FragmentManager fragmentManager;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,20 +65,20 @@ public class FragmentHome extends Fragment {
         containe = container;
         /** Set Ui View */
         setUi(inflate, containe);
-/** display products in rec view */
+        /** display products in rec view */
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewproducts = view.findViewById(R.id.rec_product);
         frameLayout = view.findViewById(R.id.frame_pro);
         recyclerViewproducts.setLayoutManager(layoutManager);
         recyclerViewproducts.setItemAnimator(new FadeInDownAnimator(new OvershootInterpolator(1f)));
         productList = new ArrayList<>();
-/** display contacts in rec view */
+        /** display contacts in rec view */
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewcontact = view.findViewById(R.id.rec_contact);
         recyclerViewcontact.setLayoutManager(layoutManager1);
         recyclerViewcontact.setItemAnimator(new FadeInUpAnimator(new OvershootInterpolator(1f)));
         contactList = new ArrayList<>();
-/** display offers in rec view */
+        /** display offers in rec view */
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerViewoffers = view.findViewById(R.id.rec_offers);
         recyclerViewoffers.setLayoutManager(layoutManager2);
@@ -120,10 +115,10 @@ public class FragmentHome extends Fragment {
 //
 //        // Checks the orientation of the screen
 //        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//            Toast.makeText(getContext(), "landscape", Toast.LENGTH_SHORT).show();
+//            AppToastUtil.makeText(getContext(), "landscape", AppToastUtil.LENGTH_SHORT).show();
 //
 //        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-//            Toast.makeText(getContext(), "portrait", Toast.LENGTH_SHORT).show();
+//            AppToastUtil.makeText(getContext(), "portrait", AppToastUtil.LENGTH_SHORT).show();
 //        }
 //        setUi(inflate, containe);
 //    }
@@ -135,15 +130,13 @@ public class FragmentHome extends Fragment {
         progressDialog.show();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Home/ListProduct",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        progressDialog.dismiss();
-                        try {
+                response -> {
+                    progressDialog.dismiss();
+                    try {
 
-                            JSONObject object = new JSONObject(response);
-                            final JSONArray array = object.getJSONArray("List");
-                            if (array.length() > 0) {
+                        JSONObject object = new JSONObject(response);
+                        final JSONArray array = object.getJSONArray("List");
+                        if (array.length() > 0) {
 
 //                                final int size = productList.size();
 //                                if (size > 0) {
@@ -152,75 +145,52 @@ public class FragmentHome extends Fragment {
 //                                        adapterproducts.notifyItemRemoved(i);
 //                                    }
 //                                }
-                                productList = new ArrayList<>();
+                            productList = new ArrayList<>();
 
-                                for (int x = 0; x < array.length(); x++) {
-                                    JSONObject object1 = array.getJSONObject(x);
+                            for (int x = 0; x < array.length(); x++) {
+                                JSONObject object1 = array.getJSONObject(x);
 
-                                    Product r = new Product(object1.getInt("Id"),
-                                            object1.getString("Name"),
-                                            "http://selltlbaty.rivile.com" + object1.getString("Photo"),
-                                            (float) object1.getDouble("Price"),
-                                            (float) object1.getDouble("Sale"),
-                                            (float) object1.getDouble("Rate")
-                                    );
-                                    r.setIsOffer(0);
-                                    productList.add(r);
+                                Product r = new Product(object1.getInt("Id"),
+                                        object1.getString("Name"),
+                                        "http://selltlbaty.rivile.com" + object1.getString("Photo"),
+                                        (float) object1.getDouble("Price"),
+                                        (float) object1.getDouble("Sale"),
+                                        (float) object1.getDouble("Rate")
+                                );
+                                r.setIsOffer(0);
+                                productList.add(r);
 
-                                }
-
-                                adapterproducts = new ProductAdapter(getActivity(), productList);
-                                AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapterproducts);
-                                alphaAdapter.setDuration(3000);
-                                recyclerViewproducts.setAdapter(adapterproducts);
-
-
-                            } else {
-                                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                                View layout = inflater.inflate(R.layout.toast_info,null);
-
-                                TextView text = (TextView) layout.findViewById(R.id.txt);
-                                text.setText("لا توجد بيانات");
-
-                                Toast toast = new Toast(getActivity());
-                                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                toast.setDuration(Toast.LENGTH_LONG);
-                                toast.setView(layout);
-                                toast.show();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
+                            adapterproducts = new ProductAdapter(getActivity(), productList);
+                            AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapterproducts);
+                            alphaAdapter.setDuration(3000);
+                            recyclerViewproducts.setAdapter(adapterproducts);
+
+                        } else {
+                            AppToastUtil.showInfoToast("لا توجد بيانات",
+                                    AppToastUtil.LENGTH_LONG, getContext());
                         }
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
 
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                }, error -> {
+            progressDialog.dismiss();
 
-                View layout = inflater.inflate(R.layout.toast_warning,null);
+            String WarningMessage = null;
+            if (error instanceof ServerError)
+                WarningMessage = "خطأ فى الاتصال بالخادم";
+            else if (error instanceof TimeoutError)
+                WarningMessage = "خطأ فى مدة الاتصال";
+            else if (error instanceof NetworkError)
+                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
 
-                TextView text = (TextView) layout.findViewById(R.id.txt);
-
-                if (error instanceof ServerError)
-                    text.setText("خطأ فى الاتصال بالخادم");
-                else if (error instanceof TimeoutError)
-                    text.setText("خطأ فى مدة الاتصال");
-                else if (error instanceof NetworkError)
-                    text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                Toast toast = new Toast(getActivity());
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
-                toast.setView(layout);
-                toast.show();
-            }
+            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                    AppToastUtil.LENGTH_LONG, getContext());
         }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("count", 80 + "");
                 map.put("token", "?za[ZbGNz2B}MXYZ");
@@ -243,15 +213,13 @@ public class FragmentHome extends Fragment {
         progressDialog1.show();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Offers/List",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        progressDialog1.dismiss();
-                        try {
+                response -> {
+                    progressDialog1.dismiss();
+                    try {
 
-                            JSONObject object = new JSONObject(response);
-                            final JSONArray array = object.getJSONArray("Offers");
-                            if (array.length() > 0) {
+                        JSONObject object = new JSONObject(response);
+                        final JSONArray array = object.getJSONArray("Offers");
+                        if (array.length() > 0) {
 
 //                                final int size = offerList.size();
 //                                if (size > 0) {
@@ -260,75 +228,51 @@ public class FragmentHome extends Fragment {
 //                                        adapteroffers.notifyItemRemoved(i);
 //                                    }
 //                                }
-                                productList = new ArrayList<>();
+                            productList = new ArrayList<>();
 
-                                for (int x = 0; x < array.length(); x++) {
-                                    JSONObject object1 = array.getJSONObject(x);
+                            for (int x = 0; x < array.length(); x++) {
+                                JSONObject object1 = array.getJSONObject(x);
 
-                                    Product r = new Product(object1.getInt("Id"),
-                                            object1.getString("Name"),
-                                            "http://selltlbaty.rivile.com" + object1.getString("Photo"),
-                                            (float) object1.getDouble("Price"),
-                                            0,
-                                            (float) object1.getDouble("Rate")
-                                    );
-                                    r.setIsOffer(1);
-                                    offerList.add(r);
+                                Product r = new Product(object1.getInt("Id"),
+                                        object1.getString("Name"),
+                                        "http://selltlbaty.rivile.com" + object1.getString("Photo"),
+                                        (float) object1.getDouble("Price"),
+                                        0,
+                                        (float) object1.getDouble("Rate")
+                                );
+                                r.setIsOffer(1);
+                                offerList.add(r);
 
-                                }
-
-                                adapteroffers = new ProductAdapter(1,getActivity(), offerList);
-                                AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapteroffers);
-                                alphaAdapter.setDuration(3000);
-                                recyclerViewoffers.setAdapter(adapteroffers);
-
-
-                            } else {
-                                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                                View layout = inflater.inflate(R.layout.toast_info,null);
-
-                                TextView text = (TextView) layout.findViewById(R.id.txt);
-                                text.setText("لا توجد بيانات");
-
-                                Toast toast = new Toast(getActivity());
-                                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                toast.setDuration(Toast.LENGTH_LONG);
-                                toast.setView(layout);
-                                toast.show();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
+                            adapteroffers = new ProductAdapter(1, getActivity(), offerList);
+                            AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapteroffers);
+                            alphaAdapter.setDuration(3000);
+                            recyclerViewoffers.setAdapter(adapteroffers);
+
+                        } else {
+                            AppToastUtil.showInfoToast("لا توجد بيانات",
+                                    AppToastUtil.LENGTH_LONG, getContext());
                         }
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog1.dismiss();
+                }, error -> {
+            progressDialog1.dismiss();
 
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            String WarningMessage = null;
+            if (error instanceof ServerError)
+                WarningMessage = "خطأ فى الاتصال بالخادم";
+            else if (error instanceof TimeoutError)
+                WarningMessage = "خطأ فى مدة الاتصال";
+            else if (error instanceof NetworkError)
+                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
 
-                View layout = inflater.inflate(R.layout.toast_warning,null);
-
-                TextView text = (TextView) layout.findViewById(R.id.txt);
-
-                if (error instanceof ServerError)
-                    text.setText("خطأ فى الاتصال بالخادم");
-                else if (error instanceof TimeoutError)
-                    text.setText("خطأ فى مدة الاتصال");
-                else if (error instanceof NetworkError)
-                    text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                Toast toast = new Toast(getActivity());
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
-                toast.setView(layout);
-                toast.show();
-            }
+            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                    AppToastUtil.LENGTH_LONG, getContext());
         }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("count", 80 + "");
                 map.put("token", "?za[ZbGNz2B}MXYZ");
@@ -347,13 +291,13 @@ public class FragmentHome extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if(progressDialog != null && progressDialog.isShowing()){
+        if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
-        if(progressDialog1 != null && progressDialog1.isShowing()){
+        if (progressDialog1 != null && progressDialog1.isShowing()) {
             progressDialog1.dismiss();
         }
-        if(progressDialog2 != null && progressDialog2.isShowing()){
+        if (progressDialog2 != null && progressDialog2.isShowing()) {
             progressDialog2.dismiss();
         }
     }
@@ -364,15 +308,13 @@ public class FragmentHome extends Fragment {
         progressDialog2.setCancelable(false);
         progressDialog2.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Home/ShopList",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progressDialog2.dismiss();
-                        try {
+                response -> {
+                    progressDialog2.dismiss();
+                    try {
 
-                            JSONObject object = new JSONObject(response);
-                            JSONArray array = object.getJSONArray("List");
-                            if (array.length() > 0) {
+                        JSONObject object = new JSONObject(response);
+                        JSONArray array = object.getJSONArray("List");
+                        if (array.length() > 0) {
 //                                final int size = contactList.size();
 //                                if (size > 0) {
 //                                    for (int i = 0; i < size; i++) {
@@ -380,83 +322,57 @@ public class FragmentHome extends Fragment {
 //                                    }
 //                                    adaptercontact.notifyDataSetChanged();
 //                                }
-                                productList = new ArrayList<>();
+                            productList = new ArrayList<>();
 
-                                for (int x = 0; x < array.length(); x++) {
-                                    JSONObject object1 = array.getJSONObject(x);
+                            for (int x = 0; x < array.length(); x++) {
+                                JSONObject object1 = array.getJSONObject(x);
 
-                                    Contact info = new Contact(
-                                            object1.getInt("Id"),
-                                            object1.getString("Name"),
-                                            (float) object1.getDouble("Rate"),
-                                            object1.getString("Name"),
-                                            object1.getString("Address"),
-                                            object1.getString("Phone"),
-                                            "http://selltlbaty.rivile.com" + object1.getString("Photo"),
-                                            ""
-                                    );
-                                    contactList.add(info);
+                                Contact info = new Contact(
+                                        object1.getInt("Id"),
+                                        object1.getString("Name"),
+                                        (float) object1.getDouble("Rate"),
+                                        object1.getString("Name"),
+                                        object1.getString("Address"),
+                                        object1.getString("Phone"),
+                                        "http://selltlbaty.rivile.com" + object1.getString("Photo"),
+                                        ""
+                                );
+                                contactList.add(info);
 
-                                }
-
-                                adaptercontact = new ContactAdapter(getActivity(), contactList, frameLayout, new ContactAdapter.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(Contact item) {
-                                        fragmentManager.beginTransaction()
-                                                .replace(R.id.frame_home,new FragmentHomeContacts().setData(item.getId(), item.getPhone(), item.getEmail(),
-                                                        item.getLocation(), item.getName(), item.getCompany_logo(),
-                                                        item.getRate())).addToBackStack("FragmentHomeContacts").commit();
-                                    }
-                                });
-                                AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adaptercontact);
-                                alphaAdapter.setDuration(3000);
-                                recyclerViewcontact.setAdapter(adaptercontact);
-
-                            } else {
-                                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                                View layout = inflater.inflate(R.layout.toast_info,null);
-
-                                TextView text = (TextView) layout.findViewById(R.id.txt);
-                                text.setText("لا توجد بيانات");
-
-                                Toast toast = new Toast(getActivity());
-                                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                toast.setDuration(Toast.LENGTH_LONG);
-                                toast.setView(layout);
-                                toast.show();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
+                            adaptercontact = new ContactAdapter(getActivity(), contactList, frameLayout, item -> fragmentManager.beginTransaction()
+                                    .replace(R.id.frame_home, new FragmentHomeContacts().setData(item.getId(), item.getPhone(), item.getEmail(),
+                                            item.getLocation(), item.getName(), item.getCompany_logo(),
+                                            item.getRate())).addToBackStack("FragmentHomeContacts").commit());
+                            AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adaptercontact);
+                            alphaAdapter.setDuration(3000);
+                            recyclerViewcontact.setAdapter(adaptercontact);
+
+                        } else {
+                            AppToastUtil.showInfoToast("لا توجد بيانات",
+                                    AppToastUtil.LENGTH_LONG, getContext());
                         }
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog2.dismiss();
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                View layout = inflater.inflate(R.layout.toast_warning,null);
+                }, error -> {
+            progressDialog2.dismiss();
 
-                TextView text = (TextView) layout.findViewById(R.id.txt);
+            String WarningMessage = null;
+            if (error instanceof ServerError)
+                WarningMessage = "خطأ فى الاتصال بالخادم";
+            else if (error instanceof TimeoutError)
+                WarningMessage = "خطأ فى مدة الاتصال";
+            else if (error instanceof NetworkError)
+                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
 
-                if (error instanceof ServerError)
-                    text.setText("خطأ فى الاتصال بالخادم");
-                else if (error instanceof TimeoutError)
-                    text.setText("خطأ فى مدة الاتصال");
-                else if (error instanceof NetworkError)
-                    text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                Toast toast = new Toast(getActivity());
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
-                toast.setView(layout);
-                toast.show();
-            }
+            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                    AppToastUtil.LENGTH_LONG, getContext());
         }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("count", 80 + "");
                 map.put("token", "?za[ZbGNz2B}MXYZ");

@@ -131,9 +131,9 @@ public class FragmentMotageHome extends Fragment {
 //
 //                                text.setText("لا توجد اقسام حاليا");
 //
-//                                Toast toast = new Toast(getActivity());
+//                                AppToastUtil toast = new AppToastUtil(getActivity());
 //                                toast.setGravity(Gravity.BOTTOM, 0, 0);
-//                                toast.setDuration(Toast.LENGTH_LONG);
+//                                toast.setDuration(AppToastUtil.LENGTH_LONG);
 //                                toast.setView(layout);
 //                                toast.show();
 //                            }
@@ -160,9 +160,9 @@ public class FragmentMotageHome extends Fragment {
 //                else if (error instanceof NetworkError)
 //                    text.setText("شبكه الانترنت ضعيفه حاليا");
 //
-//                Toast toast = new Toast(getActivity());
+//                AppToastUtil toast = new AppToastUtil(getActivity());
 //                toast.setGravity(Gravity.BOTTOM, 0, 0);
-//                toast.setDuration(Toast.LENGTH_LONG);
+//                toast.setDuration(AppToastUtil.LENGTH_LONG);
 //                toast.setView(layout);
 //                toast.show();
 //            }

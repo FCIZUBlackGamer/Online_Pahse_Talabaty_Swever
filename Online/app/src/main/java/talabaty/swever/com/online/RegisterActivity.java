@@ -16,15 +16,18 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Base64;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -34,14 +37,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.fourhcode.forhutils.FUtilsValidation;
@@ -59,8 +60,9 @@ import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import talabaty.swever.com.online.Utils.AppToastUtil;
 
-public class Register extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     EditText fname, lname, email, pass, repass, phone;
     TextView login;
@@ -73,7 +75,7 @@ public class Register extends AppCompatActivity {
     List<ImageSource> Gallary;
     String baseUrl = "http://selltlbaty.rivile.com/";
     private String UPLOAD_URL = baseUrl + "Uploads/UploadAndro";
-    private String UPLOAD_LINK = "http://onlineapi.rivile.com/Login/AddUser";
+    private String UPLOAD_LINK = "http://onlineapi.rivile.com/LoginActivity/AddUser";
 
     private String KEY_IMAGE = "base64imageString";
     private String KEY_NAME = "name";
@@ -128,7 +130,7 @@ public class Register extends AppCompatActivity {
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
                 DatePickerDialog dialog = new DatePickerDialog(
-                        Register.this,
+                        RegisterActivity.this,
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth
                         , DatePicker1
                         , year, month, day);
@@ -141,7 +143,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month + 1;
-                date_of_birth.setText(year + "/" + month +"/" + dayOfMonth);
+                date_of_birth.setText(year + "/" + month + "/" + dayOfMonth);
             }
         };
 
@@ -160,7 +162,7 @@ public class Register extends AppCompatActivity {
                 cam = Camera_view.findViewById(R.id.cam);
                 gal = Camera_view.findViewById(R.id.gal);
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                 builder.setCancelable(false)
                         .setView(Camera_view);
 
@@ -186,7 +188,7 @@ public class Register extends AppCompatActivity {
                 close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        close_type =0;
+                        close_type = 0;
                         dialog.dismiss();
                         runOnUiThread(new Runnable() {
 
@@ -202,7 +204,7 @@ public class Register extends AppCompatActivity {
                 minimize.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        close_type =1;
+                        close_type = 1;
                         dialog.dismiss();
                         runOnUiThread(new Runnable() {
 
@@ -222,7 +224,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final LayoutInflater inflater = (LayoutInflater) Register.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final LayoutInflater inflater = (LayoutInflater) RegisterActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                 Camera_view = inflater.inflate(R.layout.camera_view, null);
 
@@ -231,7 +233,7 @@ public class Register extends AppCompatActivity {
                 cam = Camera_view.findViewById(R.id.cam);
                 gal = Camera_view.findViewById(R.id.gal);
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder(Register.this);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                 builder.setCancelable(false)
                         .setView(Camera_view);
 
@@ -257,7 +259,7 @@ public class Register extends AppCompatActivity {
                 close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        close_type =0;
+                        close_type = 0;
                         dialog.dismiss();
                         runOnUiThread(new Runnable() {
 
@@ -272,7 +274,7 @@ public class Register extends AppCompatActivity {
                 minimize.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        close_type =1;
+                        close_type = 1;
                         dialog.dismiss();
                         runOnUiThread(new Runnable() {
 
@@ -285,11 +287,11 @@ public class Register extends AppCompatActivity {
                 });
             }
         });
-        
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Register.this, Login.class));
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
             }
         });
 
@@ -299,14 +301,13 @@ public class Register extends AppCompatActivity {
                 //Todo: Validate Inputs #Done
 
 
-
-                if (FUtilsValidation.isPhone(phone.getText().toString())&&
-                        FUtilsValidation.isValidEmail(email,"صيغه بريد الكترونى خاطئه")&&
-                        !FUtilsValidation.isEmpty(fname,"ادخل اسم صحيح")&&
-                        !FUtilsValidation.isEmpty(lname,"ادخل اسم صحيح")&&
-                        !FUtilsValidation.isPasswordEqual(pass,repass,"ادخل اسم صحيح")&&
-                        !FUtilsValidation.isDateValid(date_of_birth.getText().toString(),"yyyy/mm/dd")&&
-                        !FUtilsValidation.isEmpty(fname,"ادخل اسم صحيح")&&
+                if (FUtilsValidation.isPhone(phone.getText().toString()) &&
+                        FUtilsValidation.isValidEmail(email, "صيغه بريد الكترونى خاطئه") &&
+                        !FUtilsValidation.isEmpty(fname, "ادخل اسم صحيح") &&
+                        !FUtilsValidation.isEmpty(lname, "ادخل اسم صحيح") &&
+                        !FUtilsValidation.isPasswordEqual(pass, repass, "ادخل اسم صحيح") &&
+                        !FUtilsValidation.isDateValid(date_of_birth.getText().toString(), "yyyy/mm/dd") &&
+                        !FUtilsValidation.isEmpty(fname, "ادخل اسم صحيح") &&
                         im == 1) {
                     userModel.setCountryId(1);
                     userModel.setFirstName(fname.getText().toString());
@@ -347,9 +348,9 @@ public class Register extends AppCompatActivity {
 //
 //            text.setText("يرجى ادخال تاريخ ميلاد");
 //
-//            Toast toast = new Toast(Register.this);
+//            AppToastUtil toast = new AppToastUtil(RegisterActivity.this);
 //            toast.setGravity(Gravity.BOTTOM, 0, 0);
-//            toast.setDuration(Toast.LENGTH_LONG);
+//            toast.setDuration(AppToastUtil.LENGTH_LONG);
 //            toast.setView(layout);
 //            toast.show();
 //
@@ -363,9 +364,9 @@ public class Register extends AppCompatActivity {
 //
 //            text.setText("يرجى ارفاق صوره الشخصيه");
 //
-//            Toast toast = new Toast(Register.this);
+//            AppToastUtil toast = new AppToastUtil(RegisterActivity.this);
 //            toast.setGravity(Gravity.BOTTOM, 0, 0);
-//            toast.setDuration(Toast.LENGTH_LONG);
+//            toast.setDuration(AppToastUtil.LENGTH_LONG);
 //            toast.setView(layout);
 //            toast.show();
 //            res = false;
@@ -397,7 +398,7 @@ public class Register extends AppCompatActivity {
                                 String object1 = array.getString(x);
                                 userModel.setPhoto(object1);
                             }
-                            
+
                             final String jsonInString = gson.toJson(userModel);
 //                            Log.e("Data", jsonInString);
 //                            Log.e("Gallary", gson.toJson(Gallary));
@@ -409,35 +410,23 @@ public class Register extends AppCompatActivity {
 
                     }
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        //Dismissing the progress dialog
-                        progressDialog.dismiss();
+                error -> {
+                    //Dismissing the progress dialog
+                    progressDialog.dismiss();
 
-                        //Showing toast
-                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    String WarningMessage = null;
+                    if (error instanceof ServerError)
+                        WarningMessage = "خطأ فى الاتصال بالخادم";
+                    else if (error instanceof TimeoutError)
+                        WarningMessage = "خطأ فى مدة الاتصال";
+                    else if (error instanceof NetworkError)
+                        WarningMessage = "شبكه الانترنت ضعيفه حاليا";
 
-                        View layout = inflater.inflate(R.layout.toast_warning,null);
-
-                        TextView text = (TextView) layout.findViewById(R.id.txt);
-
-                        if (volleyError instanceof ServerError)
-                            text.setText("خطأ فى الاتصال بالخادم");
-                        else if (volleyError instanceof TimeoutError)
-                            text.setText("خطأ فى مدة الاتصال");
-                        else if (volleyError instanceof NetworkError)
-                            text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                        Toast toast = new Toast(Register.this);
-                        toast.setGravity(Gravity.BOTTOM, 0, 0);
-                        toast.setDuration(Toast.LENGTH_LONG);
-                        toast.setView(layout);
-                        toast.show();
-                    }
+                    if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                            AppToastUtil.LENGTH_LONG, RegisterActivity.this);
                 }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
 
                 //Creating parameters
                 Map<String, String> params = new Hashtable<String, String>();
@@ -476,16 +465,16 @@ public class Register extends AppCompatActivity {
 
     //Requesting permission
     private void requestStoragePermission() {
-        if (ContextCompat.checkSelfPermission(Register.this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+        if (ContextCompat.checkSelfPermission(RegisterActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
             return;
 
-        if (ActivityCompat.shouldShowRequestPermissionRationale(Register.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(RegisterActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
             //If the user has denied the permission previously your code will come to this block
             //Here you can explain why you need this permission
             //Explain here why you need this permission
         }
         //And finally ask for the permission
-        ActivityCompat.requestPermissions(Register.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 123);
+        ActivityCompat.requestPermissions(RegisterActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 123);
     }
 
     @Override
@@ -497,11 +486,11 @@ public class Register extends AppCompatActivity {
 
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                Toast.makeText(Register.this, "camera permission granted", Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, "camera permission granted", Toast.LENGTH_LONG).show();
 
             } else {
 
-                Toast.makeText(Register.this, "camera permission denied", Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, "camera permission denied", Toast.LENGTH_LONG).show();
 
             }
 
@@ -514,28 +503,28 @@ public class Register extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Uri filePath;
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            filePath= data.getData();
+            filePath = data.getData();
 
             try {
                 //Getting the Bitmap from Gallery
-                bitmap = MediaStore.Images.Media.getBitmap(Register.this.getContentResolver(), filePath);
+                bitmap = MediaStore.Images.Media.getBitmap(RegisterActivity.this.getContentResolver(), filePath);
                 image.setImageBitmap(bitmap);
-                if (image.getDrawable() == null){
+                if (image.getDrawable() == null) {
                     imageStrings.add(getStringImage(bitmap));
-                }else {
-                    imageStrings.add(0,getStringImage(bitmap));
+                } else {
+                    imageStrings.add(0, getStringImage(bitmap));
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+        } else if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             bitmap = (Bitmap) data.getExtras().get("data");
             image.setImageBitmap(bitmap);
-            if (image.getDrawable() == null){
+            if (image.getDrawable() == null) {
                 imageStrings.add(getStringImage(bitmap));
-            }else {
-                imageStrings.add(0,getStringImage(bitmap));
+            } else {
+                imageStrings.add(0, getStringImage(bitmap));
             }
 
         }
@@ -551,87 +540,45 @@ public class Register extends AppCompatActivity {
 
     private void uploadMontage(final String jsonInString) {
         Log.e("Connection UploadMontag", "Here");
-        Log.e("Full Model",jsonInString);
+        Log.e("Full Model", jsonInString);
         progressDialog2 = ProgressDialog.show(this, "Uploading...", "Please wait...", false, false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, UPLOAD_LINK,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String s) {
-                        //Disimissing the progress dialog
-                        progressDialog2.dismiss();
-                        Log.e("Data: ", s);
-                        if (s.equals("\"duplicate\"")){
-                            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                            View layout = inflater.inflate(R.layout.toast_info,null);
-
-                            TextView text = (TextView) layout.findViewById(R.id.txt);
-                            text.setText(" البريد الالكتروني او رقم التليفون مكرر  .. يرجي إعاده المحاوله");
-
-                            Toast toast = new Toast(Register.this);
-                            toast.setGravity(Gravity.BOTTOM, 0, 0);
-                            toast.setDuration(Toast.LENGTH_LONG);
-                            toast.setView(layout);
-                            toast.show();
-
-                        }else if (s.equals("\"fail\"")){
-                            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                            View layout = inflater.inflate(R.layout.toast_info,null);
-
-                            TextView text = (TextView) layout.findViewById(R.id.txt);
-                            text.setText("عذرا حدث خطأ أثناء اجراء العملية  .. يرجي المحاوله لاحقا");
-
-                            Toast toast = new Toast(Register.this);
-                            toast.setGravity(Gravity.BOTTOM, 0, 0);
-                            toast.setDuration(Toast.LENGTH_LONG);
-                            toast.setView(layout);
-                            toast.show();
-                        }else  {
-                            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                            View layout = inflater.inflate(R.layout.toast_info,null);
-
-                            TextView text = (TextView) layout.findViewById(R.id.txt);
-                            text.setText("اسم المستخدم هو "+s);
-
-                            Toast toast = new Toast(Register.this);
-                            toast.setGravity(Gravity.BOTTOM, 0, 0);
-                            toast.setDuration(Toast.LENGTH_LONG);
-                            toast.setView(layout);
-                            toast.show();
-                        }
+                s -> {
+                    //Disimissing the progress dialog
+                    progressDialog2.dismiss();
+                    Log.e("Data: ", s);
+                    String infoMessage;
+                    switch (s) {
+                        case "\"duplicate\"":
+                            infoMessage = " البريد الالكتروني او رقم التليفون مكرر  .. يرجي إعاده المحاوله";
+                            break;
+                        case "\"fail\"":
+                           infoMessage = "عذرا حدث خطأ أثناء اجراء العملية  .. يرجي المحاوله لاحقا";
+                            break;
+                        default:
+                            infoMessage = "اسم المستخدم هو " + s;
+                            break;
                     }
+                    AppToastUtil.showInfoToast(infoMessage,
+                            AppToastUtil.LENGTH_LONG, RegisterActivity.this);
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        //Dismissing the progress dialog
-                        progressDialog2.dismiss();
+                error -> {
+                    //Dismissing the progress dialog
+                    progressDialog2.dismiss();
 
-                        //Showing toast
-                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    String WarningMessage = null;
+                    if (error instanceof ServerError)
+                        WarningMessage = "خطأ فى الاتصال بالخادم";
+                    else if (error instanceof TimeoutError)
+                        WarningMessage = "خطأ فى مدة الاتصال";
+                    else if (error instanceof NetworkError)
+                        WarningMessage = "شبكه الانترنت ضعيفه حاليا";
 
-                        View layout = inflater.inflate(R.layout.toast_warning,null);
-
-                        TextView text = (TextView) layout.findViewById(R.id.txt);
-
-                        if (volleyError instanceof ServerError)
-                            text.setText("خطأ فى الاتصال بالخادم");
-                        else if (volleyError instanceof TimeoutError)
-                            text.setText("خطأ فى مدة الاتصال");
-                        else if (volleyError instanceof NetworkError)
-                            text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                        Toast toast = new Toast(Register.this);
-                        toast.setGravity(Gravity.BOTTOM, 0, 0);
-                        toast.setDuration(Toast.LENGTH_LONG);
-                        toast.setView(layout);
-                        toast.show();
-                    }
+                    if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                            AppToastUtil.LENGTH_LONG, RegisterActivity.this);
                 }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 //Converting Bitmap to String
 //                for (int x= 0; x<imageSources.size(); x++) {
 //                    String image = getStringImage(bitmap);
@@ -662,7 +609,8 @@ public class Register extends AppCompatActivity {
         super.onPause();
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
-        }if (progressDialog2 != null && progressDialog2.isShowing()) {
+        }
+        if (progressDialog2 != null && progressDialog2.isShowing()) {
             progressDialog2.dismiss();
         }
     }

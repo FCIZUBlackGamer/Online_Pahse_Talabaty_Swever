@@ -57,7 +57,7 @@ public class LoginDatabae extends SQLiteOpenHelper{
         try {
             db.execSQL(DATABASE_CREATE);
             db.execSQL("insert into " + TABLE_NAME + " ( " + UID + ", " + NAME + ", " + USER_ID + ", " + PHONE + ", " + TYPE + "," + IMAGE + "," + AccountType +  "," + Mail +  ") values ( '1', 'e', '0', '0', '0', '0', '0', '0');");
-            // Toast.makeText(cont,"تم إنشاء سله تسوق", Toast.LENGTH_SHORT).show();
+            // AppToastUtil.makeText(cont,"تم إنشاء سله تسوق", AppToastUtil.LENGTH_SHORT).show();
         }catch (SQLException e)
         {
             Toast.makeText(cont,"database doesn't created " +e.toString(), Toast.LENGTH_SHORT).show();

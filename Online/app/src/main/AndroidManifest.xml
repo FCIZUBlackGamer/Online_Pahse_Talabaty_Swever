@@ -25,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Login"
+        <activity android:name=".LoginActivity"
             android:configChanges="orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +43,7 @@
             android:name=".FinalBell.FinalBellActivity"
             android:configChanges="keyboardHidden|orientation" />
 
-        <activity android:name=".Cart.FragmentHomeCart"
+        <activity android:name=".Cart.HomeCartActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="landscape"/>
         <!--
@@ -59,7 +59,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".Register"
+        <activity android:name=".RegisterActivity"
             android:configChanges="keyboardHidden|orientation"/>
     </application>
 

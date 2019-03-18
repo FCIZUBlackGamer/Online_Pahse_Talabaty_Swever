@@ -29,6 +29,6 @@
         android:layout_gravity="bottom|end"
         app:backgroundTint="@color/colorPrimary"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/chart" />
+        app:srcCompat="@drawable/cart" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

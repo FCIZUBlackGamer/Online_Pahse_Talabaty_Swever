@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import talabaty.swever.com.online.Cart.FragmentHomeCart;
+import talabaty.swever.com.online.Cart.HomeCartActivity;
 import talabaty.swever.com.online.ContactUs.FragmentContactUs;
 import talabaty.swever.com.online.Fields.FragmentFields;
 import talabaty.swever.com.online.Fields.FragmentMotageHome;
@@ -100,8 +100,8 @@ public class SwitchNav extends AppCompatActivity
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
 //                fragmentManager.beginTransaction()
-//                        .replace(R.id.frame_home,new FragmentHomeCart()).addToBackStack("FragmentHomeCart").commit();
-                startActivity(new Intent(SwitchNav.this, FragmentHomeCart.class));
+//                        .replace(R.id.frame_home,new HomeCartActivity()).addToBackStack("HomeCartActivity").commit();
+                startActivity(new Intent(SwitchNav.this, HomeCartActivity.class));
 
             }
         });
@@ -261,12 +261,12 @@ public class SwitchNav extends AppCompatActivity
                     .replace(R.id.frame_home,new FragmentContactUs()).addToBackStack("FragmentContactUs").commit();
         } else if (id == R.id.nav_car_shop) {
 //            fragmentManager.beginTransaction()
-//                    .replace(R.id.frame_home,new FragmentHomeCart()).addToBackStack("FragmentHomeCart").commit();
-            startActivity(new Intent(SwitchNav.this, FragmentHomeCart.class));
+//                    .replace(R.id.frame_home,new HomeCartActivity()).addToBackStack("HomeCartActivity").commit();
+            startActivity(new Intent(SwitchNav.this, HomeCartActivity.class));
         } else if (id == R.id.nav_logout) {
             //Todo: Action Logout
             loginDatabae.UpdateData("1","c","c","c","0","","0","0");
-            startActivity(new Intent(SwitchNav.this, Login.class));
+            startActivity(new Intent(SwitchNav.this, LoginActivity.class));
         }
 //        else {
 //            String cat_name = item.getTitle().toString();
@@ -344,9 +344,9 @@ public class SwitchNav extends AppCompatActivity
 //                        else if (error instanceof NetworkError)
 //                            text.setText("شبكه الانترنت ضعيفه حاليا");
 //
-//                        Toast toast = new Toast(SwitchNav.this);
+//                        AppToastUtil toast = new AppToastUtil(SwitchNav.this);
 //                        toast.setGravity(Gravity.BOTTOM, 0, 0);
-//                        toast.setDuration(Toast.LENGTH_LONG);
+//                        toast.setDuration(AppToastUtil.LENGTH_LONG);
 //                        toast.setView(layout);
 //                        toast.show();
 //                    }

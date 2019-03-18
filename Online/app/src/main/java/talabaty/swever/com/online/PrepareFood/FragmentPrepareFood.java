@@ -2,36 +2,32 @@ package talabaty.swever.com.online.PrepareFood;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
 import android.text.InputType;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
@@ -49,6 +45,7 @@ import talabaty.swever.com.online.Cart.CartAdditionalDatabase;
 import talabaty.swever.com.online.Cart.CartDatabase;
 import talabaty.swever.com.online.Cart.Sanf;
 import talabaty.swever.com.online.R;
+import talabaty.swever.com.online.Utils.AppToastUtil;
 
 public class FragmentPrepareFood extends Fragment {
 
@@ -64,7 +61,7 @@ public class FragmentPrepareFood extends Fragment {
     CartDatabase cartDatabase;
     CartAdditionalDatabase cartAdditionalDatabase;
 
-    public static FragmentPrepareFood setData(int shopI){
+    public static FragmentPrepareFood setData(int shopI) {
         FragmentPrepareFood fragmentPrepareFood = new FragmentPrepareFood();
         shopId = shopI;
         return fragmentPrepareFood;
@@ -102,11 +99,11 @@ public class FragmentPrepareFood extends Fragment {
             long res;
             //String[] real_price = price.getText().toString().split(" ");
 
-            res = cartDatabase.InsertData(sanf.getName()+"",
-                    sanf.getImage()+"", "", "", "", sanf.getAmount() + "",
-                    "ممتازة", sanf.getPrice() + "", "", "", "",/* in this case we assign address to state*/ sanf.getState()+"", sanf.getId() + "", "2");
+            res = cartDatabase.InsertData(sanf.getName() + "",
+                    sanf.getImage() + "", "", "", "", sanf.getAmount() + "",
+                    "ممتازة", sanf.getPrice() + "", "", "", "",/* in this case we assign address to state*/ sanf.getState() + "", sanf.getId() + "", "2");
 
-            Log.e("Address",sanf.getState());
+            Log.e("Address", sanf.getState());
             //int temp_id = sanf.getId();
             Log.e("InsertedID", sanf.getId() + "");
             Log.e("InsertedRes", res + "");
@@ -177,129 +174,95 @@ public class FragmentPrepareFood extends Fragment {
         progressDialog.setCancelable(false);
         progressDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/BeTheChef/BaseFoods",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progressDialog.dismiss();
-                        try {
+                response -> {
+                    progressDialog.dismiss();
+                    try {
 
-                            JSONObject object = new JSONObject(response);
-                            JSONArray array = object.getJSONArray("List");
-                            if (array.length() > 0) {
+                        JSONObject object = new JSONObject(response);
+                        JSONArray array = object.getJSONArray("List");
+                        if (array.length() > 0) {
 
-                                final int size = sanfList.size();
-                                if (size > 0) {
-                                    for (int i = 0; i < size; i++) {
-                                        sanfList.remove(0);
-
-                                    }
-                                    prepareFoodAdapter.notifyDataSetChanged();
-                                }
-                                try {
-
-                                    for (int x = 0; x < array.length(); x++) {
-                                        JSONObject object1 = array.getJSONObject(x);
-
-                                        Sanf food = new Sanf(object1.getInt("Id"),
-                                                object1.getString("Name"),
-                                                "http://www.selltlbaty.rivile.com" + object1.getString("Photo"),
-                                                (float) object1.getDouble("Price")
-                                        );
-                                        food.setIsOffer(2);
-                                        food.setState(object1.getString("Address"));
-                                        sanfList.add(food);
-                                    }
-
-                                    prepareFoodAdapter = new PrepareFoodAdapter(getActivity(), sanfList);
-                                    gridView.setAdapter(prepareFoodAdapter);
-                                    Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fly_in_from_center);
-                                    gridView.setAnimation(anim);
-                                    anim.start();
-                                    gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                        @Override
-                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                            final Sanf book = sanfList.get(position);
-                                            amount = 0;
-                                            final EditText amount_num = new EditText(getActivity());
-                                            amount_num.setHint("ادخل عدد القطع");
-                                            amount_num.setInputType(InputType.TYPE_CLASS_NUMBER);
-                                            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                            builder.setView(amount_num).setCancelable(false)
-                                                    .setPositiveButton("التالى", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            amount = (int) Float.parseFloat(amount_num.getText().toString());
-                                                            book.setAmount(amount);
-                                                            Log.e("ShopId", shopId);
-                                                            fragmentManager.beginTransaction().replace(R.id.frame_home, new FragmentAdditions().setAdditions(book, Integer.parseInt(shopId))).addToBackStack("FragmentAdditions").commit();
-                                                            ViewGroup parent = (ViewGroup) amount_num.getParent();
-                                                            if (parent != null) {
-                                                                parent.removeAllViews();
-                                                            }
-
-                                                        }
-                                                    })
-                                                    .setNegativeButton("إلغاء", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            ViewGroup parent = (ViewGroup) amount_num.getParent();
-                                                            if (parent != null) {
-                                                                parent.removeAllViews();
-                                                            }
-                                                            dialog.dismiss();
-                                                        }
-                                                    }).show();
-
-                                        }
-                                    });
-
-                                } catch (Exception e) {
+                            final int size = sanfList.size();
+                            if (size > 0) {
+                                for (int i = 0; i < size; i++) {
+                                    sanfList.remove(0);
 
                                 }
-
-
-                            } else {
-                                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                                View layout = inflater.inflate(R.layout.toast_info,null);
-
-                                TextView text = (TextView) layout.findViewById(R.id.txt);
-                                text.setText("لا توجد بيانات");
-
-                                Toast toast = new Toast(getActivity());
-                                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                toast.setDuration(Toast.LENGTH_LONG);
-                                toast.setView(layout);
-                                toast.show();
+                                prepareFoodAdapter.notifyDataSetChanged();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            try {
+
+                                for (int x = 0; x < array.length(); x++) {
+                                    JSONObject object1 = array.getJSONObject(x);
+
+                                    Sanf food = new Sanf(object1.getInt("Id"),
+                                            object1.getString("Name"),
+                                            "http://www.selltlbaty.rivile.com" + object1.getString("Photo"),
+                                            (float) object1.getDouble("Price")
+                                    );
+                                    food.setIsOffer(2);
+                                    food.setState(object1.getString("Address"));
+                                    sanfList.add(food);
+                                }
+
+                                prepareFoodAdapter = new PrepareFoodAdapter(getActivity(), sanfList);
+                                gridView.setAdapter(prepareFoodAdapter);
+                                Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fly_in_from_center);
+                                gridView.setAnimation(anim);
+                                anim.start();
+                                gridView.setOnItemClickListener((parent, view, position, id) -> {
+                                    final Sanf book = sanfList.get(position);
+                                    amount = 0;
+                                    final EditText amount_num = new EditText(getActivity());
+                                    amount_num.setHint("ادخل عدد القطع");
+                                    amount_num.setInputType(InputType.TYPE_CLASS_NUMBER);
+                                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                    builder.setView(amount_num).setCancelable(false)
+                                            .setPositiveButton("التالى", (dialog, which) -> {
+                                                amount = (int) Float.parseFloat(amount_num.getText().toString());
+                                                book.setAmount(amount);
+                                                Log.e("ShopId", shopId);
+                                                fragmentManager.beginTransaction().replace(R.id.frame_home, new FragmentAdditions().setAdditions(book, Integer.parseInt(shopId))).addToBackStack("FragmentAdditions").commit();
+                                                ViewGroup parent12 = (ViewGroup) amount_num.getParent();
+                                                if (parent12 != null) {
+                                                    parent12.removeAllViews();
+                                                }
+
+                                            })
+                                            .setNegativeButton("إلغاء", (dialog, which) -> {
+                                                ViewGroup parent1 = (ViewGroup) amount_num.getParent();
+                                                if (parent1 != null) {
+                                                    parent1.removeAllViews();
+                                                }
+                                                dialog.dismiss();
+                                            }).show();
+
+                                });
+
+                            } catch (Exception e) {
+
+                            }
+                        } else {
+                            AppToastUtil.showInfoToast("لا توجد بيانات",
+                                    AppToastUtil.LENGTH_LONG, getContext());
                         }
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                View layout = inflater.inflate(R.layout.toast_warning,null);
+                }, error -> {
+            progressDialog.dismiss();
 
-                TextView text = (TextView) layout.findViewById(R.id.txt);
+            String WarningMessage = null;
+            if (error instanceof ServerError)
+                WarningMessage = "خطأ فى الاتصال بالخادم";
+            else if (error instanceof TimeoutError)
+                WarningMessage = "خطأ فى مدة الاتصال";
+            else if (error instanceof NetworkError)
+                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
 
-                if (error instanceof ServerError)
-                    text.setText("خطأ فى الاتصال بالخادم");
-                else if (error instanceof TimeoutError)
-                    text.setText("خطأ فى مدة الاتصال");
-                else if (error instanceof NetworkError)
-                    text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                Toast toast = new Toast(getActivity());
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
-                toast.setView(layout);
-                toast.show();
-            }
+            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                    AppToastUtil.LENGTH_LONG, getContext());
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lay"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:background="@drawable/back_toast_error"
     android:orientation="horizontal"
-    android:id="@+id/lay"
-    android:padding="10dp"
-    android:layout_marginBottom="50dp"
-    android:background="@drawable/back_toast_error">
+    android:padding="10dp">
 
     <TextView
+        android:id="@+id/tv_error_toast"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/txt"
-        android:gravity="center"
+        android:layout_gravity="center"
         android:fontFamily="@font/changaregular"
-        android:text="بلح"
-        android:textSize="15dp"
+        android:gravity="center"
         android:textColor="@color/white"
-        android:layout_gravity="center"/>
-
+        android:textSize="15sp"
+        tools:text="بلح" />
 </LinearLayout>

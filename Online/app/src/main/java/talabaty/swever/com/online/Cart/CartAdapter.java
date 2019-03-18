@@ -48,7 +48,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Vholder> {
     @NonNull
     @Override
     public Vholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chart_row_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_row_item, parent, false);
         return new Vholder(view);
     }
 
@@ -75,7 +75,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.Vholder> {
         }
         try{
             if (!talabats.get(position).getImage().isEmpty()) {
-                //Log.e("Image in Chart",talabats.get(position).getImage());
+                //Log.e("Image in Cart",talabats.get(position).getImage());
                Picasso.get().load(talabats.get(position).getImage()).into(holder.image);
             }
         }catch (Exception e){

@@ -1,7 +1,6 @@
 package talabaty.swever.com.online.Category;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -9,26 +8,21 @@ import androidx.annotation.Nullable;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -42,6 +36,7 @@ import java.util.List;
 import talabaty.swever.com.online.Fields.MostTrend.MontagAdapter;
 import talabaty.swever.com.online.Fields.MostTrend.Product;
 import talabaty.swever.com.online.R;
+import talabaty.swever.com.online.Utils.AppToastUtil;
 
 public class FragmentHomeCategory extends Fragment {
 
@@ -171,16 +166,14 @@ public class FragmentHomeCategory extends Fragment {
         progressDialog.setCancelable(false);
         progressDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://onlineapi.rivile.com/Products/MostVisited?type=" + type + "&x=" + x + "&count=80",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        int temp = 0;
-                        progressDialog.dismiss();
-                        try {
+                response -> {
+                    int temp = 0;
+                    progressDialog.dismiss();
+                    try {
 
-                            JSONObject object = new JSONObject(response);
-                            JSONArray array = object.getJSONArray("List");
-                            if (array.length() > 0) {
+                        JSONObject object = new JSONObject(response);
+                        JSONArray array = object.getJSONArray("List");
+                        if (array.length() > 0) {
 //                                final int size = products.size();
 //                                if (size > 0) {
 //                                    for (int i = 0; i < size; i++) {
@@ -188,94 +181,69 @@ public class FragmentHomeCategory extends Fragment {
 //                                    }
 //                                    booksAdapter.notifyDataSetChanged();
 //                                }
-                                products = new ArrayList<>();
+                            products = new ArrayList<>();
 
-                                for (int x = 0; x < array.length(); x++) {
-                                    JSONObject object1 = array.getJSONObject(x);
-                                    if (x == 0) {
-                                        temp_first = object1.getInt("Id");
-                                    } else if (x == array.length() - 1) {
-                                        temp_last = object1.getInt("Id");
-                                    }
-
-
-                                    Product r = new Product(object1.getInt("Id"),
-                                            object1.getString("Name"),
-                                            "http://selltlbaty.rivile.com" + object1.getString("Photo"),
-                                            object1.getInt("Price"),
-                                            object1.getInt("Sale"),
-                                            object1.getInt("Rate")
-                                    );
-                                    products.add(r);
-                                    temp = object1.getInt("Id");
-
-                                    if (r.equals("1")) {
-                                        page_num++;
-                                    } else if (r.equals("0")) {
-                                        page_num--;
-                                    }
-
+                            for (int x1 = 0; x1 < array.length(); x1++) {
+                                JSONObject object1 = array.getJSONObject(x1);
+                                if (x1 == 0) {
+                                    temp_first = object1.getInt("Id");
+                                } else if (x1 == array.length() - 1) {
+                                    temp_last = object1.getInt("Id");
                                 }
-                                booksAdapter = new MontagAdapter(getActivity(), products);
-                                gridView.setAdapter(booksAdapter);
 
-                                Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fly_in_from_center);
-                                gridView.setAnimation(anim);
-                                anim.start();
 
-                                item_num = temp;
-                                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        Product book = products.get(position);
-                                        //Todo: Make Some Action
-                                        book.getId();
-                                    }
-                                });
-                                num.setText(page_num + "");
-                            } else {
-                                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                Product r = new Product(object1.getInt("Id"),
+                                        object1.getString("Name"),
+                                        "http://selltlbaty.rivile.com" + object1.getString("Photo"),
+                                        object1.getInt("Price"),
+                                        object1.getInt("Sale"),
+                                        object1.getInt("Rate")
+                                );
+                                products.add(r);
+                                temp = object1.getInt("Id");
 
-                                View layout = inflater.inflate(R.layout.toast_info,null);
+                                if (r.equals("1")) {
+                                    page_num++;
+                                } else if (r.equals("0")) {
+                                    page_num--;
+                                }
 
-                                TextView text = (TextView) layout.findViewById(R.id.txt);
-                                text.setText("لا توجد بيانات");
-
-                                Toast toast = new Toast(getActivity());
-                                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                toast.setDuration(Toast.LENGTH_LONG);
-                                toast.setView(layout);
-                                toast.show();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            booksAdapter = new MontagAdapter(getActivity(), products);
+                            gridView.setAdapter(booksAdapter);
+
+                            Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fly_in_from_center);
+                            gridView.setAnimation(anim);
+                            anim.start();
+
+                            item_num = temp;
+                            gridView.setOnItemClickListener((parent, view, position, id) -> {
+                                Product book = products.get(position);
+                                //Todo: Make Some Action
+                                book.getId();
+                            });
+                            num.setText(page_num + "");
+                        } else {
+                            AppToastUtil.showInfoToast("لا توجد بيانات",
+                                    AppToastUtil.LENGTH_LONG, getContext());
                         }
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                View layout = inflater.inflate(R.layout.toast_warning,null);
+                }, error -> {
+                    progressDialog.dismiss();
+            String WarningMessage = null;
+            if (error instanceof ServerError)
+                WarningMessage = "خطأ فى الاتصال بالخادم";
+            else if (error instanceof TimeoutError)
+                WarningMessage = "خطأ فى مدة الاتصال";
+            else if (error instanceof NetworkError)
+                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
 
-                TextView text = (TextView) layout.findViewById(R.id.txt);
-
-                if (error instanceof ServerError)
-                    text.setText("خطأ فى الاتصال بالخادم");
-                else if (error instanceof TimeoutError)
-                    text.setText("خطأ فى مدة الاتصال");
-                else if (error instanceof NetworkError)
-                    text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                Toast toast = new Toast(getActivity());
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
-                toast.setView(layout);
-                toast.show();
-            }
-        });
+            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                    AppToastUtil.LENGTH_LONG, getContext());
+                });
 //        Volley.newRequestQueue(getActivity()).add(stringRequest);
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,

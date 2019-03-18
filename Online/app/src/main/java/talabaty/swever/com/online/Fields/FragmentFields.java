@@ -1,30 +1,25 @@
 package talabaty.swever.com.online.Fields;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.Gravity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -40,10 +35,11 @@ import java.util.Map;
 import talabaty.swever.com.online.R;
 import talabaty.swever.com.online.SubCategory.FragmentSubCategory;
 import talabaty.swever.com.online.SwitchNav;
+import talabaty.swever.com.online.Utils.AppToastUtil;
 
 public class FragmentFields extends Fragment {
 
-//    private TabLayout tabLayout;
+    //    private TabLayout tabLayout;
 //    ViewPager viewPager = null;
     FragmentManager fragmentManager;
     RecyclerView recyclerView_cat;
@@ -58,9 +54,9 @@ public class FragmentFields extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 //        viewPager = (ViewPager) view.findViewById(R.id.pager);
         fragmentManager = getFragmentManager();
-        recyclerView_cat = (RecyclerView) view.findViewById(R.id.cat_rec);
+        recyclerView_cat = view.findViewById(R.id.cat_rec);
         recyclerView_cat.setHasFixedSize(true);
-        recyclerView_cat.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true));
+        recyclerView_cat.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, true));
 
 //        viewPager.setAdapter(new pager(fragmentManager));
 //        tabLayout = (TabLayout) view.findViewById(R.id.tablayout);
@@ -118,86 +114,51 @@ public class FragmentFields extends Fragment {
         progressDialog.setCancelable(false);
         progressDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Fields/List",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        progressDialog.dismiss();
-                        try {
-
-                            JSONObject object = new JSONObject(response);
-                            JSONArray array = object.getJSONArray("Fields");
-                            if (array.length() > 0) {
-                                for (int x = 0; x < array.length(); x++) {
-                                    JSONObject object1 = array.getJSONObject(x);
-                                    Category categoryModel = new Category(object1.getInt("Id"),
-                                            object1.getString("Name"),
-                                            "http://selltlbaty.rivile.com"+object1.getString("Photo")
-                                    );
-
-                                    categoryList.add(categoryModel);
-                                }
-
-                                catAdapter = new CategoryAdapter(getActivity(), categoryList,new CategoryAdapter.OnItemClickListener(){
-
-                                    @Override
-                                    public void onItemClick(Category item) {
-                                        fragmentManager.beginTransaction()
-                                                .replace(R.id.frame_home, new FragmentSubCategory().setId(item.getId())).addToBackStack("FragmentSubCategory").commit();
-                                    }
-                                });
-                                recyclerView_cat.setAdapter(catAdapter);
-
-                            }else {
-                                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                                View layout = inflater.inflate(R.layout.toast_warning, null);
-
-                                TextView text = (TextView) layout.findViewById(R.id.txt);
-
-
-                                text.setText("لا توجد اقسام حاليا");
-
-                                Toast toast = new Toast(getActivity());
-                                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                toast.setDuration(Toast.LENGTH_LONG);
-                                toast.setView(layout);
-                                toast.show();
+                response -> {
+                    progressDialog.dismiss();
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONArray array = object.getJSONArray("Fields");
+                        if (array.length() > 0) {
+                            for (int x = 0; x < array.length(); x++) {
+                                JSONObject object1 = array.getJSONObject(x);
+                                Category categoryModel = new Category(object1.getInt("Id"),
+                                        object1.getString("Name"),
+                                        "http://selltlbaty.rivile.com" + object1.getString("Photo")
+                                );
+                                categoryList.add(categoryModel);
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
+                            catAdapter = new CategoryAdapter(getActivity(), categoryList, item -> fragmentManager.beginTransaction()
+                                    .replace(R.id.frame_home, new FragmentSubCategory().setId(item.getId())).addToBackStack("FragmentSubCategory").commit());
+                            recyclerView_cat.setAdapter(catAdapter);
+
+                        } else {
+                            AppToastUtil.showWarningToast("لا توجد اقسام حاليا",
+                                    AppToastUtil.LENGTH_LONG, getContext());
                         }
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
+
+                }, error -> {
+            progressDialog.dismiss();
+
+            String WarningMessage = null;
+            if (error instanceof ServerError)
+                WarningMessage = "خطأ فى الاتصال بالخادم";
+            else if (error instanceof TimeoutError)
+                WarningMessage = "خطأ فى مدة الاتصال";
+            else if (error instanceof NetworkError)
+                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
+
+            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                    AppToastUtil.LENGTH_LONG, getContext());
+        }) {
             @Override
-            public void onErrorResponse(VolleyError error) {
-
-                progressDialog.dismiss();
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                View layout = inflater.inflate(R.layout.toast_warning, null);
-
-                TextView text = (TextView) layout.findViewById(R.id.txt);
-
-                if (error instanceof ServerError)
-                    text.setText("خطأ فى الاتصال بالخادم");
-                else if (error instanceof TimeoutError)
-                    text.setText("خطأ فى مدة الاتصال");
-                else if (error instanceof NetworkError)
-                    text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                Toast toast = new Toast(getActivity());
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
-                toast.setView(layout);
-                toast.show();
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> map = new HashMap<>();
-                map.put("token","?za[ZbGNz2B}MXYZ");
+            protected Map<String, String> getParams() {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("token", "?za[ZbGNz2B}MXYZ");
                 return map;
             }
         };
@@ -208,6 +169,7 @@ public class FragmentFields extends Fragment {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Volley.newRequestQueue(getActivity()).add(stringRequest);
     }
+
     @Override
     public void onPause() {
         super.onPause();

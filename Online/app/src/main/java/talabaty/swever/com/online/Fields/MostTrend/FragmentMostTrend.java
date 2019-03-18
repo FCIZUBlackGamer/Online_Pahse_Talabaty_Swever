@@ -1,16 +1,18 @@
 package talabaty.swever.com.online.Fields.MostTrend;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,16 +22,12 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
@@ -45,6 +43,7 @@ import java.util.Map;
 
 import talabaty.swever.com.online.ProductDetails.FragmentProductDetails;
 import talabaty.swever.com.online.R;
+import talabaty.swever.com.online.Utils.AppToastUtil;
 
 public class FragmentMostTrend extends Fragment {
 
@@ -73,7 +72,7 @@ public class FragmentMostTrend extends Fragment {
 
     static List<Product> product_List = null;
 
-    public static FragmentMostTrend setList(List<Product> contact_Li){
+    public static FragmentMostTrend setList(List<Product> contact_Li) {
         FragmentMostTrend contact = new FragmentMostTrend();
         product_List = contact_Li;
         return contact;
@@ -84,7 +83,7 @@ public class FragmentMostTrend extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         View view = inflater.inflate(R.layout.fragment_home_most_trend, container, false);
-        gridView = (GridView) view.findViewById(R.id.gridview);
+        gridView = view.findViewById(R.id.gridview);
         next = view.findViewById(R.id.next);
         last = view.findViewById(R.id.previous);
         num = view.findViewById(R.id.item_num);
@@ -104,13 +103,13 @@ public class FragmentMostTrend extends Fragment {
         temp_last = 10;
         page_num = 0;
 
-        if (product_List!= null){
+        if (product_List != null) {
 //            for (Fragment fragment:getActivity().getSupportFragmentManager().getFragments()) {
 //                getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
 //            }
 
             Gson gson = new Gson();
-            Log.e("Product",gson.toJson(product_List));
+            Log.e("Product", gson.toJson(product_List));
             layout.setVisibility(View.GONE);
 
             booksAdapter = new MontagAdapter(getActivity(), product_List);
@@ -124,11 +123,11 @@ public class FragmentMostTrend extends Fragment {
                     Product book = product_List.get(position);
 
                     fragmentManager.beginTransaction()
-                            .replace(R.id.frame_home, new FragmentProductDetails().setId(book.getId(),0)).addToBackStack("FragmentOfferDetails").commit();
+                            .replace(R.id.frame_home, new FragmentProductDetails().setId(book.getId(), 0)).addToBackStack("FragmentOfferDetails").commit();
                 }
             });
 
-        }else {
+        } else {
             if (Type.equals("trend")) {
 /** الاكثر زياره لجهات العمل*/
                 Link = "http://onlineapi.rivile.com/Products/MostVisited/list";
@@ -190,9 +189,10 @@ public class FragmentMostTrend extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if(progressDialog != null && progressDialog.isShowing()){
+        if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
-        }if(progressDialog2 != null && progressDialog2.isShowing()){
+        }
+        if (progressDialog2 != null && progressDialog2.isShowing()) {
             progressDialog2.dismiss();
         }
 
@@ -204,18 +204,16 @@ public class FragmentMostTrend extends Fragment {
         progressDialog2.setCancelable(false);
         progressDialog2.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Link,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        int temp = 0;
+                response -> {
+                    int temp = 0;
 
-                        progressDialog2.dismiss();
+                    progressDialog2.dismiss();
 
-                        try {
+                    try {
 
-                            JSONObject object = new JSONObject(response);
-                            JSONArray array = object.getJSONArray("List");
-                            if (array.length() > 0) {
+                        JSONObject object = new JSONObject(response);
+                        JSONArray array = object.getJSONArray("List");
+                        if (array.length() > 0) {
 //                                final int size = products.size();
 //                                if (size > 0) {
 //                                    for (int i = 0; i < size; i++) {
@@ -223,100 +221,76 @@ public class FragmentMostTrend extends Fragment {
 //                                    }
 //                                    booksAdapter.notifyDataSetChanged();
 //                                }
-                                products = new ArrayList<>();
+                            products = new ArrayList<>();
 
-                                for (int x = 0; x < array.length(); x++) {
-                                    JSONObject object1 = array.getJSONObject(x);
-                                    if (x == 0) {
-                                        temp_first = object1.getInt("Id");
-                                    } else if (x == array.length() - 1) {
-                                        temp_last = object1.getInt("Id");
-                                    }
-
-                                    Product r = new Product(object1.getInt("Id"),
-                                            object1.getString("Name"),
-                                            "http://selltlbaty.rivile.com" + object1.getString("Photo"),
-                                            object1.getInt("Price"),
-                                            object1.getInt("Sale"),
-                                            object1.getInt("Rate")
-                                    );
-                                    r.setIsOffer(0);
-                                    products.add(r);
-                                    temp = object1.getInt("Id");
-
+                            for (int x1 = 0; x1 < array.length(); x1++) {
+                                JSONObject object1 = array.getJSONObject(x1);
+                                if (x1 == 0) {
+                                    temp_first = object1.getInt("Id");
+                                } else if (x1 == array.length() - 1) {
+                                    temp_last = object1.getInt("Id");
                                 }
-                                if (type.equals("1")) {
-                                    page_num++;
-                                } else if (type.equals("0")) {
-                                    page_num--;
-                                }
-                                booksAdapter = new MontagAdapter(getActivity(), products);
-                                gridView.setAdapter(booksAdapter);
-                                Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fly_in_from_center);
-                                gridView.setAnimation(anim);
-                                anim.start();
-                                item_num = temp;
-                                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        Product book = products.get(position);
-/** عرض تفاصيل المنتج*/
-                                        fragmentManager.beginTransaction()
-                                                .replace(R.id.frame_home, new FragmentProductDetails().setId(book.getId(),0)).addToBackStack("FragmentOfferDetails").commit();
-                                    }
-                                });
-                                num.setText(page_num + "");
-                            } else {
-                                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                                View layout = inflater.inflate(R.layout.toast_info,null);
+                                Product r = new Product(object1.getInt("Id"),
+                                        object1.getString("Name"),
+                                        "http://selltlbaty.rivile.com" + object1.getString("Photo"),
+                                        object1.getInt("Price"),
+                                        object1.getInt("Sale"),
+                                        object1.getInt("Rate")
+                                );
+                                r.setIsOffer(0);
+                                products.add(r);
+                                temp = object1.getInt("Id");
 
-                                TextView text = (TextView) layout.findViewById(R.id.txt);
-                                text.setText("لا توجد بيانات");
-
-                                Toast toast = new Toast(getActivity());
-                                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                toast.setDuration(Toast.LENGTH_LONG);
-                                toast.setView(layout);
-                                toast.show();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            if (type.equals("1")) {
+                                page_num++;
+                            } else if (type.equals("0")) {
+                                page_num--;
+                            }
+                            booksAdapter = new MontagAdapter(getActivity(), products);
+                            gridView.setAdapter(booksAdapter);
+                            Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fly_in_from_center);
+                            gridView.setAnimation(anim);
+                            anim.start();
+                            item_num = temp;
+                            gridView.setOnItemClickListener((parent, view, position, id) -> {
+                                Product book = products.get(position);
+/** عرض تفاصيل المنتج*/
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.frame_home, new FragmentProductDetails().setId(book.getId(), 0)).addToBackStack("FragmentOfferDetails").commit();
+                            });
+                            num.setText(page_num + "");
+                        } else {
+                            AppToastUtil.showInfoToast("لا توجد بيانات",
+                                    AppToastUtil.LENGTH_LONG, getContext());
                         }
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog2.dismiss();
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                View layout = inflater.inflate(R.layout.toast_warning,null);
+                }, error -> {
+            progressDialog2.dismiss();
 
-                TextView text = (TextView) layout.findViewById(R.id.txt);
+            String WarningMessage = null;
+            if (error instanceof ServerError)
+                WarningMessage = "خطأ فى الاتصال بالخادم";
+            else if (error instanceof TimeoutError)
+                WarningMessage = "خطأ فى مدة الاتصال";
+            else if (error instanceof NetworkError)
+                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
 
-                if (error instanceof ServerError)
-                    text.setText("خطأ فى الاتصال بالخادم");
-                else if (error instanceof TimeoutError)
-                    text.setText("خطأ فى مدة الاتصال");
-                else if (error instanceof NetworkError)
-                    text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                Toast toast = new Toast(getActivity());
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
-                toast.setView(layout);
-                toast.show();
-            }
+            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                    AppToastUtil.LENGTH_LONG, getContext());
         }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("type", type + "");
                 map.put("x", x + "");
-                if (amount == 1){
+                if (amount == 1) {
                     map.put("count", 10 + "");
-                }else {
+                } else {
                     map.put("count", 80 + "");
                 }
                 map.put("token", "?za[ZbGNz2B}MXYZ");
@@ -337,18 +311,15 @@ public class FragmentMostTrend extends Fragment {
         progressDialog.setCancelable(false);
         progressDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Link,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        int temp = 0;
+                response -> {
+                    int temp = 0;
 
-                        progressDialog.dismiss();
+                    progressDialog.dismiss();
 
-                        try {
-
-                            JSONObject object = new JSONObject(response);
-                            JSONArray array = object.getJSONArray("List");
-                            if (array.length() > 0) {
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONArray array = object.getJSONArray("List");
+                        if (array.length() > 0) {
 //                                final int size = products.size();
 //                                if (size > 0) {
 //                                    for (int i = 0; i < size; i++) {
@@ -356,91 +327,64 @@ public class FragmentMostTrend extends Fragment {
 //                                    }
 //                                    booksAdapter.notifyDataSetChanged();
 //                                }
-                                products = new ArrayList<>();
+                            products = new ArrayList<>();
 
-                                for (int x = 0; x < array.length(); x++) {
-                                    JSONObject object1 = array.getJSONObject(x);
-                                    if (x == 0) {
-                                        temp_first = object1.getInt("Id");
-                                    } else if (x == array.length() - 1) {
-                                        temp_last = object1.getInt("Id");
-                                    }
-
-
-                                    Product r = new Product(object1.getInt("Id"),
-                                            object1.getString("Name"),
-                                            "http://selltlbaty.rivile.com" + object1.getString("Photo"),
-                                            object1.getInt("Price"),
-                                            object1.getInt("Sale"),
-                                            object1.getInt("Rate")
-                                    );
-                                    r.setIsOffer(1);
-                                    products.add(r);
-                                    temp = object1.getInt("Id");
-
-
+                            for (int x = 0; x < array.length(); x++) {
+                                JSONObject object1 = array.getJSONObject(x);
+                                if (x == 0) {
+                                    temp_first = object1.getInt("Id");
+                                } else if (x == array.length() - 1) {
+                                    temp_last = object1.getInt("Id");
                                 }
-                                booksAdapter = new MontagAdapter(getActivity(), products);
-                                gridView.setAdapter(booksAdapter);
-                                Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fly_in_from_center);
-                                gridView.setAnimation(anim);
-                                anim.start();
-                                item_num = temp;
-                                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        Product book = products.get(position);
 
-                                        fragmentManager.beginTransaction()
-                                                .replace(R.id.frame_home, new FragmentProductDetails().setId(book.getId(),1)).addToBackStack("FragmentOfferDetails").commit();
-                                    }
-                                });
-                                num.setText(page_num + "");
-                            } else {
-                                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                                View layout = inflater.inflate(R.layout.toast_info,null);
-
-                                TextView text = (TextView) layout.findViewById(R.id.txt);
-                                text.setText("لا توجد بيانات");
-
-                                Toast toast = new Toast(getActivity());
-                                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                toast.setDuration(Toast.LENGTH_LONG);
-                                toast.setView(layout);
-                                toast.show();
+                                Product r = new Product(object1.getInt("Id"),
+                                        object1.getString("Name"),
+                                        "http://selltlbaty.rivile.com" + object1.getString("Photo"),
+                                        object1.getInt("Price"),
+                                        object1.getInt("Sale"),
+                                        object1.getInt("Rate")
+                                );
+                                r.setIsOffer(1);
+                                products.add(r);
+                                temp = object1.getInt("Id");
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            booksAdapter = new MontagAdapter(getActivity(), products);
+                            gridView.setAdapter(booksAdapter);
+                            Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fly_in_from_center);
+                            gridView.setAnimation(anim);
+                            anim.start();
+                            item_num = temp;
+                            gridView.setOnItemClickListener((parent, view, position, id) -> {
+                                Product book = products.get(position);
+
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.frame_home, new FragmentProductDetails().setId(book.getId(), 1)).addToBackStack("FragmentOfferDetails").commit();
+                            });
+                            num.setText(page_num + "");
+                        } else {
+                            AppToastUtil.showInfoToast("لا توجد بيانات",
+                                    AppToastUtil.LENGTH_LONG, getContext());
                         }
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                View layout = inflater.inflate(R.layout.toast_warning,null);
+                }, error -> {
+            progressDialog.dismiss();
 
-                TextView text = (TextView) layout.findViewById(R.id.txt);
+            String WarningMessage = null;
+            if (error instanceof ServerError)
+                WarningMessage = "خطأ فى الاتصال بالخادم";
+            else if (error instanceof TimeoutError)
+                WarningMessage = "خطأ فى مدة الاتصال";
+            else if (error instanceof NetworkError)
+                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
 
-                if (error instanceof ServerError)
-                    text.setText("خطأ فى الاتصال بالخادم");
-                else if (error instanceof TimeoutError)
-                    text.setText("خطأ فى مدة الاتصال");
-                else if (error instanceof NetworkError)
-                    text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                Toast toast = new Toast(getActivity());
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
-                toast.setView(layout);
-                toast.show();
-            }
+            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                    AppToastUtil.LENGTH_LONG, getContext());
         }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("token", "?za[ZbGNz2B}MXYZ");
                 return map;

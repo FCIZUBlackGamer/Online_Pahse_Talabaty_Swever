@@ -24,7 +24,6 @@ import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.Request;
@@ -87,6 +85,7 @@ import static com.android.volley.VolleyLog.TAG;
 import talabaty.swever.com.online.Cart.Models.*;
 import talabaty.swever.com.online.FinalBell.*;
 import talabaty.swever.com.online.*;
+import talabaty.swever.com.online.Utils.AppToastUtil;
 
 //talabaty-213109
 public class FinishCart extends Fragment implements OnMapReadyCallback,
@@ -134,7 +133,7 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 //        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        view = inflater.inflate(R.layout.dialog_chart_buy, container, false);
+        view = inflater.inflate(R.layout.dialog_cart_buy, container, false);
 
         Log.e("Fragment", "Found");
         cartDatabase = new CartDatabase(getActivity());
@@ -346,7 +345,7 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
                                         Gson gson = new Gson();
                                         String mod = gson.toJson(modelList);
                                         Log.e("Model", gson.toJson(mod));
-                                        uploadChart(mod, addres, region, city, state, date, modelList);
+                                        uploadCart(mod, addres, region, city, state, date, modelList);
 
                                     }
                                 } catch (JSONException e1) {
@@ -542,11 +541,11 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 //                lat=location.getLatitude();
 //                lon=location.getLatitude();
-//                Toast.makeText(
+//                AppToastUtil.makeText(
 //                        getActivity(),
 //                        "Lat " + latLng.latitude + " "
 //                                + "Long " + latLng.longitude,
-//                        Toast.LENGTH_LONG).show();
+//                        AppToastUtil.LENGTH_LONG).show();
                 Log.e("Lat ", latLng.latitude + " ");
                 Log.e("Long ", latLng.longitude + " ");
                 if (marker != null) {
@@ -662,126 +661,110 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
     }
 
     @SuppressLint("NewApi")
-    private void uploadChart(final String mod, final String addres, final String Region, final String City, final String State, final Date date, final List<CartModel> models) {
+    private void uploadCart(final String mod, final String addres, final String Region, final String City, final String State, final Date date, final List<CartModel> models) {
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("جارى حجز الطلب ...");
         progressDialog.setCancelable(false);
         progressDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Order/OrderPreview",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        progressDialog.dismiss();
-                        Log.e("Response", response);
-                        try {
-                            //Todo: Still Just Test And Retrieve Data
-                            JSONObject object = new JSONObject(response);
-                            JSONArray array = object.getJSONArray("List");
-                            if (array.length() > 0) {
+                response -> {
+                    progressDialog.dismiss();
+                    Log.e("Response", response);
+                    try {
+                        //Todo: Still Just Test And Retrieve Data
+                        JSONObject object = new JSONObject(response);
+                        JSONArray array = object.getJSONArray("List");
+                        if (array.length() > 0) {
 
 
-                                /*string token, string Order, string Address, string Region, string City, string State, int UserId , string Date*/
-                                for (int x = 0; x < array.length(); x++) {
-                                    JSONObject b = array.getJSONObject(x);
-                                    Bell bell = new Bell();
-                                    /** Get Bell Info*/
-                                    bell.setId(b.getInt("Id"));
-                                    bell.setBarcode(b.getString("Barcode"));
-                                    bell.setTotalPrice(b.getDouble("TotalPrice"));
-                                    bell.setPhone(b.getString("Phone"));
-                                    bell.setChargeValue(b.getDouble("ChargeValue"));
-                                    bell.setAddress(b.getString("Address"));
-                                    bell.setContact_name(b.getString("ShopName"));
-                                    /** Get Products Info for one bell */
-                                    JSONArray OperOrder = new JSONArray(b.getString("OperOrder"));
-                                    String Amount = "";
-                                    String Price = "";
-                                    String name = "";
-                                    if (OperOrder.length() > 0) {
-                                        List<Double> AmountValues, PriceValues;
-                                        List<String> SaleType, Sale;
-                                        Sale = SaleType = new ArrayList<>();
-                                        AmountValues = PriceValues = new ArrayList<>();
-                                        for (int i = 0; i < OperOrder.length(); i++) {
-                                            JSONObject object2 = OperOrder.getJSONObject(i);
+                            /*string token, string Order, string Address, string Region, string City, string State, int UserId , string Date*/
+                            for (int x = 0; x < array.length(); x++) {
+                                JSONObject b = array.getJSONObject(x);
+                                Bell bell = new Bell();
+                                /** Get Bell Info*/
+                                bell.setId(b.getInt("Id"));
+                                bell.setBarcode(b.getString("Barcode"));
+                                bell.setTotalPrice(b.getDouble("TotalPrice"));
+                                bell.setPhone(b.getString("Phone"));
+                                bell.setChargeValue(b.getDouble("ChargeValue"));
+                                bell.setAddress(b.getString("Address"));
+                                bell.setContact_name(b.getString("ShopName"));
+                                /** Get Products Info for one bell */
+                                JSONArray OperOrder = new JSONArray(b.getString("OperOrder"));
+                                String Amount = "";
+                                String Price = "";
+                                String name = "";
+                                if (OperOrder.length() > 0) {
+                                    List<Double> AmountValues, PriceValues;
+                                    List<String> SaleType, Sale;
+                                    Sale = SaleType = new ArrayList<>();
+                                    AmountValues = PriceValues = new ArrayList<>();
+                                    for (int i = 0; i < OperOrder.length(); i++) {
+                                        JSONObject object2 = OperOrder.getJSONObject(i);
 
-                                            name += object2.getString("Name") + "\n";
-                                            Amount += object2.getInt("Amount") + "\n";
-                                            Price += object2.getDouble("Price") + "\n";
-                                            try {
-                                                Sale.add(b.getString("Sale"));
-                                            }catch (Exception e){
-                                                Sale.add(null);
-                                            }
-
-                                            try {
-                                                SaleType.add(b.getString("SaleType"));
-                                            }catch (Exception e){
-                                                SaleType.add(null);
-                                            }
-
-                                            double temp_amount= object2.getInt("Amount");
-                                            double temp_price= object2.getDouble("Price");
-                                            AmountValues.add(temp_amount);
-                                            PriceValues.add(temp_price);
-
+                                        name += object2.getString("Name") + "\n";
+                                        Amount += object2.getInt("Amount") + "\n";
+                                        Price += object2.getDouble("Price") + "\n";
+                                        try {
+                                            Sale.add(b.getString("Sale"));
+                                        } catch (Exception e) {
+                                            Sale.add(null);
                                         }
-                                        bell.setAmountValues(AmountValues);
-                                        bell.setPriceValues(PriceValues);
-                                        bell.setSaleType(SaleType);
-                                        bell.setSale(Sale);
+
+                                        try {
+                                            SaleType.add(b.getString("SaleType"));
+                                        } catch (Exception e) {
+                                            SaleType.add(null);
+                                        }
+
+                                        double temp_amount = object2.getInt("Amount");
+                                        double temp_price = object2.getDouble("Price");
+                                        AmountValues.add(temp_amount);
+                                        PriceValues.add(temp_price);
                                     }
-
-                                    bell.setName(name);
-                                    bell.setPrice(Price);
-                                    bell.setAmount(Amount);
-
-                                    bellList.add(bell);
+                                    bell.setAmountValues(AmountValues);
+                                    bell.setPriceValues(PriceValues);
+                                    bell.setSaleType(SaleType);
+                                    bell.setSale(Sale);
                                 }
 
+                                bell.setName(name);
+                                bell.setPrice(Price);
+                                bell.setAmount(Amount);
 
-                                Intent intent = new Intent(getActivity() , FinalBellActivity.class);
-                                intent.putExtra("model",(Serializable) bellList);
-                                intent.putExtra("mod",(Serializable) models);
-                                intent.putExtra("Address", addres + "");
-                                intent.putExtra("Region", Region + "");
-                                intent.putExtra("City", City + "");
-                                intent.putExtra("State", State + "");
-                                startActivity(intent);
+                                bellList.add(bell);
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
+                            Intent intent = new Intent(getActivity() , FinalBellActivity.class);
+                            intent.putExtra("model",(Serializable) bellList);
+                            intent.putExtra("mod",(Serializable) models);
+                            intent.putExtra("Address", addres + "");
+                            intent.putExtra("Region", Region + "");
+                            intent.putExtra("City", City + "");
+                            intent.putExtra("State", State + "");
+                            startActivity(intent);
                         }
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
+
+                }, error -> {
+                    progressDialog.dismiss();
+
+                    String WarningMessage = null;
+                    if (error instanceof ServerError)
+                        WarningMessage = "خطأ فى الاتصال بالخادم";
+                    else if (error instanceof TimeoutError)
+                        WarningMessage = "خطأ فى مدة الاتصال";
+                    else if (error instanceof NetworkError)
+                        WarningMessage = "شبكه الانترنت ضعيفه حاليا";
+
+                    if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                            AppToastUtil.LENGTH_LONG, getContext());
+                }) {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                View layout = inflater.inflate(R.layout.toast_warning,null);
-
-                TextView text = (TextView) layout.findViewById(R.id.txt);
-
-                if (error instanceof ServerError)
-                    text.setText("خطأ فى الاتصال بالخادم");
-                else if (error instanceof TimeoutError)
-                    text.setText("خطأ فى مدة الاتصال");
-                else if (error instanceof NetworkError)
-                    text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                Toast toast = new Toast(getActivity());
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
-                toast.setView(layout);
-                toast.show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("token", "?za[ZbGNz2B}MXYZ");
                 map.put("Order", mod + "");

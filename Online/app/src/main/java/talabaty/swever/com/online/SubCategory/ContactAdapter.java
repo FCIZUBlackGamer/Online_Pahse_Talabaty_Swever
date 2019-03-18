@@ -2,14 +2,14 @@ package talabaty.swever.com.online.SubCategory;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,16 +19,13 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
@@ -46,6 +43,7 @@ import talabaty.swever.com.online.Fields.MostTrend.FragmentMostTrend;
 import talabaty.swever.com.online.Fields.MostTrend.Product;
 import talabaty.swever.com.online.Fields.MostViewed.Contact;
 import talabaty.swever.com.online.R;
+import talabaty.swever.com.online.Utils.AppToastUtil;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder> {
 
@@ -95,7 +93,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
         holder.bind(contacts.get(position), listener);
         holder.name.setText(contacts.get(position).getName());
         if (!contacts.get(position).getCompany_logo().isEmpty()) {
-           Picasso.get().load(contacts.get(position).getCompany_logo()).into(holder.logo);
+            Picasso.get().load(contacts.get(position).getCompany_logo()).into(holder.logo);
         }
 
 //        holder.move.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +129,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
         public void bind(final Contact item, final OnItemClickListener listener) {
 
             itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
                     listener.onItemClick(item);
                 }
             });
@@ -146,90 +145,59 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
         progressDialog.setCancelable(false);
         progressDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Categories/ListOfCategories",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                response -> {
 
-                        progressDialog.dismiss();
-                        try {
+                    progressDialog.dismiss();
+                    try {
 
-                            JSONObject object = new JSONObject(response);
-                            JSONArray array = object.getJSONArray("Categories");
-                            if (array.length() > 0) {
-                                //Todo: Show AlertDialog And List SubCategory Of One Contact
-                                AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
-                                builderSingle.setIcon(R.drawable.ic_info_outline_black_24dp);
-                                builderSingle.setTitle("من فضلك أختر احد من الأقسام لعرض المنتجات");
-                                //Todo: Fill SubCategory Of One Contact From Api
-                                for (int x = 0; x < array.length(); x++) {
-                                    JSONObject object1 = array.getJSONObject(x);
-                                    arrayAdapter.add(object1.getString("Name"));
-                                    subCatId.add(object1.getInt("Id"));
-                                }
-                                builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
+                        JSONObject object = new JSONObject(response);
+                        JSONArray array = object.getJSONArray("Categories");
+                        if (array.length() > 0) {
+                            //Todo: Show AlertDialog And List SubCategory Of One Contact
+                            AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
+                            builderSingle.setIcon(R.drawable.ic_info_outline_black_24dp);
+                            builderSingle.setTitle("من فضلك أختر احد من الأقسام لعرض المنتجات");
+                            //Todo: Fill SubCategory Of One Contact From Api
+                            for (int x = 0; x < array.length(); x++) {
+                                JSONObject object1 = array.getJSONObject(x);
+                                arrayAdapter.add(object1.getString("Name"));
+                                subCatId.add(object1.getInt("Id"));
+                            }
+                            builderSingle.setNegativeButton("cancel", (dialog, which) -> dialog.dismiss());
 
-                                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        String strName = arrayAdapter.getItem(which);
-                                        System.out.println("Name: " + strName);
-                                        System.out.println("Id: "+subCatId.get(arrayAdapter.getPosition(strName)));
-                                        //Todo: Second Connect To Api To get List Of Products Of One SubCategory For Same Contact
-                                        loadProductOfSubCategory(subCatId.get(arrayAdapter.getPosition(strName)),product_List);
+                            builderSingle.setAdapter(arrayAdapter, (dialog, which) -> {
+                                String strName = arrayAdapter.getItem(which);
+                                System.out.println("Name: " + strName);
+                                System.out.println("Id: " + subCatId.get(arrayAdapter.getPosition(strName)));
+                                //Todo: Second Connect To Api To get List Of Products Of One SubCategory For Same Contact
+                                loadProductOfSubCategory(subCatId.get(arrayAdapter.getPosition(strName)), product_List);
 
-                                    }
-                                });
-                                builderSingle.show();
+                            });
+                            builderSingle.show();
 
-                            } else {
-                                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                                View layout = inflater.inflate(R.layout.toast_info,null);
-
-                                TextView text = (TextView) layout.findViewById(R.id.txt);
-                                text.setText("عذرا لا يوجد منتجات حاليا فى ذلك القسم");
-
-                                Toast toast = new Toast(context);
-                                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                toast.setDuration(Toast.LENGTH_LONG);
-                                toast.setView(layout);
-                                toast.show();                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        } else {
+                            AppToastUtil.showInfoToast("عذرا لا يوجد جهات عمل حاليا فى ذلك القسم",
+                                    AppToastUtil.LENGTH_LONG, context);
                         }
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                View layout = inflater.inflate(R.layout.toast_warning,null);
+                }, error -> {
+            progressDialog.dismiss();
+            String WarningMessage = null;
+            if (error instanceof ServerError)
+                WarningMessage = "خطأ فى الاتصال بالخادم";
+            else if (error instanceof TimeoutError)
+                WarningMessage = "خطأ فى مدة الاتصال";
+            else if (error instanceof NetworkError)
+                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
 
-                TextView text = (TextView) layout.findViewById(R.id.txt);
-
-                if (error instanceof ServerError)
-                    text.setText("خطأ فى الاتصال بالخادم");
-                else if (error instanceof TimeoutError)
-                    text.setText("خطأ فى مدة الاتصال");
-                else if (error instanceof NetworkError)
-                    text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                Toast toast = new Toast(context);
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
-                toast.setView(layout);
-                toast.show();
-            }
+            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                    AppToastUtil.LENGTH_LONG, context);
         }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("ShopId", ID + "");
                 map.put("token", "?za[ZbGNz2B}MXYZ");
@@ -278,57 +246,36 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
                                     );
                                     product_List.add(r);
                                 }
-                                Log.e("List",product_List.size()+"");
+                                Log.e("List", product_List.size() + "");
 
                                 frameLayout.removeAllViews();
                                 fragmentManager.beginTransaction()
                                         .replace(R.id.frame_pro, new FragmentMostTrend().setList(product_List)).commit();
 
                             } else {
-                                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                                View layout = inflater.inflate(R.layout.toast_info,null);
-
-                                TextView text = (TextView) layout.findViewById(R.id.txt);
-                                text.setText("عذرا لا يوجد منتجات حاليا فى ذلك القسم");
-
-                                Toast toast = new Toast(context);
-                                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                                toast.setDuration(Toast.LENGTH_LONG);
-                                toast.setView(layout);
-                                toast.show();
+                                AppToastUtil.showInfoToast("عذرا لا يوجد جهات عمل حاليا فى ذلك القسم",
+                                        AppToastUtil.LENGTH_LONG, context);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
                     }
-                }, new Response.ErrorListener() {
+                }, error -> {
+                    progressDialog2.dismiss();
+            String WarningMessage = null;
+            if (error instanceof ServerError)
+                WarningMessage = "خطأ فى الاتصال بالخادم";
+            else if (error instanceof TimeoutError)
+                WarningMessage = "خطأ فى مدة الاتصال";
+            else if (error instanceof NetworkError)
+                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
+
+            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                    AppToastUtil.LENGTH_LONG, context);
+                }) {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog2.dismiss();
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                View layout = inflater.inflate(R.layout.toast_warning,null);
-
-                TextView text = (TextView) layout.findViewById(R.id.txt);
-
-                if (error instanceof ServerError)
-                    text.setText("خطأ فى الاتصال بالخادم");
-                else if (error instanceof TimeoutError)
-                    text.setText("خطأ فى مدة الاتصال");
-                else if (error instanceof NetworkError)
-                    text.setText("شبكه الانترنت ضعيفه حاليا");
-
-                Toast toast = new Toast(context);
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
-                toast.setView(layout);
-                toast.show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("CategeoryId", ID + "");
                 Log.e("CategeoryId", ID + "");
@@ -347,11 +294,9 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Vholder>
         Volley.newRequestQueue(context).add(stringRequest);
     }
 
-    private void setAnimation(View viewToAnimate, int position)
-    {
+    private void setAnimation(View viewToAnimate, int position) {
         // If the bound view wasn't previously displayed on screen, it's animated
-        if (position > lastPosition)
-        {
+        if (position > lastPosition) {
             Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
             viewToAnimate.startAnimation(animation);
             lastPosition = position;
