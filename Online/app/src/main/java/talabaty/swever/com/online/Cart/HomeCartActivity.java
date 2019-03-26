@@ -131,7 +131,7 @@ public class HomeCartActivity extends AppCompatActivity {
                 if (sanfList.size() > 0) {
                     /** لو المنتجات اللى ف السله اكتر من 0*/
                     fragmentManager.beginTransaction()
-                            .replace(R.id.frame_home, new FinishCart()).addToBackStack("FinishCart").commit();
+                            .replace(R.id.frame_home, new FinishCartFragment()).addToBackStack("FinishCartFragment").commit();
                 } else {
                     Snackbar.make(v, "لا توجد مشتريات حاليا", Snackbar.LENGTH_SHORT).show();
                 }

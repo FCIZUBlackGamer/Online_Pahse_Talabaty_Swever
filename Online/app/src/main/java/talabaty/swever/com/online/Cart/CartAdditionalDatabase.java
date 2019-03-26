@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
-public class CartAdditionalDatabase extends SQLiteOpenHelper{
+import talabaty.swever.com.online.Utils.AppToastUtil;
+
+public class CartAdditionalDatabase extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "Addition";
 
@@ -25,68 +27,67 @@ public class CartAdditionalDatabase extends SQLiteOpenHelper{
     private static final String PROUCT_PRICE = "price";
 
     private static final int DATABASE_VERSION = 2;
-    Context cont;
+    Context mContext;
 
     // Database creation sql statement
-    private static final String DATABASE_CREATE = "create table " +TABLE_NAME +
-            "( "+UID+" integer primary key , "
-            +BID+" varchar(255) not null, "
-            +AID+" varchar(255) not null, "
-            +NAME+" varchar(255), "
-            +PROUCT_PRICE+" varchar(255) );";
+    private static final String DATABASE_CREATE = "create table " + TABLE_NAME +
+            "( " + UID + " integer primary key , "
+            + BID + " varchar(255) not null, "
+            + AID + " varchar(255) not null, "
+            + NAME + " varchar(255), "
+            + PROUCT_PRICE + " varchar(255) );";
 
     // Database Deletion
-    private static final String DATABASE_DROP = "drop table if exists "+TABLE_NAME+";";
+    private static final String DATABASE_DROP = "drop table if exists " + TABLE_NAME + ";";
 
     public CartAdditionalDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.cont = context;
+        this.mContext = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
             db.execSQL(DATABASE_CREATE);
-            Toast.makeText(cont,"تم إنشاء سله وجبات", Toast.LENGTH_SHORT).show();
-        }catch (SQLException e)
-        {
-            Toast.makeText(cont,"database doesn't created " +e.toString(), Toast.LENGTH_SHORT).show();
+            AppToastUtil.showInfoToast("تم إنشاء سله وجبات",
+                    AppToastUtil.LENGTH_SHORT, mContext);
+        } catch (SQLException e) {
+            AppToastUtil.showErrorToast("database doesn't created " + e.toString(),
+                    AppToastUtil.LENGTH_SHORT, mContext);
         }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
         try {
             db.execSQL(DATABASE_DROP);
             onCreate(db);
-            Toast.makeText(cont,"تم تحديث سله التسوق", Toast.LENGTH_SHORT).show();
-        }catch (SQLException e)
-        {
-            Toast.makeText(cont,"database doesn't upgraded " +e.toString(), Toast.LENGTH_SHORT).show();
+            AppToastUtil.showInfoToast("تم تحديث سله التسوق",
+                    AppToastUtil.LENGTH_SHORT, mContext);
+        } catch (SQLException e) {
+            AppToastUtil.showInfoToast("database doesn't upgraded " + e.toString(),
+                    AppToastUtil.LENGTH_SHORT, mContext);
         }
     }
 
-    public boolean InsertData (String name,
-                               String price,
-                               String addition_id,
-                               String food_id)
-    {
+    public boolean InsertData(String name,
+                              String price,
+                              String addition_id,
+                              String food_id) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(NAME,name);
-        contentValues.put(BID,food_id);
-        contentValues.put(AID,addition_id);
-        contentValues.put(PROUCT_PRICE,price);
-        long result = sqLiteDatabase.insert(TABLE_NAME,null,contentValues);
+        contentValues.put(NAME, name);
+        contentValues.put(BID, food_id);
+        contentValues.put(AID, addition_id);
+        contentValues.put(PROUCT_PRICE, price);
+        long result = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
 
-        return result==-1?false:true;
+        return result == -1 ? false : true;
     }
 
-    public Cursor ShowData (String Id)
-    {
+    public Cursor ShowData(String Id) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery("select * from "+TABLE_NAME+" where "+BID+" = "+Id+" ;",null);
+        Cursor cursor = sqLiteDatabase.rawQuery("select * from " + TABLE_NAME + " where " + BID + " = " + Id + " ;", null);
         return cursor;
     }
 
@@ -103,16 +104,14 @@ public class CartAdditionalDatabase extends SQLiteOpenHelper{
 //        return true;
 //    }
 
-    public int DeleteData (String id)
-    {
+    public int DeleteData(String id) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        return sqLiteDatabase.delete(TABLE_NAME,"food_id = ?",new String[] {id});
+        return sqLiteDatabase.delete(TABLE_NAME, "food_id = ?", new String[]{id});
     }
 
-    public int DeleteData ()
-    {
+    public int DeleteData() {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        sqLiteDatabase.execSQL("delete from "+ TABLE_NAME);
-        return sqLiteDatabase.delete(TABLE_NAME,null,null);
+        sqLiteDatabase.execSQL("delete from " + TABLE_NAME);
+        return sqLiteDatabase.delete(TABLE_NAME, null, null);
     }
 }

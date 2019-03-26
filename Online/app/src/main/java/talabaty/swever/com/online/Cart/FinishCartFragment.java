@@ -16,13 +16,17 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,7 +92,7 @@ import talabaty.swever.com.online.*;
 import talabaty.swever.com.online.Utils.AppToastUtil;
 
 //talabaty-213109
-public class FinishCart extends Fragment implements OnMapReadyCallback,
+public class FinishCartFragment extends Fragment implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         android.location.LocationListener,
@@ -103,7 +107,7 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
     List<CartModel> modelList;
     Location location;
 
-    LoginDatabae loginDatabae ;
+    LoginDatabase loginDatabase;
     String userId;
 
     private static final int PERMISSION_REQUEST_CODE = 7001;
@@ -141,9 +145,9 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
         cursor = cartDatabase.ShowData();
         modelList = new ArrayList<>();
 
-        loginDatabae = new LoginDatabae(getActivity());
-        cursorUserId = loginDatabae.ShowData();
-        while (cursorUserId.moveToNext()){
+        loginDatabase = new LoginDatabase(getActivity());
+        cursorUserId = loginDatabase.ShowData();
+        while (cursorUserId.moveToNext()) {
             userId = cursorUserId.getString(2);
         }
 
@@ -236,7 +240,8 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
 
             @Override
             public void onError(Status status) {
-                Toast.makeText(getActivity(), "" + status.toString(), Toast.LENGTH_SHORT).show();
+                AppToastUtil.showErrorToast(status.toString(),
+                        AppToastUtil.LENGTH_LONG, getContext());
             }
         });
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -271,38 +276,38 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
                 cursor = cartDatabase.ShowData();
                 while (cursor.moveToNext()) {
                     model = new CartModel();
-                    model.setId((int)Float.parseFloat(cursor.getString(12)));
-                    Log.e("ID",model.getId()+"");
+                    model.setId((int) Float.parseFloat(cursor.getString(12)));
+                    Log.e("ID", model.getId() + "");
                     try {
                         model.setSize(Integer.parseInt(cursor.getString(4)));
                         model.setColor(Integer.parseInt(cursor.getString(3)));
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         Log.e("Color&Size", e.getMessage());
                     }
                     model.setName(cursor.getString(1));
                     model.setImage("");
-                    model.setIsOffer((int)Float.parseFloat(cursor.getString(14)));
-                    Log.e("IsOfferrr",model.getIsOffer()+"");
-                    if (model.getIsOffer() == 2){
+                    model.setIsOffer((int) Float.parseFloat(cursor.getString(14)));
+                    Log.e("IsOfferrr", model.getIsOffer() + "");
+                    if (model.getIsOffer() == 2) {
                         int id = model.getId();
                         List<AdditionalModel> list = new ArrayList<>();
-                        Log.e("FinishCartId",id+"");
+                        Log.e("FinishCartId", id + "");
                         cartAdditionalDatabase = new CartAdditionalDatabase(getActivity());
-                        Cursor curso = cartAdditionalDatabase.ShowData(id+"");
-                        while (curso.moveToNext()){
+                        Cursor curso = cartAdditionalDatabase.ShowData(id + "");
+                        while (curso.moveToNext()) {
                             list.add(new AdditionalModel(curso.getString(2),
                                     curso.getString(3),
                                     curso.getString(4)));
                         }
                         model.setAdditionList(list);
-                        Log.e("Model.Size()",model.getAdditionList().size()+"");
+                        Log.e("Model.Size()", model.getAdditionList().size() + "");
                     }
 
                     model.setPrice(Double.parseDouble(cursor.getString(7)));
-                    model.setAmount((int)Float.parseFloat(cursor.getString(5)));
+                    model.setAmount((int) Float.parseFloat(cursor.getString(5)));
 
                     String temp_address = cursor.getString(11);
-                    Log.e("LOOOOOO",temp_address+" ");
+                    Log.e("LOOOOOO", temp_address + " ");
                     if (!temp_address.isEmpty()) {
 
                         String url = "https://maps.googleapis.com/maps/api/geocode/json?address="
@@ -337,7 +342,7 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
                                             double distanceInMeters = first.distanceTo(last);
                                             model.setDistance(distanceInMeters);
                                         } catch (Exception e) {
-                                             Log.e("Error", e.getMessage());
+                                            Log.e("Error", e.getMessage());
                                         }
                                         modelList.add(model);
                                         Date date = new Date();
@@ -349,14 +354,14 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
 
                                     }
                                 } catch (JSONException e1) {
-                                    Log.e("xxxxxxxxxxxx",e1.getMessage()+"");
+                                    Log.e("xxxxxxxxxxxx", e1.getMessage() + "");
 
                                 }
                             }
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.e("yyyyyyyyyyyyyyyyyyy",error.getMessage()+"");
+                                Log.e("yyyyyyyyyyyyyyyyyyy", error.getMessage() + "");
                             }
                         });
                         // add it to the queue
@@ -365,8 +370,8 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
                                 2,  // maxNumRetries = 2 means no retry
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                         Volley.newRequestQueue(getActivity()).add(stateReq);
-                    }else {
-                        Log.e("Address","No Address");
+                    } else {
+                        Log.e("Address", "No Address");
                     }
                     //LatLng locatio = getLocationFromAddress(getActivity(), temp_address);
 
@@ -399,19 +404,19 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
                         // "formatted_string"
                         if (location.getDouble("lat") != 0 && location.getDouble("lng") != 0) {
                             latLng = new LatLng(location.getDouble("lat"), location.getDouble("lng"));
-                            Log.e("latLng.lat",latLng.latitude+"");
-                            Log.e("latLng.lon",latLng.longitude+"");
+                            Log.e("latLng.lat", latLng.latitude + "");
+                            Log.e("latLng.lon", latLng.longitude + "");
                             //Do what you want
                         }
                     } catch (JSONException e1) {
-                        Log.e("xxxxxxxxxxxx",e1.getMessage()+"");
+                        Log.e("xxxxxxxxxxxx", e1.getMessage() + "");
 
                     }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("yyyyyyyyyyyyyyyyyyy",error.getMessage()+"");
+                    Log.e("yyyyyyyyyyyyyyyyyyy", error.getMessage() + "");
                 }
             });
             // add it to the queue
@@ -654,7 +659,7 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
     @Override
     public void onPause() {
         super.onPause();
-        if(progressDialog != null && progressDialog.isShowing()){
+        if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
 
@@ -736,9 +741,9 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
                                 bellList.add(bell);
                             }
 
-                            Intent intent = new Intent(getActivity() , FinalBellActivity.class);
-                            intent.putExtra("model",(Serializable) bellList);
-                            intent.putExtra("mod",(Serializable) models);
+                            Intent intent = new Intent(getActivity(), FinalBellActivity.class);
+                            intent.putExtra("model", (Serializable) bellList);
+                            intent.putExtra("mod", (Serializable) models);
                             intent.putExtra("Address", addres + "");
                             intent.putExtra("Region", Region + "");
                             intent.putExtra("City", City + "");
@@ -750,19 +755,19 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
                     }
 
                 }, error -> {
-                    progressDialog.dismiss();
+            progressDialog.dismiss();
 
-                    String WarningMessage = null;
-                    if (error instanceof ServerError)
-                        WarningMessage = "خطأ فى الاتصال بالخادم";
-                    else if (error instanceof TimeoutError)
-                        WarningMessage = "خطأ فى مدة الاتصال";
-                    else if (error instanceof NetworkError)
-                        WarningMessage = "شبكه الانترنت ضعيفه حاليا";
+            String WarningMessage = null;
+            if (error instanceof ServerError)
+                WarningMessage = "خطأ فى الاتصال بالخادم";
+            else if (error instanceof TimeoutError)
+                WarningMessage = "خطأ فى مدة الاتصال";
+            else if (error instanceof NetworkError)
+                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
 
-                    if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
-                            AppToastUtil.LENGTH_LONG, getContext());
-                }) {
+            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
+                    AppToastUtil.LENGTH_LONG, getContext());
+        }) {
             @Override
             protected Map<String, String> getParams() {
                 HashMap<String, String> map = new HashMap<>();
@@ -777,7 +782,7 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
                 map.put("State", State + "");
                 Log.e("State", State + "");
                 //Log.e("Id", userId.getString(2));
-                map.put("UserId",userId+"");
+                map.put("UserId", userId + "");
                 map.put("Date", new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(date) + "");
                 return map;
             }
@@ -878,7 +883,8 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode))
                 GooglePlayServicesUtil.getErrorDialog(resultCode, getActivity(), PLAY_SERVICE_REQUEST).show();
             else {
-                Toast.makeText(getActivity(), "getActivity() device is not supported", Toast.LENGTH_SHORT).show();
+                AppToastUtil.showErrorToast("device is not supported",
+                        AppToastUtil.LENGTH_LONG, getContext());
                 getActivity().finish();
             }
             return false;
@@ -942,8 +948,8 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onMarkerDragStart(Marker marker) {
-        Toast.makeText(getActivity(), "Dragging Start",
-                Toast.LENGTH_SHORT).show();
+        AppToastUtil.showInfoToast("Dragging Start",
+                AppToastUtil.LENGTH_SHORT, getContext());
     }
 
     @Override
@@ -951,11 +957,11 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
         LatLng latLng = marker.getPosition();
 //                lat = latLng.latitude;
 //                lon = latLng.longitude;
-        Toast.makeText(
-                getActivity(),
-                "Lat " + latLng.latitude + " "
+
+        AppToastUtil.showInfoToast("Lat " + latLng.latitude + " "
                         + "Long " + latLng.longitude,
-                Toast.LENGTH_LONG).show();
+                AppToastUtil.LENGTH_LONG, getContext());
+
         Log.e("Lat1 ", latLng.latitude + " ");
         Log.e("Long1 ", latLng.longitude + " ");
         location.setLatitude(latLng.latitude);
@@ -968,7 +974,7 @@ public class FinishCart extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onMarkerDragEnd(Marker marker) {
-        Toast.makeText(getActivity(), "Dragging End",
-                Toast.LENGTH_SHORT).show();
+        AppToastUtil.showInfoToast("Dragging End",
+                AppToastUtil.LENGTH_SHORT, getContext());
     }
 }

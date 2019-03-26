@@ -485,15 +485,12 @@ public class RegisterActivity extends AppCompatActivity {
         if (requestCode == 100) {
 
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                Toast.makeText(RegisterActivity.this, "camera permission granted", Toast.LENGTH_LONG).show();
-
+                AppToastUtil.showInfoToast("camera permission granted", Toast.LENGTH_LONG,
+                        this);
             } else {
-
-                Toast.makeText(RegisterActivity.this, "camera permission denied", Toast.LENGTH_LONG).show();
-
+                AppToastUtil.showWarningToast("camera permission denied",
+                        Toast.LENGTH_LONG, this);
             }
-
         }
     }//end onRequestPermissionsResult
 

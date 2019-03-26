@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mEmailEditText, mPasswordEditText;
     private Button mLoginButton;
     private TextView mNewAccountTextView;
-    private LoginDatabae mLoginDatabase;
+    private LoginDatabase mLoginDatabase;
     private Cursor mCursor;
 
     private ProgressDialog progressDialog;
@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mRepository = AppRepository.getInstance(getApplication());
 
-        mLoginDatabase = new LoginDatabae(this);
+        mLoginDatabase = new LoginDatabase(this);
 
         mLoginButton = findViewById(R.id.login_button);
         mNewAccountTextView = findViewById(R.id.new_account);
