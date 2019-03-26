@@ -46,7 +46,7 @@ import talabaty.swever.com.online.Cart.CartAdditionalDatabase;
 import talabaty.swever.com.online.Cart.CartDatabase;
 import talabaty.swever.com.online.Cart.CartModel;
 import talabaty.swever.com.online.Cart.Models.Bell;
-import talabaty.swever.com.online.LoginDatabae;
+import talabaty.swever.com.online.LoginDatabase;
 import talabaty.swever.com.online.R;
 import talabaty.swever.com.online.SwitchNav;
 import talabaty.swever.com.online.Utils.AppToastUtil;
@@ -60,7 +60,7 @@ public class FinalBellActivity extends AppCompatActivity {
     List<Bell> bellList;
     List<CartModel> modelList;
 
-    LoginDatabae loginDatabae;
+    LoginDatabase loginDatabase;
     Cursor userId;
     String user_id;
 
@@ -90,8 +90,8 @@ public class FinalBellActivity extends AppCompatActivity {
         barcode = findViewById(R.id.barcode);
         finish = findViewById(R.id.ok);
 
-        loginDatabae = new LoginDatabae(FinalBellActivity.this);
-        userId = loginDatabae.ShowData();
+        loginDatabase = new LoginDatabase(FinalBellActivity.this);
+        userId = loginDatabase.ShowData();
 
         intent = getIntent();
         bellList = (ArrayList<Bell>) intent.getSerializableExtra("model");

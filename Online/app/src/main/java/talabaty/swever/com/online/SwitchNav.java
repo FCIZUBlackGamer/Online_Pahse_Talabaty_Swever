@@ -6,9 +6,11 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.core.view.GravityCompat;
@@ -16,20 +18,17 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
@@ -51,6 +50,7 @@ import talabaty.swever.com.online.Fields.FragmentMotageHome;
 import talabaty.swever.com.online.Fields.MostViewed.FragmentMostViewed;
 import talabaty.swever.com.online.Home.FragmentHome;
 import talabaty.swever.com.online.NearestContacts.ContactInfo;
+import talabaty.swever.com.online.Utils.AppToastUtil;
 import talabaty.swever.com.online.WorkWithUs.FragmentWorkWithUs;
 
 public class SwitchNav extends AppCompatActivity
@@ -64,12 +64,12 @@ public class SwitchNav extends AppCompatActivity
 
     CircleImageView imageView;
     TextView user_name;
-    LoginDatabae loginDatabae;
+    LoginDatabase loginDatabase;
     Cursor cursor;
 
     ProgressDialog progressDialog;
     String AccountType;
-    View parentLayout ;
+    View parentLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,20 +78,20 @@ public class SwitchNav extends AppCompatActivity
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         parentLayout = findViewById(android.R.id.content);
         setUi();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        loginDatabae = new LoginDatabae(this);
-        cursor = loginDatabae.ShowData();
+        loginDatabase = new LoginDatabase(this);
+        cursor = loginDatabase.ShowData();
 
         fragmentManager = getSupportFragmentManager();
         categoryModelList = new ArrayList<>();
         contactInfos = new ArrayList<>();
         final Fragment fragment = new FragmentHome();
         fragmentManager.beginTransaction()
-                .add(R.id.frame_home,fragment).commit();
+                .add(R.id.frame_home, fragment).commit();
         setActionBarTitle("الرئيسيه");
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,14 +106,14 @@ public class SwitchNav extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 /** make the application rtl */
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View view = navigationView.getHeaderView(0);
         TextView email, job;
@@ -125,12 +125,12 @@ public class SwitchNav extends AppCompatActivity
         while (cursor.moveToNext()) {
             user_name.setText(cursor.getString(1));
             email.setText(cursor.getString(7));
-            Log.e("UserId",cursor.getString(2));
+            Log.e("UserId", cursor.getString(2));
             AccountType = cursor.getString(6);
-            if (AccountType.equals("2")){
+            if (AccountType.equals("2")) {
                 job.setText("مدير");
                 job.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 job.setVisibility(View.GONE);
             }
             if (!cursor.getString(5).isEmpty()) {
@@ -144,28 +144,29 @@ public class SwitchNav extends AppCompatActivity
     }
 
 
-    public void setUi(){
+    public void setUi() {
         setContentView(R.layout.activity_switch_nav);
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        ((DrawerLayout)findViewById(R.id.drawer_layout)).removeAllViews();
+        ((DrawerLayout) findViewById(R.id.drawer_layout)).removeAllViews();
         super.onConfigurationChanged(newConfig);
 
         // Checks the orientation of the screen
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
+            AppToastUtil.showInfoToast("landscape",
+                    AppToastUtil.LENGTH_SHORT, this);
 
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-            Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            AppToastUtil.showInfoToast("portrait", AppToastUtil.LENGTH_SHORT, this);
         }
         setUi();
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -219,7 +220,7 @@ public class SwitchNav extends AppCompatActivity
         if (id == R.id.nav_home) {
             /** home page */
             fragmentManager.beginTransaction()
-                    .replace(R.id.frame_home,new FragmentHome()).addToBackStack("FragmentHome").commit();
+                    .replace(R.id.frame_home, new FragmentHome()).addToBackStack("FragmentHome").commit();
         }
 //        else if (id == R.id.nav_new_offers) {
 //            fragmentManager.beginTransaction()
@@ -228,44 +229,44 @@ public class SwitchNav extends AppCompatActivity
         else if (id == R.id.nav_new_food) {
             /** make new food جهز وجبتى */
             fragmentManager.beginTransaction()
-                    .replace(R.id.frame_home,new FragmentMostViewed().setType("prepare_food")).addToBackStack("FragmentMostViewed").commit();
+                    .replace(R.id.frame_home, new FragmentMostViewed().setType("prepare_food")).addToBackStack("FragmentMostViewed").commit();
         } else if (id == R.id.nav_nearest) {
             /** الاقرب*/
             fragmentManager.beginTransaction()
-                    .replace(R.id.frame_home,new FragmentMostViewed().setType("nearest")).addToBackStack("FragmentMostViewed").commit();
+                    .replace(R.id.frame_home, new FragmentMostViewed().setType("nearest")).addToBackStack("FragmentMostViewed").commit();
         } else if (id == R.id.nav_montag) {
             /** Montage page */
             fragmentManager.beginTransaction()
-                    .replace(R.id.frame_home,new FragmentMotageHome()).addToBackStack("FragmentMotageHome").commit();
+                    .replace(R.id.frame_home, new FragmentMotageHome()).addToBackStack("FragmentMotageHome").commit();
         } else if (id == R.id.nav_category) {
             /** Category page */
             fragmentManager.beginTransaction()
-                    .replace(R.id.frame_home,new FragmentFields()).addToBackStack("FragmentFields").commit();
+                    .replace(R.id.frame_home, new FragmentFields()).addToBackStack("FragmentFields").commit();
         } else if (id == R.id.nav_contact) {
             /** جهات العمل */
             fragmentManager.beginTransaction()
-                    .replace(R.id.frame_home,new FragmentMostViewed().setType("normal")).addToBackStack("FragmentMostViewed").commit();
+                    .replace(R.id.frame_home, new FragmentMostViewed().setType("normal")).addToBackStack("FragmentMostViewed").commit();
         } else if (id == R.id.nav_work_with_us) {
             /**  اشترك معنا 0 يعني مسجلش قبل كده 1 يعني هو مسجل بالفعل ومينفعش يسجل تانى  */
             if (AccountType.equals("0")) {
                 fragmentManager.beginTransaction()
                         .replace(R.id.frame_home, new FragmentWorkWithUs()).addToBackStack("FragmentWorkWithUs").commit();
-            }else {
-                Snackbar.make(parentLayout,"لا يمكن انشاء حساب اخر", Snackbar.LENGTH_LONG)
-                        .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+            } else {
+                Snackbar.make(parentLayout, "لا يمكن انشاء حساب اخر", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(getResources().getColor(android.R.color.holo_red_light))
                         .show();
             }
         } else if (id == R.id.nav_call_us) {
             /** تواصل معنا */
             fragmentManager.beginTransaction()
-                    .replace(R.id.frame_home,new FragmentContactUs()).addToBackStack("FragmentContactUs").commit();
+                    .replace(R.id.frame_home, new FragmentContactUs()).addToBackStack("FragmentContactUs").commit();
         } else if (id == R.id.nav_car_shop) {
 //            fragmentManager.beginTransaction()
 //                    .replace(R.id.frame_home,new HomeCartActivity()).addToBackStack("HomeCartActivity").commit();
             startActivity(new Intent(SwitchNav.this, HomeCartActivity.class));
         } else if (id == R.id.nav_logout) {
             //Todo: Action Logout
-            loginDatabae.UpdateData("1","c","c","c","0","","0","0");
+            loginDatabase.UpdateData("1", "c", "c", "c", "0", "", "0", "0");
             startActivity(new Intent(SwitchNav.this, LoginActivity.class));
         }
 //        else {
@@ -282,7 +283,7 @@ public class SwitchNav extends AppCompatActivity
 //                    .replace(R.id.frame_home,new FragmentSubCategory().setId(cat_id)).addToBackStack("FragmentSubCategory").commit();
 //        }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -376,6 +377,7 @@ public class SwitchNav extends AppCompatActivity
             progressDialog.dismiss();
         }
     }
+
     //Todo: For The Nearest Contacts To My Current Location
     private void loadContacts() {
         final ProgressDialog progressDialog = new ProgressDialog(SwitchNav.this);
@@ -383,67 +385,62 @@ public class SwitchNav extends AppCompatActivity
         progressDialog.setCancelable(false);
         progressDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.sweverteam.com/shops/list/list",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                response -> {
+                    progressDialog.dismiss();
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONArray array = object.getJSONArray("List");
+                        if (array.length() > 0) {
+                            for (int x = 0; x < array.length(); x++) {
+                                JSONObject object1 = array.getJSONObject(x);
 
-                        progressDialog.dismiss();
-                        try {
-
-                            JSONObject object = new JSONObject(response);
-                            JSONArray array = object.getJSONArray("List");
-                            if (array.length() > 0) {
-
-                                for (int x = 0; x < array.length(); x++) {
-                                    JSONObject object1 = array.getJSONObject(x);
-
-                                    ContactInfo info = new ContactInfo(
-                                            object1.getInt("Id"),
-                                            object1.getInt("Visitor"),
-                                            object1.getInt("CatogoryId"),
-                                            object1.getInt("CityId"),
-                                            object1.getInt("RegionId"),
-                                            (float) object1.getDouble("Rate"),
-                                            object1.getString("Name"),
-                                            "http://selltlbaty.sweverteam.com"+object1.getString("Photo"),
-                                            object1.getString("Address"),
-                                            object1.getString("Phone"),
-                                            object1.getString("Descripation"),
-                                            object1.getString("Descripation1"),
-                                            object1.getString("Category"),
-                                            object1.getString("CityName"),
-                                            object1.getString("EnglishCityName"),
-                                            object1.getString("RegionName")
-                                    );
-                                    contactInfos.add(info);
-                                }
-
+                                ContactInfo info = new ContactInfo(
+                                        object1.getInt("Id"),
+                                        object1.getInt("Visitor"),
+                                        object1.getInt("CatogoryId"),
+                                        object1.getInt("CityId"),
+                                        object1.getInt("RegionId"),
+                                        (float) object1.getDouble("Rate"),
+                                        object1.getString("Name"),
+                                        "http://selltlbaty.sweverteam.com" + object1.getString("Photo"),
+                                        object1.getString("Address"),
+                                        object1.getString("Phone"),
+                                        object1.getString("Descripation"),
+                                        object1.getString("Descripation1"),
+                                        object1.getString("Category"),
+                                        object1.getString("CityName"),
+                                        object1.getString("EnglishCityName"),
+                                        object1.getString("RegionName")
+                                );
+                                contactInfos.add(info);
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
 
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
+                },
+                error -> {
+                    progressDialog.dismiss();
+                    String errorMessage = null;
+                    if (error instanceof ServerError)
+                        errorMessage = "خطأ إثناء الاتصال بالخادم";
+                    else if (error instanceof NetworkError)
+                        errorMessage = "خطأ فى شبكه الانترنت";
+                    else if (error instanceof TimeoutError)
+                        errorMessage = "خطأ فى مده الانتظار";
+
+                    if (errorMessage != null) AppToastUtil.showErrorToast(
+                            errorMessage, AppToastUtil.LENGTH_LONG, SwitchNav.this);
+                }) {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
-                if (error instanceof ServerError)
-                    Toast.makeText(SwitchNav.this, "خطأ إثناء الاتصال بالخادم", Toast.LENGTH_SHORT).show();
-                else if (error instanceof NetworkError)
-                    Toast.makeText(SwitchNav.this, "خطأ فى شبكه الانترنت", Toast.LENGTH_SHORT).show();
-                else if (error instanceof TimeoutError)
-                    Toast.makeText(SwitchNav.this, "خطأ فى مده الانتظار", Toast.LENGTH_SHORT).show();
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> map = new HashMap<>();
-                map.put("Id","3");
-                map.put("token","?za[ZbGNz2B}MXYZ");
-                map.put("type","1");
-                map.put("x","0");
-                map.put("count","80");
+            protected Map<String, String> getParams() {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("Id", "3");
+                map.put("token", "?za[ZbGNz2B}MXYZ");
+                map.put("type", "1");
+                map.put("x", "0");
+                map.put("count", "80");
                 return map;
             }
         };

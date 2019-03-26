@@ -92,7 +92,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import talabaty.swever.com.online.LoginDatabae;
+import talabaty.swever.com.online.LoginDatabase;
 import talabaty.swever.com.online.R;
 import talabaty.swever.com.online.SwitchNav;
 import talabaty.swever.com.online.Utils.AppToastUtil;
@@ -128,7 +128,7 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
     List<String> cats, values;
     List<spin> spins, spin_cat;
     boolean packag = false;
-    LoginDatabae loginDatabae;
+    LoginDatabase loginDatabase;
     Cursor cursor;
 
     DatePickerDialog.OnDateSetListener DatePicker1;
@@ -182,7 +182,7 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
         doc = view.findViewById(R.id.doc);
         addresss = view.findViewById(R.id.address);
         delivery = view.findViewById(R.id.delivery);
-        loginDatabae = new LoginDatabae(getActivity());
+        loginDatabase = new LoginDatabase(getActivity());
         fragmentManager = getFragmentManager();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
@@ -285,7 +285,8 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
 
             @Override
             public void onError(Status status) {
-                Toast.makeText(getActivity(), "" + status.toString(), Toast.LENGTH_SHORT).show();
+                AppToastUtil.showErrorToast(status.toString(),
+                        AppToastUtil.LENGTH_LONG, getContext());
             }
         });
 
@@ -296,7 +297,7 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
                 if (valid(phone.getText().toString(),
                         national_id.getText().toString(),
                         name.getText().toString())) {
-                    cursor = loginDatabae.ShowData();
+                    cursor = loginDatabase.ShowData();
 
                     withUsModel = new WorkWithUsModel();
                     if (doc.getSelectedItem().toString().equals("بطاقه هوية شخصيه")) {
@@ -572,7 +573,8 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode))
                 GooglePlayServicesUtil.getErrorDialog(resultCode, getActivity(), PLAY_SERVICE_REQUEST).show();
             else {
-                Toast.makeText(getActivity(), "getActivity() device is not supported", Toast.LENGTH_SHORT).show();
+                AppToastUtil.showErrorToast("device is not supported",
+                        AppToastUtil.LENGTH_LONG, getContext());
                 getActivity().finish();
             }
             return false;
@@ -583,20 +585,17 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         if (requestCode == 100) {
-
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                Toast.makeText(getActivity(), "camera permission granted", Toast.LENGTH_LONG).show();
-
+                AppToastUtil.showInfoToast("camera permission granted",
+                        AppToastUtil.LENGTH_SHORT, getContext());
             } else {
-
-                Toast.makeText(getActivity(), "camera permission denied", Toast.LENGTH_LONG).show();
-
+                AppToastUtil.showWarningToast("camera permission denied",
+                        AppToastUtil.LENGTH_LONG, getContext());
             }
-
         }
+
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -619,63 +618,60 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
         //Showing the progress dialog
         progressDialog = ProgressDialog.show(getActivity(), "Uploading...", "Please wait...", false, false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, UPLOAD_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String s) {
-                        //Disimissing the progress dialog
-                        progressDialog.dismiss();
-                        Log.e("Path: ", s);
-                        try {
+                s -> {
+                    //Disimissing the progress dialog
+                    progressDialog.dismiss();
+                    Log.e("Path: ", s);
+                    try {
 
-                            JSONObject object = new JSONObject(s);
-                            JSONArray array = object.getJSONArray("Images");
-                            for (int x = 0; x < array.length(); x++) {
-                                String object1 = array.getString(x);
-                                withUsModel.setPhoto(object1);
-                            }
-
-                            final String jsonInString = gson.toJson(withUsModel);
-                            Log.e("Data", jsonInString);
-                            if (packag) {
-                                int temp = 0;
-                                for (int r = 0; r < spin_cat.size(); r++) {
-                                    Log.e("R", spin_cat.get(r).getId() + "");
-                                    if (String.valueOf(spin_cat.get(r).getName()).equals(cat_id.getSelectedItem().toString())) {
-                                        temp = spin_cat.get(r).getId();
-                                        Log.e("INDEX", temp + "");
-                                    }
-                                }
-                                Log.e("Index", temp + "");
-                                uploadMontage(jsonInString, 0, name.getText().toString(), temp);
-                            } else {
-                                int temp = 0;
-                                for (int r = 0; r < spins.size(); r++) {
-                                    Log.e("R", spins.get(r).getId() + "");
-                                    if (String.valueOf(spins.get(r).getValue()).equals(package_id.getSelectedItem().toString())) {
-                                        temp = spins.get(r).getId();
-                                        Log.e("INDEX", temp + "");
-                                    }
-                                }
-                                Log.e("Index", temp + "");
-
-                                int temp1 = 0;
-                                for (int r = 0; r < spin_cat.size(); r++) {
-                                    Log.e("R", spin_cat.get(r).getId() + "");
-                                    if (String.valueOf(spin_cat.get(r).getName()).equals(cat_id.getSelectedItem().toString())) {
-                                        temp1 = spin_cat.get(r).getId();
-                                        Log.e("INDEX", temp1 + "");
-                                    }
-                                }
-                                Log.e("Index", temp1 + "");
-
-                                uploadMontage(jsonInString, temp, name.getText().toString(), temp1);
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        JSONObject object = new JSONObject(s);
+                        JSONArray array = object.getJSONArray("Images");
+                        for (int x = 0; x < array.length(); x++) {
+                            String object1 = array.getString(x);
+                            withUsModel.setPhoto(object1);
                         }
 
+                        final String jsonInString = gson.toJson(withUsModel);
+                        Log.e("Data", jsonInString);
+                        if (packag) {
+                            int temp = 0;
+                            for (int r = 0; r < spin_cat.size(); r++) {
+                                Log.e("R", spin_cat.get(r).getId() + "");
+                                if (String.valueOf(spin_cat.get(r).getName()).equals(cat_id.getSelectedItem().toString())) {
+                                    temp = spin_cat.get(r).getId();
+                                    Log.e("INDEX", temp + "");
+                                }
+                            }
+                            Log.e("Index", temp + "");
+                            uploadMontage(jsonInString, 0, name.getText().toString(), temp);
+                        } else {
+                            int temp = 0;
+                            for (int r = 0; r < spins.size(); r++) {
+                                Log.e("R", spins.get(r).getId() + "");
+                                if (String.valueOf(spins.get(r).getValue()).equals(package_id.getSelectedItem().toString())) {
+                                    temp = spins.get(r).getId();
+                                    Log.e("INDEX", temp + "");
+                                }
+                            }
+                            Log.e("Index", temp + "");
+
+                            int temp1 = 0;
+                            for (int r = 0; r < spin_cat.size(); r++) {
+                                Log.e("R", spin_cat.get(r).getId() + "");
+                                if (String.valueOf(spin_cat.get(r).getName()).equals(cat_id.getSelectedItem().toString())) {
+                                    temp1 = spin_cat.get(r).getId();
+                                    Log.e("INDEX", temp1 + "");
+                                }
+                            }
+                            Log.e("Index", temp1 + "");
+
+                            uploadMontage(jsonInString, temp, name.getText().toString(), temp1);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+
                 },
                 error -> {
                     //Dismissing the progress dialog
@@ -1136,11 +1132,10 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
         LatLng latLng = marker.getPosition();
 //                lat = latLng.latitude;
 //                lon = latLng.longitude;
-        Toast.makeText(
-                getActivity(),
-                "Lat " + latLng.latitude + " "
+        AppToastUtil.showInfoToast("Lat " + latLng.latitude + " "
                         + "Long " + latLng.longitude,
-                Toast.LENGTH_LONG).show();
+                AppToastUtil.LENGTH_SHORT, getContext());
+
         Log.e("Lat1 ", latLng.latitude + " ");
         Log.e("Long1 ", latLng.longitude + " ");
         location.setLatitude(latLng.latitude);
