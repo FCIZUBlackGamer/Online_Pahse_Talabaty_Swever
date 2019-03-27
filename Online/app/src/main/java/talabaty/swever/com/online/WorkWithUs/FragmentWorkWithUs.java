@@ -47,7 +47,6 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
@@ -94,7 +93,7 @@ import java.util.Map;
 
 import talabaty.swever.com.online.LoginDatabase;
 import talabaty.swever.com.online.R;
-import talabaty.swever.com.online.SwitchNav;
+import talabaty.swever.com.online.SwitchNavActivity;
 import talabaty.swever.com.online.Utils.AppToastUtil;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -1006,7 +1005,7 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
                         AppToastUtil.showInfoToast("تم اضافه المحل بنجاح",
                                 AppToastUtil.LENGTH_LONG, getContext());
 
-                        getActivity().startActivity(new Intent(getActivity(), SwitchNav.class));
+                        getActivity().startActivity(new Intent(getActivity(), SwitchNavActivity.class));
                     } else {
                         String warningMessage;
                         switch (s) {

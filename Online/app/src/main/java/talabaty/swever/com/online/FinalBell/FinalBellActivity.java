@@ -48,7 +48,7 @@ import talabaty.swever.com.online.Cart.CartModel;
 import talabaty.swever.com.online.Cart.Models.Bell;
 import talabaty.swever.com.online.LoginDatabase;
 import talabaty.swever.com.online.R;
-import talabaty.swever.com.online.SwitchNav;
+import talabaty.swever.com.online.SwitchNavActivity;
 import talabaty.swever.com.online.Utils.AppToastUtil;
 
 public class FinalBellActivity extends AppCompatActivity {
@@ -162,7 +162,7 @@ public class FinalBellActivity extends AppCompatActivity {
                             cartAdditionalDatabase.DeleteData();
                             //Send Message To User
                             sendMessage("طلباتى", "تم تنفيذ الطلب وجارى المتابعه");
-                            Intent intent = new Intent(FinalBellActivity.this, SwitchNav.class);
+                            Intent intent = new Intent(FinalBellActivity.this, SwitchNavActivity.class);
 
                             startActivity(intent);
                             finish();

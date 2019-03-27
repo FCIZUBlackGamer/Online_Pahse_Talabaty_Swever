@@ -168,7 +168,7 @@ public class FragmentMotageHome extends Fragment {
 //            }
 //        }){
 //            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
+//            protected Map<String, String> createNearestShopsParams() throws AuthFailureError {
 //                HashMap<String,String> map = new HashMap<>();
 //                map.put("token","?za[ZbGNz2B}MXYZ");
 //                return map;

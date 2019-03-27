@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SwitchNav"
+            android:name=".SwitchNavActivity"
             android:label="@string/title_activity_switch_nav"
             android:theme="@style/AppTheme"
             android:configChanges="keyboardHidden|orientation"/>

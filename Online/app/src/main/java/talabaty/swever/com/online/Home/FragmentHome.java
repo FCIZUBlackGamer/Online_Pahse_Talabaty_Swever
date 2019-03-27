@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,9 @@ import talabaty.swever.com.online.Fields.MostViewed.Contact;
 import talabaty.swever.com.online.R;
 import talabaty.swever.com.online.SubCategory.ContactAdapter;
 import talabaty.swever.com.online.SubCategory.ProductAdapter;
+import talabaty.swever.com.online.Utils.AppRepository;
 import talabaty.swever.com.online.Utils.AppToastUtil;
+import talabaty.swever.com.online.Utils.StringUtil;
 
 public class FragmentHome extends Fragment {
     RecyclerView recyclerViewcontact, recyclerViewproducts, recyclerViewoffers;
@@ -57,9 +60,12 @@ public class FragmentHome extends Fragment {
     FrameLayout frameLayout;
     FragmentManager fragmentManager;
 
+    private AppRepository mRepository;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mRepository = AppRepository.getInstance(getActivity().getApplication());
 //        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         inflate = inflater;
         containe = container;
@@ -129,11 +135,12 @@ public class FragmentHome extends Fragment {
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Home/ListProduct",
-                response -> {
-                    progressDialog.dismiss();
-                    try {
+        mRepository.listProducts(80).observe(this, response -> {
+            if (response != null) {
+                progressDialog.dismiss();
 
+                if (!response.equals(StringUtil.DISMISS_PROGRESS_DIALOG)) {
+                    try {
                         JSONObject object = new JSONObject(response);
                         final JSONArray array = object.getJSONArray("List");
                         if (array.length() > 0) {
@@ -159,51 +166,22 @@ public class FragmentHome extends Fragment {
                                 );
                                 r.setIsOffer(0);
                                 productList.add(r);
-
                             }
 
                             adapterproducts = new ProductAdapter(getActivity(), productList);
                             AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapterproducts);
                             alphaAdapter.setDuration(3000);
                             recyclerViewproducts.setAdapter(adapterproducts);
-
                         } else {
                             AppToastUtil.showInfoToast("لا توجد بيانات",
                                     AppToastUtil.LENGTH_LONG, getContext());
                         }
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.e(StringUtil.EXCEPTION_TAG, e.getMessage());
                     }
-
-                }, error -> {
-            progressDialog.dismiss();
-
-            String WarningMessage = null;
-            if (error instanceof ServerError)
-                WarningMessage = "خطأ فى الاتصال بالخادم";
-            else if (error instanceof TimeoutError)
-                WarningMessage = "خطأ فى مدة الاتصال";
-            else if (error instanceof NetworkError)
-                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
-
-            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
-                    AppToastUtil.LENGTH_LONG, getContext());
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("count", 80 + "");
-                map.put("token", "?za[ZbGNz2B}MXYZ");
-                return map;
+                }
             }
-        };
-
-//        Volley.newRequestQueue(getActivity()).add(stringRequest);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                2,  // maxNumRetries = 2 means no retry
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(getActivity()).add(stringRequest);
+        });
     }
 
     private void loadOffers() {
@@ -212,11 +190,12 @@ public class FragmentHome extends Fragment {
         progressDialog1.setCancelable(false);
         progressDialog1.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Offers/List",
-                response -> {
-                    progressDialog1.dismiss();
-                    try {
+        mRepository.listOffers(80).observe(this, response -> {
+            if (response != null) {
+                progressDialog1.dismiss();
 
+                if (!response.equals(StringUtil.DISMISS_PROGRESS_DIALOG)) {
+                    try {
                         JSONObject object = new JSONObject(response);
                         final JSONArray array = object.getJSONArray("Offers");
                         if (array.length() > 0) {
@@ -255,51 +234,11 @@ public class FragmentHome extends Fragment {
                                     AppToastUtil.LENGTH_LONG, getContext());
                         }
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.e(StringUtil.EXCEPTION_TAG, e.getMessage());
                     }
-                }, error -> {
-            progressDialog1.dismiss();
-
-            String WarningMessage = null;
-            if (error instanceof ServerError)
-                WarningMessage = "خطأ فى الاتصال بالخادم";
-            else if (error instanceof TimeoutError)
-                WarningMessage = "خطأ فى مدة الاتصال";
-            else if (error instanceof NetworkError)
-                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
-
-            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
-                    AppToastUtil.LENGTH_LONG, getContext());
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("count", 80 + "");
-                map.put("token", "?za[ZbGNz2B}MXYZ");
-                return map;
+                }
             }
-        };
-
-//        Volley.newRequestQueue(getActivity()).add(stringRequest);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                2,  // maxNumRetries = 2 means no retry
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(getActivity()).add(stringRequest);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-        if (progressDialog1 != null && progressDialog1.isShowing()) {
-            progressDialog1.dismiss();
-        }
-        if (progressDialog2 != null && progressDialog2.isShowing()) {
-            progressDialog2.dismiss();
-        }
+        });
     }
 
     private void loadContact() {
@@ -307,11 +246,13 @@ public class FragmentHome extends Fragment {
         progressDialog2.setMessage("جارى تحميل البيانات ...");
         progressDialog2.setCancelable(false);
         progressDialog2.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Home/ShopList",
-                response -> {
-                    progressDialog2.dismiss();
-                    try {
 
+        mRepository.listShops(80).observe(this, response -> {
+            if (response != null) {
+                progressDialog2.dismiss();
+
+                if (!response.equals(StringUtil.DISMISS_PROGRESS_DIALOG)) {
+                    try {
                         JSONObject object = new JSONObject(response);
                         JSONArray array = object.getJSONArray("List");
                         if (array.length() > 0) {
@@ -354,37 +295,24 @@ public class FragmentHome extends Fragment {
                                     AppToastUtil.LENGTH_LONG, getContext());
                         }
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.e(StringUtil.EXCEPTION_TAG, e.getMessage());
                     }
-
-                }, error -> {
-            progressDialog2.dismiss();
-
-            String WarningMessage = null;
-            if (error instanceof ServerError)
-                WarningMessage = "خطأ فى الاتصال بالخادم";
-            else if (error instanceof TimeoutError)
-                WarningMessage = "خطأ فى مدة الاتصال";
-            else if (error instanceof NetworkError)
-                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
-
-            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
-                    AppToastUtil.LENGTH_LONG, getContext());
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("count", 80 + "");
-                map.put("token", "?za[ZbGNz2B}MXYZ");
-                return map;
+                }
             }
-        };
+        });
+    }
 
-//        Volley.newRequestQueue(getActivity()).add(stringRequest);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                2,  // maxNumRetries = 2 means no retry
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(getActivity()).add(stringRequest);
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        if (progressDialog1 != null && progressDialog1.isShowing()) {
+            progressDialog1.dismiss();
+        }
+        if (progressDialog2 != null && progressDialog2.isShowing()) {
+            progressDialog2.dismiss();
+        }
     }
 }

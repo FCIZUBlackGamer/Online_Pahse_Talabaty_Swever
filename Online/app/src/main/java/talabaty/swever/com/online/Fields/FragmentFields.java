@@ -34,7 +34,7 @@ import java.util.Map;
 
 import talabaty.swever.com.online.R;
 import talabaty.swever.com.online.SubCategory.FragmentSubCategory;
-import talabaty.swever.com.online.SwitchNav;
+import talabaty.swever.com.online.SwitchNavActivity;
 import talabaty.swever.com.online.Utils.AppToastUtil;
 
 public class FragmentFields extends Fragment {
@@ -66,7 +66,7 @@ public class FragmentFields extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        ((SwitchNav) getActivity())
+        ((SwitchNavActivity) getActivity())
                 .setActionBarTitle("مجالات ");
 //        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 //            @Override

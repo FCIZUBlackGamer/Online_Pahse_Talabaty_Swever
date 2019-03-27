@@ -287,7 +287,7 @@ public class FragmentOfferDetails extends Fragment {
 //                    }
 //                }) {
 //                    @Override
-//                    protected Map<String, String> getParams() throws AuthFailureError {
+//                    protected Map<String, String> createNearestShopsParams() throws AuthFailureError {
 //                        HashMap<String, String> map = new HashMap<>();
 //                        map.put("Id", id + "");
 //                        map.put("vote", (int) rating + "");

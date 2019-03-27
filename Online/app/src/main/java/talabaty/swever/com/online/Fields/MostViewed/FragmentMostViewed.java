@@ -49,7 +49,7 @@ import java.util.Map;
 
 import talabaty.swever.com.online.Contact.FragmentHomeContacts;
 import talabaty.swever.com.online.R;
-import talabaty.swever.com.online.SwitchNav;
+import talabaty.swever.com.online.SwitchNavActivity;
 import talabaty.swever.com.online.PrepareFood.*;
 import talabaty.swever.com.online.Utils.AppToastUtil;
 
@@ -175,13 +175,13 @@ public class FragmentMostViewed extends Fragment {
         super.onStart();
 /** الاكثر زياره*/
         if (Type.equals("trend")) {
-            ((SwitchNav) getActivity())
+            ((SwitchNavActivity) getActivity())
                     .setActionBarTitle("الأكثر زيارة");
             Link = "http://onlineapi.rivile.com/shops/MostVisited/list";
             loadContact(0, "1");
         } else if (Type.equals("nearest")) {
             /** الاقرب**/
-            ((SwitchNav) getActivity())
+            ((SwitchNavActivity) getActivity())
                     .setActionBarTitle("الأقرب");
             Link = "http://onlineapi.rivile.com/shops/list";
 
