@@ -6,16 +6,8 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
 import android.os.Bundle;
-
-import androidx.core.content.ContextCompat;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -41,11 +25,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import talabaty.swever.com.online.R;
+import talabaty.swever.com.online.Utils.AppRepository;
 import talabaty.swever.com.online.Utils.AppToastUtil;
+import talabaty.swever.com.online.Utils.StringUtil;
 
 public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
 
@@ -54,6 +42,8 @@ public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
     EditText title, name, content, email;
     Button send;
     ProgressDialog progressDialog, progressDialog2;
+
+    private AppRepository mRepository;
 
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +62,9 @@ public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        mRepository = AppRepository.getInstance(getActivity().getApplication());
+
         View view = inflater.inflate(R.layout.fragment_contact_us, container, false);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
@@ -101,25 +94,25 @@ public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
         loadDetails();
 
 
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (valiate(name.getText().toString(),
-                        title.getText().toString(),
-                        email.getText().toString(),
-                        content.getText().toString())) {
+        send.setOnClickListener(v -> {
+            if (valiate(name.getText().toString(),
+                    title.getText().toString(),
+                    email.getText().toString(),
+                    content.getText().toString())) {
 
-                    progressDialog = new ProgressDialog(getActivity());
-                    progressDialog.setMessage("جارى تحميل البيانات ...");
-                    progressDialog.setCancelable(false);
-                    progressDialog.show();
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/contact/SendMail",
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
+                progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setMessage("جارى تحميل البيانات ...");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
 
-                                    progressDialog.dismiss();
-                                    if (response.equals("\"success\"")) {
+                mRepository.contactUsWithSocial(name.getText().toString(), email.getText().toString(),
+                        title.getText().toString(), content.getText().toString())
+                        .observe(this, response -> {
+                            if (response != null) {
+                                progressDialog.dismiss();
+
+                                if (!response.equals(StringUtil.DISMISS_PROGRESS_DIALOG)) {
+                                    if (response.equals(StringUtil.RESPONSE_SUCCESS)) {
                                         AppToastUtil.showInfoToast("تم الإرسال بنجاح",
                                                 AppToastUtil.LENGTH_LONG, getContext());
                                     } else {
@@ -127,38 +120,8 @@ public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
                                                 AppToastUtil.LENGTH_LONG, getContext());
                                     }
                                 }
-                            }, error -> {
-                        progressDialog.dismiss();
-
-                        String WarningMessage = null;
-                        if (error instanceof ServerError)
-                            WarningMessage = "خطأ فى الاتصال بالخادم";
-                        else if (error instanceof TimeoutError)
-                            WarningMessage = "خطأ فى مدة الاتصال";
-                        else if (error instanceof NetworkError)
-                            WarningMessage = "شبكه الانترنت ضعيفه حاليا";
-
-                        if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
-                                AppToastUtil.LENGTH_LONG, getContext());
-                    }) {
-                        @Override
-                        protected Map<String, String> getParams() {
-                            HashMap<String, String> map = new HashMap<>();
-                            map.put("token", "?za[ZbGNz2B}MXYZ");
-                            map.put("name", name.getText().toString());
-                            map.put("email", email.getText().toString());
-                            map.put("subject", title.getText().toString());
-                            map.put("message", content.getText().toString());
-                            return map;
-                        }
-                    };
-//        Volley.newRequestQueue(getActivity()).add(stringRequest);
-                    stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                            DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                            2,  // maxNumRetries = 2 means no retry
-                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                    Volley.newRequestQueue(getActivity()).add(stringRequest);
-                }
+                            }
+                        });
             }
         });
 
@@ -250,11 +213,13 @@ public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
         progressDialog2.setMessage("جارى تحميل البيانات ...");
         progressDialog2.setCancelable(false);
         progressDialog2.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/contact/SocialMedia",
-                response -> {
-                    progressDialog2.dismiss();
-                    try {
 
+        mRepository.contactUsWithSocial().observe(this, response -> {
+            if (response != null) {
+                progressDialog2.dismiss();
+
+                if (!response.equals(StringUtil.DISMISS_PROGRESS_DIALOG)) {
+                    try {
                         JSONObject object = new JSONObject(response);
                         JSONObject array = object.getJSONObject("list");
                         if (array.length() > 0) {
@@ -270,36 +235,11 @@ public class FragmentContactUs extends Fragment implements OnMapReadyCallback {
 
                         }
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.e(StringUtil.EXCEPTION_TAG, e.getMessage());
                     }
-
-                }, error -> {
-            progressDialog2.dismiss();
-
-            String WarningMessage = null;
-            if (error instanceof ServerError)
-                WarningMessage = "خطأ فى الاتصال بالخادم";
-            else if (error instanceof TimeoutError)
-                WarningMessage = "خطأ فى مدة الاتصال";
-            else if (error instanceof NetworkError)
-                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
-
-            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
-                    AppToastUtil.LENGTH_LONG, getContext());
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("token", "?za[ZbGNz2B}MXYZ");
-                return map;
+                }
             }
-        };
-//        Volley.newRequestQueue(getActivity()).add(stringRequest);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                2,  // maxNumRetries = 2 means no retry
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(getActivity()).add(stringRequest);
+        });
     }
 
     @Override

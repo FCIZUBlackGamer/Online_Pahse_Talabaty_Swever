@@ -6,10 +6,13 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 
 import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_COUNT;
+import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_EMAIL;
 import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_IMAGE;
+import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_MESSAGE;
 import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_NAME;
 import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_PASSWORD;
 import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_SELL_ONLINE;
+import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_SUBJECT;
 import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_TOKEN;
 import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_TYPE;
 import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_USER;
@@ -99,6 +102,24 @@ public class APIParamsUtil {
     public static Map<String, String> createAddShopParams(String shop) {
         Map<String, String> params = new HashMap<>();
         params.put(PARAM_NAME_SELL_ONLINE, shop);
+        params.put(PARAM_NAME_TOKEN, API_TOKEN);
+        return params;
+    }
+
+    @NonNull
+    public static Map<String, String> createContactUsWithMailParams(String name, String email, String subject, String content) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put(PARAM_NAME_NAME, name);
+        params.put(PARAM_NAME_EMAIL, email);
+        params.put(PARAM_NAME_SUBJECT, subject);
+        params.put(PARAM_NAME_MESSAGE, content);
+        params.put(PARAM_NAME_TOKEN, API_TOKEN);
+        return params;
+    }
+
+    @NonNull
+    public static Map<String, String> createContactUsWithSocial() {
+        Map<String, String> params = new HashMap<>();
         params.put(PARAM_NAME_TOKEN, API_TOKEN);
         return params;
     }

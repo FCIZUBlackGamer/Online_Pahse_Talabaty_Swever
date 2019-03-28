@@ -76,7 +76,7 @@ public class AppRepository {
                 APIParamsUtil.createListNearestShopsParams(type, count, x));
     }
 
-    public LiveData<String> listCategories(){
+    public LiveData<String> listCategories() {
         return addToRequestQueue(APIURLUtil.LIST_CATEGORIES_URL,
                 APIParamsUtil.createListCategoriesParams());
     }
@@ -84,6 +84,16 @@ public class AppRepository {
     public LiveData<String> addShop(String shop) {
         return addToRequestQueue(APIURLUtil.ADD_SHOP_URL,
                 APIParamsUtil.createAddShopParams(shop));
+    }
+
+    public LiveData<String> contactUsWithSocial(String name, String email, String subject, String content) {
+        return addToRequestQueue(APIURLUtil.CONTACT_US_WITH_MAIL_URL,
+                APIParamsUtil.createContactUsWithMailParams(name, email, subject, content));
+    }
+
+    public LiveData<String> contactUsWithSocial() {
+        return addToRequestQueue(APIURLUtil.CONTACT_US_WITH_SOCIAL,
+                APIParamsUtil.createContactUsWithSocial());
     }
 
     //    public LiveData<String>(){

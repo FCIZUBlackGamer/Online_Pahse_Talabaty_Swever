@@ -18,6 +18,9 @@ public class StringUtil {
     public static final String PARAM_NAME_TYPE = "type";
     public static final String PARAM_NAME_X = "x";
     public static final String PARAM_NAME_SELL_ONLINE = "SellOnline";
+    public static final String PARAM_NAME_EMAIL = "email";
+    public static final String PARAM_NAME_SUBJECT= "subject";
+    public static final String PARAM_NAME_MESSAGE= "message";
 
 //    public static final String PARAM_NAME_ = "";
 //    public static final String PARAM_NAME_ = "";
