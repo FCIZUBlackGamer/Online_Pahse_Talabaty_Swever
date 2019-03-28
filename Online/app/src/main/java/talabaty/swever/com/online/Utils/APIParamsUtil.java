@@ -86,4 +86,11 @@ public class APIParamsUtil {
         params.put(PARAM_NAME_TOKEN, API_TOKEN);
         return params;
     }
+
+    @NonNull
+    public static Map<String, String> createListCategoriesParams() {
+        Map<String, String> params = new HashMap<>();
+        params.put(PARAM_NAME_TOKEN, API_TOKEN);
+        return params;
+    }
 }

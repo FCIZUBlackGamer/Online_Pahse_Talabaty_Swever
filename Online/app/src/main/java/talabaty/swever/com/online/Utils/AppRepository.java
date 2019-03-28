@@ -76,7 +76,12 @@ public class AppRepository {
                 APIParamsUtil.createListNearestShopsParams(type, count, x));
     }
 
-//    public LiveData<String>(){
+    public LiveData<String> listCategories(){
+        return addToRequestQueue(APIURLUtil.LIST_CATEGORIES_URL,
+                APIParamsUtil.createListCategoriesParams());
+    }
+
+    //    public LiveData<String>(){
 //        return addToRequestQueue(APIURLUtil.,
 //                APIParamsUtil.);
 //    }

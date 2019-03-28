@@ -13,4 +13,5 @@ public class APIURLUtil {
     public static final String LIST_SHOPS_URL = BASE_URL + "Home/ShopList";
     public static final String LIST_MOST_VISITED_SHOPS_URL = BASE_URL + "shops/MostVisited/list";
     public static final String LIST_NEAREST_SHOPS_URL = BASE_URL + "shops/list";
+    public static final String LIST_CATEGORIES_URL = BASE_URL + "Fields/List";
 }

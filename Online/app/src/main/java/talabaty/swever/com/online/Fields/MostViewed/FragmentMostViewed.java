@@ -369,11 +369,10 @@ public class FragmentMostViewed extends Fragment {
                                     object1.getString("Address"),
                                     "BBB",// object1.getString("Email")
                                     object1.getString("Phone"),
-                                    "http://selltlbaty.rivile.com" + object1.getString("Photo"),
+                                    APIURLUtil.IMAGE_BASE_URL + object1.getString("Photo"),
                                     ""
                             );
                             contacts.add(info);
-
                         }
 
                         mostViewedAdapter = new MostViewedAdapter(getActivity(), contacts, 0);
@@ -660,5 +659,4 @@ public class FragmentMostViewed extends Fragment {
 //        } while (true);
 //        return location;
 //    }
-
 }

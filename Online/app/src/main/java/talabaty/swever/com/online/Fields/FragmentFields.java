@@ -3,6 +3,16 @@ package talabaty.swever.com.online.Fields;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,32 +20,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkError;
-import com.android.volley.Request;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import talabaty.swever.com.online.R;
 import talabaty.swever.com.online.SubCategory.FragmentSubCategory;
 import talabaty.swever.com.online.SwitchNavActivity;
+import talabaty.swever.com.online.Utils.APIURLUtil;
+import talabaty.swever.com.online.Utils.AppRepository;
 import talabaty.swever.com.online.Utils.AppToastUtil;
+import talabaty.swever.com.online.Utils.StringUtil;
 
 public class FragmentFields extends Fragment {
 
@@ -47,10 +38,15 @@ public class FragmentFields extends Fragment {
     List<Category> categoryList;
     ProgressDialog progressDialog;
 
+    private AppRepository mRepository;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        mRepository = AppRepository.getInstance(getActivity().getApplication());
+
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 //        viewPager = (ViewPager) view.findViewById(R.id.pager);
         fragmentManager = getFragmentManager();
@@ -113,9 +109,12 @@ public class FragmentFields extends Fragment {
         progressDialog.setMessage("جارى تحميل المجالات ...");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Fields/List",
-                response -> {
-                    progressDialog.dismiss();
+
+        mRepository.listCategories().observe(this, response -> {
+            if (response != null) {
+                progressDialog.dismiss();
+
+                if (!response.equals(StringUtil.DISMISS_PROGRESS_DIALOG)) {
                     try {
                         JSONObject object = new JSONObject(response);
                         JSONArray array = object.getJSONArray("Fields");
@@ -124,13 +123,13 @@ public class FragmentFields extends Fragment {
                                 JSONObject object1 = array.getJSONObject(x);
                                 Category categoryModel = new Category(object1.getInt("Id"),
                                         object1.getString("Name"),
-                                        "http://selltlbaty.rivile.com" + object1.getString("Photo")
+                                        APIURLUtil.IMAGE_BASE_URL + object1.getString("Photo")
                                 );
                                 categoryList.add(categoryModel);
                             }
 
                             catAdapter = new CategoryAdapter(getActivity(), categoryList, item -> fragmentManager.beginTransaction()
-                                    .replace(R.id.frame_home, new FragmentSubCategory().setId(item.getId())).addToBackStack("FragmentSubCategory").commit());
+                                    .replace(R.id.frame_home, FragmentSubCategory.setId(item.getId())).addToBackStack("FragmentSubCategory").commit());
                             recyclerView_cat.setAdapter(catAdapter);
 
                         } else {
@@ -140,34 +139,9 @@ public class FragmentFields extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-                }, error -> {
-            progressDialog.dismiss();
-
-            String WarningMessage = null;
-            if (error instanceof ServerError)
-                WarningMessage = "خطأ فى الاتصال بالخادم";
-            else if (error instanceof TimeoutError)
-                WarningMessage = "خطأ فى مدة الاتصال";
-            else if (error instanceof NetworkError)
-                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
-
-            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
-                    AppToastUtil.LENGTH_LONG, getContext());
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("token", "?za[ZbGNz2B}MXYZ");
-                return map;
+                }
             }
-        };
-//        Volley.newRequestQueue(getActivity()).add(stringRequest);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                3,  // maxNumRetries = 2 means no retry
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(getActivity()).add(stringRequest);
+        });
     }
 
     @Override
