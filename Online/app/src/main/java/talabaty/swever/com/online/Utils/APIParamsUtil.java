@@ -49,53 +49,32 @@ public class APIParamsUtil {
 
     @NonNull
     public static Map<String, String> createListProductsParams(Integer count) {
-        Map<String, String> params = new HashMap<>();
-        params.put(PARAM_NAME_COUNT, String.valueOf(count));
-        params.put(PARAM_NAME_TOKEN, API_TOKEN);
-        return params;
+        return create_Count_Token_Param(count);
     }
 
     @NonNull
     public static Map<String, String> createListOffersParams(Integer count) {
-        Map<String, String> params = new HashMap<>();
-        params.put(PARAM_NAME_COUNT, String.valueOf(count));
-        params.put(PARAM_NAME_TOKEN, API_TOKEN);
-        return params;
+        return create_Count_Token_Param(count);
     }
 
     @NonNull
     public static Map<String, String> createListShopsParams(Integer count) {
-        Map<String, String> params = new HashMap<>();
-        params.put(PARAM_NAME_COUNT, String.valueOf(count));
-        params.put(PARAM_NAME_TOKEN, API_TOKEN);
-        return params;
+        return create_Count_Token_Param(count);
     }
 
     @NonNull
     public static Map<String, String> createListMostVisitedShopsParams(Integer type, Integer count, Integer x) {
-        Map<String, String> params = new HashMap<>();
-        params.put(PARAM_NAME_TYPE, String.valueOf(type));
-        params.put(PARAM_NAME_COUNT, String.valueOf(count));
-        params.put(PARAM_NAME_X, String.valueOf(x));
-        params.put(PARAM_NAME_TOKEN, API_TOKEN);
-        return params;
+        return create_Count_Type_X_TOKEN_Param(type, count, x);
     }
 
     @NonNull
     public static Map<String, String> createListNearestShopsParams(Integer type, Integer count, Integer x) {
-        Map<String, String> params = new HashMap<>();
-        params.put(PARAM_NAME_TYPE, String.valueOf(type));
-        params.put(PARAM_NAME_COUNT, String.valueOf(count));
-        params.put(PARAM_NAME_X, String.valueOf(x));
-        params.put(PARAM_NAME_TOKEN, API_TOKEN);
-        return params;
+        return create_Count_Type_X_TOKEN_Param(type, count, x);
     }
 
     @NonNull
     public static Map<String, String> createListCategoriesParams() {
-        Map<String, String> params = new HashMap<>();
-        params.put(PARAM_NAME_TOKEN, API_TOKEN);
-        return params;
+        return createTokenParam();
     }
 
     @NonNull
@@ -119,8 +98,35 @@ public class APIParamsUtil {
 
     @NonNull
     public static Map<String, String> createContactUsWithSocial() {
+        return createTokenParam();
+    }
+
+    @NonNull
+    public static Map<String, String> createListPackagesParams() {
+        return createTokenParam();
+    }
+
+    @NonNull
+    private static Map<String, String> createTokenParam() {
         Map<String, String> params = new HashMap<>();
         params.put(PARAM_NAME_TOKEN, API_TOKEN);
+        return params;
+    }
+
+    @NonNull
+    private static Map<String, String> create_Count_Token_Param(int count) {
+        Map<String, String> params = new HashMap<>();
+        params.put(PARAM_NAME_COUNT, String.valueOf(count));
+        params.putAll(createTokenParam());
+        return params;
+    }
+
+    @NonNull
+    private static Map<String, String> create_Count_Type_X_TOKEN_Param(Integer type, Integer count, Integer x) {
+        Map<String, String> params = new HashMap<>();
+        params.put(PARAM_NAME_TYPE, String.valueOf(type));
+        params.put(PARAM_NAME_X, String.valueOf(x));
+        params.putAll(create_Count_Token_Param(count));
         return params;
     }
 }

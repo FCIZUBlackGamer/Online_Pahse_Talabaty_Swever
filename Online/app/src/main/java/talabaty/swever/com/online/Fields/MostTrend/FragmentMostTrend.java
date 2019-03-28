@@ -3,22 +3,12 @@ package talabaty.swever.com.online.Fields.MostTrend;
 import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,6 +20,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -41,6 +32,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import talabaty.swever.com.online.ProductDetails.FragmentProductDetails;
 import talabaty.swever.com.online.R;
 import talabaty.swever.com.online.Utils.AppToastUtil;
@@ -117,14 +112,11 @@ public class FragmentMostTrend extends Fragment {
             Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fly_in_from_center);
             gridView.setAnimation(anim);
             anim.start();
-            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Product book = product_List.get(position);
+            gridView.setOnItemClickListener((parent, view, position, id) -> {
+                Product book = product_List.get(position);
 
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.frame_home, new FragmentProductDetails().setId(book.getId(), 0)).addToBackStack("FragmentOfferDetails").commit();
-                }
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frame_home, new FragmentProductDetails().setId(book.getId(), 0)).addToBackStack("FragmentOfferDetails").commit();
             });
 
         } else {
@@ -155,29 +147,23 @@ public class FragmentMostTrend extends Fragment {
                 loadData(0, "1");
             }
 
-            next.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.e("Item Num", item_num + "");
-                    if (products.size() == 80) {
-                        loadData(item_num, "1");
-                    } else {
-                        Snackbar.make(v, "نهايه المنتجات", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                    }
+            next.setOnClickListener(v -> {
+                Log.e("Item Num", item_num + "");
+                if (products.size() == 80) {
+                    loadData(item_num, "1");
+                } else {
+                    Snackbar.make(v, "نهايه المنتجات", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
             });
 
-            last.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (page_num > 1) {
-                        Log.e("Item Num", item_num + "");
-                        loadData(item_num, "0");
-                    } else {
-                        Snackbar.make(v, "بدايه المنتجات", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                    }
+            last.setOnClickListener(v -> {
+                if (page_num > 1) {
+                    Log.e("Item Num", item_num + "");
+                    loadData(item_num, "0");
+                } else {
+                    Snackbar.make(v, "بدايه المنتجات", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
             });
 

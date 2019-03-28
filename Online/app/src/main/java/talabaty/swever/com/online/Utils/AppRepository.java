@@ -96,6 +96,11 @@ public class AppRepository {
                 APIParamsUtil.createContactUsWithSocial());
     }
 
+    public LiveData<String> listPackages() {
+        return addToRequestQueue(APIURLUtil.LIST_PACKAGES,
+                APIParamsUtil.createListPackagesParams());
+    }
+
     //    public LiveData<String>(){
 //        return addToRequestQueue(APIURLUtil.,
 //                APIParamsUtil.);

@@ -22,11 +22,6 @@ public class StringUtil {
     public static final String PARAM_NAME_SUBJECT= "subject";
     public static final String PARAM_NAME_MESSAGE= "message";
 
-//    public static final String PARAM_NAME_ = "";
-//    public static final String PARAM_NAME_ = "";
-//    public static final String PARAM_NAME_ = "";
-//    public static final String dPARAM_NAME_ = "";
-//
 //    Log.e(StringUtil.EXCEPTION_TAG, e.getMessage());
 //
 //    .observe(this, response -> {

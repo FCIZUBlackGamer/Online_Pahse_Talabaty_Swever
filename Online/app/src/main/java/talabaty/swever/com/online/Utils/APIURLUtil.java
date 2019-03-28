@@ -17,4 +17,5 @@ public class APIURLUtil {
     public static final String ADD_SHOP_URL = BASE_URL + "SubScrip/Edit";
     public static final String CONTACT_US_WITH_MAIL_URL = BASE_URL + "contactUs/SendMail";
     public static final String CONTACT_US_WITH_SOCIAL = BASE_URL + "contactUs/SocialMedia";
+    public static final String LIST_PACKAGES = BASE_URL + "SubScrip/Package";
 }

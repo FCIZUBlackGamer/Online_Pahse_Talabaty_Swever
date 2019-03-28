@@ -37,14 +37,6 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -75,10 +67,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -791,68 +781,41 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
         progressDialog2.setMessage("جارى تحميل البيانات ...");
         progressDialog2.setCancelable(false);
         progressDialog2.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/SubScrip/Package",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
 
-                            progressDialog2.dismiss();
-                            JSONObject object = new JSONObject(response);
-                            JSONArray array = object.getJSONArray("List");
-                            if (array.length() > 0) {
+        mRepository.listPackages().observe(this, response -> {
+            if (response != null) {
+                progressDialog2.dismiss();
+
+                if (!response.equals(StringUtil.DISMISS_PROGRESS_DIALOG)) {
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONArray array = object.getJSONArray("List");
+                        if (array.length() > 0) {
 
 
-                                for (int x = 0; x < array.length(); x++) {
-                                    JSONObject jsonObject = array.getJSONObject(x);
+                            for (int x = 0; x < array.length(); x++) {
+                                JSONObject jsonObject = array.getJSONObject(x);
 
-                                    spin e = new spin(jsonObject.getInt("Id"), jsonObject.getInt("Value"));
-                                    spins.add(e);
-                                }
+                                spin e = new spin(jsonObject.getInt("Id"), jsonObject.getInt("Value"));
+                                spins.add(e);
+                            }
 //                                Log.e("Length", values.size()+"");
 
-                                for (int s = 0; s < spins.size(); s++) {
-                                    values.add(spins.get(s).getValue() + "");
-                                    Log.e("RR", spins.get(s).getId() + "");
-                                }
-                                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
-                                        android.R.layout.simple_spinner_dropdown_item, values);
-                                package_id.setAdapter(dataAdapter);
-
+                            for (int s = 0; s < spins.size(); s++) {
+                                values.add(spins.get(s).getValue() + "");
+                                Log.e("RR", spins.get(s).getId() + "");
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
+                                    android.R.layout.simple_spinner_dropdown_item, values);
+                            package_id.setAdapter(dataAdapter);
+
                         }
-
+                    } catch (JSONException e) {
+                        Log.e(StringUtil.EXCEPTION_TAG, e.getMessage());
                     }
-                }, error -> {
-
-            progressDialog2.dismiss();
-            String WarningMessage = null;
-            if (error instanceof ServerError)
-                WarningMessage = "خطأ فى الاتصال بالخادم";
-            else if (error instanceof TimeoutError)
-                WarningMessage = "خطأ فى مدة الاتصال";
-            else if (error instanceof NetworkError)
-                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
-
-            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
-                    AppToastUtil.LENGTH_LONG, getContext());
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("token", "?za[ZbGNz2B}MXYZ");
-                return map;
+                }
             }
-        };
-//        Volley.newRequestQueue(getActivity()).add(stringRequest);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                2,  // maxNumRetries = 2 means no retry
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(getActivity()).add(stringRequest);
-
+        });
     }
 
     private void loadCategory() {
