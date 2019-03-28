@@ -9,6 +9,7 @@ import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_COUNT;
 import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_IMAGE;
 import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_NAME;
 import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_PASSWORD;
+import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_SELL_ONLINE;
 import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_TOKEN;
 import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_TYPE;
 import static talabaty.swever.com.online.Utils.StringUtil.PARAM_NAME_USER;
@@ -90,6 +91,14 @@ public class APIParamsUtil {
     @NonNull
     public static Map<String, String> createListCategoriesParams() {
         Map<String, String> params = new HashMap<>();
+        params.put(PARAM_NAME_TOKEN, API_TOKEN);
+        return params;
+    }
+
+    @NonNull
+    public static Map<String, String> createAddShopParams(String shop) {
+        Map<String, String> params = new HashMap<>();
+        params.put(PARAM_NAME_SELL_ONLINE, shop);
         params.put(PARAM_NAME_TOKEN, API_TOKEN);
         return params;
     }

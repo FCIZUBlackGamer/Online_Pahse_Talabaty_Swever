@@ -81,6 +81,11 @@ public class AppRepository {
                 APIParamsUtil.createListCategoriesParams());
     }
 
+    public LiveData<String> addShop(String shop) {
+        return addToRequestQueue(APIURLUtil.ADD_SHOP_URL,
+                APIParamsUtil.createAddShopParams(shop));
+    }
+
     //    public LiveData<String>(){
 //        return addToRequestQueue(APIURLUtil.,
 //                APIParamsUtil.);

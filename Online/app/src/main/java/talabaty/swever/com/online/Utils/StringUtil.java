@@ -1,9 +1,11 @@
 package talabaty.swever.com.online.Utils;
 
 public class StringUtil {
-    public static final String EXCEPTION_TAG = "EXCEPTION_TAG";
+    public static final String RESPONSE_SUCCESS = "\"Success\"";
     public static final String RESPONSE_FAIL = "\"fail\"";
     public static final String RESPONSE_DUPLICATE = "\"duplicate\"";
+
+    public static final String EXCEPTION_TAG = "EXCEPTION_TAG";
     public static final String DISMISS_PROGRESS_DIALOG = "DISMISS_PROGRESS_DIALOG";
 
     public static final String PARAM_NAME_TOKEN = "token";
@@ -15,6 +17,7 @@ public class StringUtil {
     public static final String PARAM_NAME_COUNT = "count";
     public static final String PARAM_NAME_TYPE = "type";
     public static final String PARAM_NAME_X = "x";
+    public static final String PARAM_NAME_SELL_ONLINE = "SellOnline";
 
 //    public static final String PARAM_NAME_ = "";
 //    public static final String PARAM_NAME_ = "";

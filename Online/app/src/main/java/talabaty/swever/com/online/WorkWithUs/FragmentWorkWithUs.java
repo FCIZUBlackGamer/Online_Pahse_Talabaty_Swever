@@ -23,17 +23,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.core.content.ContextCompat;
-
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -75,6 +64,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -86,15 +76,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import talabaty.swever.com.online.LoginDatabase;
 import talabaty.swever.com.online.R;
 import talabaty.swever.com.online.SwitchNavActivity;
+import talabaty.swever.com.online.Utils.AppRepository;
 import talabaty.swever.com.online.Utils.AppToastUtil;
+import talabaty.swever.com.online.Utils.StringUtil;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -162,11 +159,15 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
     View view;
     Location mylocation;
 
+    private AppRepository mRepository;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        mRepository = AppRepository.getInstance(getActivity().getApplication());
+
         view = inflater.inflate(R.layout.fragment_work_with_us, container, false);
         radiogroup = view.findViewById(R.id.radiogroup);
         package_id = view.findViewById(R.id.package_id);
@@ -616,14 +617,14 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
         Log.e("Start: ", allImages);
         //Showing the progress dialog
         progressDialog = ProgressDialog.show(getActivity(), "Uploading...", "Please wait...", false, false);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, UPLOAD_URL,
-                s -> {
-                    //Disimissing the progress dialog
-                    progressDialog.dismiss();
-                    Log.e("Path: ", s);
-                    try {
 
-                        JSONObject object = new JSONObject(s);
+        mRepository.uploadImage(allImages, "Mohamed").observe(this, response -> {
+            if (response != null) {
+                progressDialog.dismiss();
+
+                if (!response.equals(StringUtil.DISMISS_PROGRESS_DIALOG)) {
+                    try {
+                        JSONObject object = new JSONObject(response);
                         JSONArray array = object.getJSONArray("Images");
                         for (int x = 0; x < array.length(); x++) {
                             String object1 = array.getString(x);
@@ -668,46 +669,11 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
                         }
 
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.e(StringUtil.EXCEPTION_TAG, e.getMessage());
                     }
-
-                },
-                error -> {
-                    //Dismissing the progress dialog
-                    progressDialog.dismiss();
-
-                    String WarningMessage = null;
-                    if (error instanceof ServerError)
-                        WarningMessage = "خطأ فى الاتصال بالخادم";
-                    else if (error instanceof TimeoutError)
-                        WarningMessage = "خطأ فى مدة الاتصال";
-                    else if (error instanceof NetworkError)
-                        WarningMessage = "شبكه الانترنت ضعيفه حاليا";
-
-                    if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
-                            AppToastUtil.LENGTH_LONG, getContext());
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-
-                //Creating parameters
-                Map<String, String> params = new Hashtable<String, String>();
-
-                //Adding parameters
-                params.put(KEY_IMAGE, allImages);
-
-                params.put(KEY_NAME, "Mohamed");
-
-                //returning parameters
-                return params;
+                }
             }
-        };
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                2,  // maxNumRetries = 2 means no retry
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(getActivity()).add(stringRequest);
+        });
     }
 
     private void openGalary() {
@@ -904,11 +870,13 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
         progressDialog3.setMessage("جارى تحميل البيانات ...");
         progressDialog3.setCancelable(false);
         progressDialog3.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/Fields/List",
-                response -> {
-                    try {
 
-                        progressDialog3.dismiss();
+        mRepository.listCategories().observe(this, response -> {
+            if (response != null) {
+                progressDialog3.dismiss();
+
+                if (!response.equals(StringUtil.DISMISS_PROGRESS_DIALOG)) {
+                    try {
                         JSONObject object = new JSONObject(response);
                         JSONArray array = object.getJSONArray("Fields");
                         if (array.length() > 0) {
@@ -932,37 +900,11 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
 
                         }
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.e(StringUtil.EXCEPTION_TAG, e.getMessage());
                     }
-
-                }, error -> {
-
-            progressDialog3.dismiss();
-            String WarningMessage = null;
-            if (error instanceof ServerError)
-                WarningMessage = "خطأ فى الاتصال بالخادم";
-            else if (error instanceof TimeoutError)
-                WarningMessage = "خطأ فى مدة الاتصال";
-            else if (error instanceof NetworkError)
-                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
-
-            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
-                    AppToastUtil.LENGTH_LONG, getContext());
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("token", "?za[ZbGNz2B}MXYZ");
-                return map;
+                }
             }
-        };
-        progressDialog3.dismiss();
-//        Volley.newRequestQueue(getActivity()).add(stringRequest);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                2,  // maxNumRetries = 2 means no retry
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(getActivity()).add(stringRequest);
+        });
     }
 
 //    public void startNewActivity(Context context, String packageName) {
@@ -993,22 +935,21 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
         final String ebn3rs = gson.toJson(withUsModel);
         Log.e("Full Model", ebn3rs);
 
-
         progressDialog4 = ProgressDialog.show(getActivity(), "Uploading...", "Please wait...", false, false);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://onlineapi.rivile.com/SubScrip/Edit",
-                s -> {
-                    //Disimissing the progress dialog
-                    progressDialog4.dismiss();
-                    Log.e("Data: ", s);
 
-                    if (s.equals("\"Success\"")) {
+        mRepository.addShop(ebn3rs).observe(this, response -> {
+            if (response != null) {
+                progressDialog4.dismiss();
+
+                if (!response.equals(StringUtil.DISMISS_PROGRESS_DIALOG)) {
+                    if (response.equals(StringUtil.RESPONSE_SUCCESS)) {
                         AppToastUtil.showInfoToast("تم اضافه المحل بنجاح",
                                 AppToastUtil.LENGTH_LONG, getContext());
 
                         getActivity().startActivity(new Intent(getActivity(), SwitchNavActivity.class));
                     } else {
                         String warningMessage;
-                        switch (s) {
+                        switch (response) {
                             case "\"الاسم مكرر\"":
                                 warningMessage = "اسم جهه عمل مكرر يرجى اختيار اسم جديد و المحاوله مره اخرى";
                                 break;
@@ -1025,47 +966,9 @@ public class FragmentWorkWithUs extends Fragment implements OnMapReadyCallback,
 
                         AppToastUtil.showWarningToast(warningMessage, AppToastUtil.LENGTH_LONG, getContext());
                     }
-                },
-                error -> {
-                    //Dismissing the progress dialog
-                    progressDialog4.dismiss();
-
-                    String WarningMessage = null;
-                    if (error instanceof ServerError)
-                        WarningMessage = "خطأ فى الاتصال بالخادم";
-                    else if (error instanceof TimeoutError)
-                        WarningMessage = "خطأ فى مدة الاتصال";
-                    else if (error instanceof NetworkError)
-                        WarningMessage = "شبكه الانترنت ضعيفه حاليا";
-
-                    if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
-                            AppToastUtil.LENGTH_LONG, getContext());
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                //Converting Bitmap to String
-//                for (int x= 0; x<imageSources.size(); x++) {
-//                    String image = getStringImage(bitmap);
-//                }
-
-                //Creating parameters
-                Map<String, String> params = new Hashtable<String, String>();
-
-                //Adding parameters
-                params.put("SellOnline", ebn3rs);
-
-                params.put("token", "?za[ZbGNz2B}MXYZ");
-
-                //returning parameters
-                return params;
+                }
             }
-        };
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                2,  // maxNumRetries = 2 means no retry
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(getActivity()).add(stringRequest);
+        });
     }
 
     @Override
