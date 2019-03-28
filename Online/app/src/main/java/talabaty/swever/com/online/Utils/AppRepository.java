@@ -51,19 +51,29 @@ public class AppRepository {
                 APIParamsUtil.createAddUserParams(user));
     }
 
-    public LiveData<String> listProducts(int count){
+    public LiveData<String> listProducts(Integer count) {
         return addToRequestQueue(APIURLUtil.LIST_PRODUCTS_URL,
                 APIParamsUtil.createListProductsParams(count));
     }
 
-    public LiveData<String> listOffers(int count){
+    public LiveData<String> listOffers(Integer count) {
         return addToRequestQueue(APIURLUtil.LIST_OFFERS_URL,
                 APIParamsUtil.createListOffersParams(count));
     }
 
-    public LiveData<String> listShops(int count){
+    public LiveData<String> listShops(Integer count) {
         return addToRequestQueue(APIURLUtil.LIST_SHOPS_URL,
                 APIParamsUtil.createListShopsParams(count));
+    }
+
+    public LiveData<String> listMostVisitedShops(Integer type, Integer count, Integer x) {
+        return addToRequestQueue(APIURLUtil.LIST_MOST_VISITED_SHOPS_URL,
+                APIParamsUtil.createListMostVisitedShopsParams(type, count, x));
+    }
+
+    public LiveData<String> listNearestShops(Integer type, Integer count, Integer x) {
+        return addToRequestQueue(APIURLUtil.LIST_MOST_VISITED_SHOPS_URL,
+                APIParamsUtil.createListNearestShopsParams(type, count, x));
     }
 
 //    public LiveData<String>(){

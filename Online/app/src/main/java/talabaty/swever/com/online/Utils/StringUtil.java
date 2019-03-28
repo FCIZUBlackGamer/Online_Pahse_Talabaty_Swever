@@ -13,6 +13,8 @@ public class StringUtil {
     public static final String PARAM_NAME_IMAGE = "base64imageString";
     public static final String PARAM_NAME_USER = "user";
     public static final String PARAM_NAME_COUNT = "count";
+    public static final String PARAM_NAME_TYPE = "type";
+    public static final String PARAM_NAME_X = "x";
 
 //    public static final String PARAM_NAME_ = "";
 //    public static final String PARAM_NAME_ = "";

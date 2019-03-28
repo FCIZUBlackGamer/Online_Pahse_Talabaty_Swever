@@ -8,16 +8,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.provider.Settings;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AlertDialog;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,30 +18,29 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import talabaty.swever.com.online.Contact.FragmentHomeContacts;
+import talabaty.swever.com.online.PrepareFood.FragmentPrepareFood;
 import talabaty.swever.com.online.R;
 import talabaty.swever.com.online.SwitchNavActivity;
-import talabaty.swever.com.online.PrepareFood.*;
+import talabaty.swever.com.online.Utils.APIURLUtil;
+import talabaty.swever.com.online.Utils.AppRepository;
 import talabaty.swever.com.online.Utils.AppToastUtil;
+import talabaty.swever.com.online.Utils.StringUtil;
 
 public class FragmentMostViewed extends Fragment {
 
@@ -88,6 +77,8 @@ public class FragmentMostViewed extends Fragment {
 //
 //    public LocationListener listener;
 
+    private AppRepository mRepository;
+
     public FragmentMostViewed setType(String type) {
         FragmentMostViewed trend = new FragmentMostViewed();
         Type = type;
@@ -98,6 +89,9 @@ public class FragmentMostViewed extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        mRepository = AppRepository.getInstance(getActivity().getApplication());
+
         view = inflater.inflate(R.layout.fragment_home_most_viewed, container, false);
         gridView = view.findViewById(R.id.gridview);
         contacts = new ArrayList<>();
@@ -150,7 +144,7 @@ public class FragmentMostViewed extends Fragment {
         next.setOnClickListener(v -> {
             Log.e("Item Num", item_num + "");
             if (contacts.size() == 80) {
-                loadContact(item_num, "1");
+                loadContact(item_num, 1);
             } else {
                 Snackbar.make(v, "نهايه جهات العمل", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -160,7 +154,7 @@ public class FragmentMostViewed extends Fragment {
         last.setOnClickListener(v -> {
             if (page_num > 1) {
                 Log.e("Item Num", item_num + "");
-                loadContact(item_num, "0");
+                loadContact(item_num, 0);
             } else {
                 Snackbar.make(v, "بدايه جهات العمل", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -175,15 +169,13 @@ public class FragmentMostViewed extends Fragment {
         super.onStart();
 /** الاكثر زياره*/
         if (Type.equals("trend")) {
-            ((SwitchNavActivity) getActivity())
-                    .setActionBarTitle("الأكثر زيارة");
-            Link = "http://onlineapi.rivile.com/shops/MostVisited/list";
-            loadContact(0, "1");
+            ((SwitchNavActivity) getActivity()).setActionBarTitle("الأكثر زيارة");
+            Link = APIURLUtil.LIST_MOST_VISITED_SHOPS_URL;
+            loadContact(0, 1);
         } else if (Type.equals("nearest")) {
             /** الاقرب**/
-            ((SwitchNavActivity) getActivity())
-                    .setActionBarTitle("الأقرب");
-            Link = "http://onlineapi.rivile.com/shops/list";
+            ((SwitchNavActivity) getActivity()).setActionBarTitle("الأقرب");
+            Link = APIURLUtil.LIST_NEAREST_SHOPS_URL;
 
             GpsLocationTracker mGpsLocationTracker = new GpsLocationTracker(getActivity());
 
@@ -209,7 +201,7 @@ public class FragmentMostViewed extends Fragment {
                     Log.e("Address", addressStr); //This will display the final address.
                     Log.e("state", state); //This will display the final address.
 
-                    loadContact(0, "1");
+                    loadContact(0, 1);
 
                 } catch (Exception e) {
                     // Handle IOException
@@ -222,28 +214,37 @@ public class FragmentMostViewed extends Fragment {
         } else if (Type.equals("normal")) {
             /** المنتجات العاديه*/
             Link = "http://onlineapi.rivile.com/shops/list";
-            loadContact(0, "1");
+            loadContact(0, 1);
         } else if (Type.equals("prepare_food")) {
             /** جهز وجبتى**/
             Link = "http://onlineapi.rivile.com/BeTheChef/ShopList";
             loadContactOffersPrepareFood();
         }
-
     }
 
-    private void loadContact(final int x, final String type) {
+    private void loadContact(final int x, final int type) {
         progressDialog2 = new ProgressDialog(getActivity());
         progressDialog2.setMessage("جارى تحميل البيانات ...");
         progressDialog2.setCancelable(false);
         progressDialog2.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Link,
-                response -> {
-                    progressDialog2.dismiss();
-                    try {
 
-                        JSONObject object = new JSONObject(response);
-                        JSONArray array = object.getJSONArray("List");
-                        if (array.length() > 0) {
+        if (Link.equals(APIURLUtil.LIST_MOST_VISITED_SHOPS_URL)) {
+            mRepository.listMostVisitedShops(type, 80, x).observe(this,
+                    this::handleNetworkResponseFromFunction_loadContact);
+        } else if (Link.equals(APIURLUtil.LIST_NEAREST_SHOPS_URL)) {
+            mRepository.listNearestShops(type, 80, x).observe(this,
+                    this::handleNetworkResponseFromFunction_loadContact);
+        }
+    }
+
+    private void handleNetworkResponseFromFunction_loadContact(String response) {
+        if (response != null) {
+            progressDialog2.dismiss();
+            if (!response.equals(StringUtil.DISMISS_PROGRESS_DIALOG)) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    JSONArray array = object.getJSONArray("List");
+                    if (array.length() > 0) {
 
 //                                final int size = contacts.size();
 //                                if (size > 0) {
@@ -254,12 +255,39 @@ public class FragmentMostViewed extends Fragment {
 //                                    mostViewedAdapter.notifyDataSetChanged();
 //                                }
 
-                            contacts = new ArrayList<>();
+                        contacts = new ArrayList<>();
 
-                            if (state == null) {
-                                for (int x1 = 0; x1 < array.length(); x1++) {
-                                    JSONObject object1 = array.getJSONObject(x1);
+                        if (state == null) {
+                            for (int x1 = 0; x1 < array.length(); x1++) {
+                                JSONObject object1 = array.getJSONObject(x1);
 
+                                Contact info = new Contact(
+                                        object1.getInt("Id"),
+                                        object1.getString("Name"),
+                                        (float) object1.getDouble("Rate"),
+                                        object1.getString("Address"),
+                                        "BBB",// object1.getString("Email")
+                                        object1.getString("Phone"),
+                                        "http://selltlbaty.rivile.com" + object1.getString("Photo"),
+                                        ""
+                                );
+                                contacts.add(info);
+
+                            }
+                        } else {
+                            showSettingsAlert();
+                            state = state.trim().toLowerCase();
+                            String shop_address = "";
+
+                            for (int x1 = 0; x1 < array.length(); x1++) {
+                                JSONObject object1 = array.getJSONObject(x1);
+                                Log.e("InCity", state);
+                                String[] plit_add = object1.getString("Address").split(",");
+                                for (int i = 0; i < plit_add.length; i++) {
+                                    shop_address = plit_add[i];
+                                }
+                                Log.e("OutCity", shop_address);
+                                if (state.contains(shop_address.toLowerCase().trim())) {
                                     Contact info = new Contact(
                                             object1.getInt("Id"),
                                             object1.getString("Name"),
@@ -267,90 +295,32 @@ public class FragmentMostViewed extends Fragment {
                                             object1.getString("Address"),
                                             "BBB",// object1.getString("Email")
                                             object1.getString("Phone"),
-                                            "http://selltlbaty.rivile.com" + object1.getString("Photo"),
+                                            APIURLUtil.IMAGE_BASE_URL + object1.getString("Photo"),
                                             ""
                                     );
                                     contacts.add(info);
-
-                                }
-                            } else {
-                                showSettingsAlert();
-                                state = state.trim().toLowerCase();
-                                String shop_address = "";
-
-                                for (int x1 = 0; x1 < array.length(); x1++) {
-                                    JSONObject object1 = array.getJSONObject(x1);
-                                    Log.e("InCity", state);
-                                    String[] plit_add = object1.getString("Address").split(",");
-                                    for (int i = 0; i < plit_add.length; i++) {
-                                        shop_address = plit_add[i];
-                                    }
-                                    Log.e("OutCity", shop_address);
-                                    if (state.contains(shop_address.toLowerCase().trim())) {
-                                        Contact info = new Contact(
-                                                object1.getInt("Id"),
-                                                object1.getString("Name"),
-                                                (float) object1.getDouble("Rate"),
-                                                object1.getString("Address"),
-                                                "BBB",// object1.getString("Email")
-                                                object1.getString("Phone"),
-                                                "http://selltlbaty.rivile.com" + object1.getString("Photo"),
-                                                ""
-                                        );
-                                        contacts.add(info);
-                                    }
-
                                 }
                             }
-                            mostViewedAdapter = new MostViewedAdapter(getActivity(), contacts);
-                            gridView.setAdapter(mostViewedAdapter);
-                            Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fly_in_from_center);
-                            gridView.setAnimation(anim);
-                            anim.start();
-                            gridView.setOnItemClickListener((parent, view, position, id) -> fragmentManager.beginTransaction()
-                                    .replace(R.id.frame_home, new FragmentHomeContacts().setData(contacts.get(position).getId(), contacts.get(position).getPhone(), contacts.get(position).getEmail(),
-                                            contacts.get(position).getLocation(), contacts.get(position).getName(), contacts.get(position).getCompany_logo(),
-                                            contacts.get(position).getRate())).addToBackStack("FragmentHomeContacts").commit());
-
-                        } else {
-                            AppToastUtil.showInfoToast("لا توجد بيانات",
-                                    AppToastUtil.LENGTH_LONG, getContext());
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        mostViewedAdapter = new MostViewedAdapter(getActivity(), contacts);
+                        gridView.setAdapter(mostViewedAdapter);
+                        Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fly_in_from_center);
+                        gridView.setAnimation(anim);
+                        anim.start();
+                        gridView.setOnItemClickListener((parent, view, position, id) -> fragmentManager.beginTransaction()
+                                .replace(R.id.frame_home, FragmentHomeContacts.setData(contacts.get(position).getId(), contacts.get(position).getPhone(), contacts.get(position).getEmail(),
+                                        contacts.get(position).getLocation(), contacts.get(position).getName(), contacts.get(position).getCompany_logo(),
+                                        contacts.get(position).getRate())).addToBackStack("FragmentHomeContacts").commit());
+
+                    } else {
+                        AppToastUtil.showInfoToast("لا توجد بيانات",
+                                AppToastUtil.LENGTH_LONG, getContext());
                     }
-
-                }, error -> {
-                    progressDialog2.dismiss();
-
-                    String WarningMessage = null;
-                    if (error instanceof ServerError)
-                        WarningMessage = "خطأ فى الاتصال بالخادم";
-                    else if (error instanceof TimeoutError)
-                        WarningMessage = "خطأ فى مدة الاتصال";
-                    else if (error instanceof NetworkError)
-                        WarningMessage = "شبكه الانترنت ضعيفه حاليا";
-
-                    if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
-                            AppToastUtil.LENGTH_LONG, getContext());
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("count", 80 + "");
-                map.put("type", type + "");
-                map.put("x", x + "");
-                map.put("token", "?za[ZbGNz2B}MXYZ");
-                return map;
+                } catch (JSONException e) {
+                    Log.e(StringUtil.EXCEPTION_TAG, e.getMessage());
+                }
             }
-        };
-
-//        Volley.newRequestQueue(getActivity()).add(stringRequest);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                2,  // maxNumRetries = 2 means no retry
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(getActivity()).add(stringRequest);
+        }
     }
 
     private void loadContactOffersPrepareFood() {
@@ -359,16 +329,25 @@ public class FragmentMostViewed extends Fragment {
         progressDialog.setMessage("جارى تحميل البيانات ...");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Link,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progressDialog.dismiss();
-                        try {
 
-                            JSONObject object = new JSONObject(response);
-                            JSONArray array = object.getJSONArray("List");
-                            if (array.length() > 0) {
+        if (Link.equals(APIURLUtil.LIST_MOST_VISITED_SHOPS_URL)) {
+            mRepository.listMostVisitedShops(null, null, null).observe(this,
+                    this::handleNetworkResponseFromFunction_loadContactOffersPrepareFood);
+        } else if (Link.equals(APIURLUtil.LIST_NEAREST_SHOPS_URL)) {
+            mRepository.listNearestShops(null, null, null).observe(this,
+                    this::handleNetworkResponseFromFunction_loadContactOffersPrepareFood);
+        }
+    }
+
+    private void handleNetworkResponseFromFunction_loadContactOffersPrepareFood(String response) {
+        if (response != null) {
+            progressDialog.dismiss();
+
+            if (!response.equals(StringUtil.DISMISS_PROGRESS_DIALOG)) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    JSONArray array = object.getJSONArray("List");
+                    if (array.length() > 0) {
 
 //                                final int size = contacts.size();
 //                                if (size > 0) {
@@ -378,69 +357,42 @@ public class FragmentMostViewed extends Fragment {
 //                                    }
 //                                    mostViewedAdapter.notifyDataSetChanged();
 //                                }
-                                contacts = new ArrayList<>();
+                        contacts = new ArrayList<>();
 
-                                for (int x = 0; x < array.length(); x++) {
-                                    JSONObject object1 = array.getJSONObject(x);
+                        for (int x = 0; x < array.length(); x++) {
+                            JSONObject object1 = array.getJSONObject(x);
 
-                                    Contact info = new Contact(
-                                            object1.getInt("Id"),
-                                            object1.getString("Name"),
-                                            (float) object1.getDouble("Rate"),
-                                            object1.getString("Address"),
-                                            "BBB",// object1.getString("Email")
-                                            object1.getString("Phone"),
-                                            "http://selltlbaty.rivile.com" + object1.getString("Photo"),
-                                            ""
-                                    );
-                                    contacts.add(info);
+                            Contact info = new Contact(
+                                    object1.getInt("Id"),
+                                    object1.getString("Name"),
+                                    (float) object1.getDouble("Rate"),
+                                    object1.getString("Address"),
+                                    "BBB",// object1.getString("Email")
+                                    object1.getString("Phone"),
+                                    "http://selltlbaty.rivile.com" + object1.getString("Photo"),
+                                    ""
+                            );
+                            contacts.add(info);
 
-                                }
-
-                                mostViewedAdapter = new MostViewedAdapter(getActivity(), contacts, 0);
-                                gridView.setAdapter(mostViewedAdapter);
-                                Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fly_in_from_center);
-                                gridView.setAnimation(anim);
-                                anim.start();
-                                gridView.setOnItemClickListener((parent, view, position, id) -> fragmentManager.beginTransaction()
-                                        .replace(R.id.frame_home, new FragmentPrepareFood().setData(contacts.get(position).getId())).addToBackStack("FragmentPrepareFood").commit());
-
-                            } else {
-                                AppToastUtil.showInfoToast("لا توجد بيانات",
-                                        AppToastUtil.LENGTH_LONG, getContext());
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
+
+                        mostViewedAdapter = new MostViewedAdapter(getActivity(), contacts, 0);
+                        gridView.setAdapter(mostViewedAdapter);
+                        Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.fly_in_from_center);
+                        gridView.setAnimation(anim);
+                        anim.start();
+                        gridView.setOnItemClickListener((parent, view, position, id) -> fragmentManager.beginTransaction()
+                                .replace(R.id.frame_home, new FragmentPrepareFood().setData(contacts.get(position).getId())).addToBackStack("FragmentPrepareFood").commit());
+
+                    } else {
+                        AppToastUtil.showInfoToast("لا توجد بيانات",
+                                AppToastUtil.LENGTH_LONG, getContext());
                     }
-                }, error -> {
-            progressDialog.dismiss();
-
-            String WarningMessage = null;
-            if (error instanceof ServerError)
-                WarningMessage = "خطأ فى الاتصال بالخادم";
-            else if (error instanceof TimeoutError)
-                WarningMessage = "خطأ فى مدة الاتصال";
-            else if (error instanceof NetworkError)
-                WarningMessage = "شبكه الانترنت ضعيفه حاليا";
-
-            if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
-                    AppToastUtil.LENGTH_LONG, getContext());
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("token", "?za[ZbGNz2B}MXYZ");
-                return map;
+                } catch (JSONException e) {
+                    Log.e(StringUtil.EXCEPTION_TAG, e.getMessage());
+                }
             }
-        };
-
-//        Volley.newRequestQueue(getActivity()).add(stringRequest);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                2,  // maxNumRetries = 2 means no retry
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(getActivity()).add(stringRequest);
+        }
     }
 
     @Override
