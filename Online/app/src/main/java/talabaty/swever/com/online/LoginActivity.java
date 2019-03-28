@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import talabaty.swever.com.online.Utils.APIParamsUtil;
+import talabaty.swever.com.online.Utils.APIURLUtil;
 import talabaty.swever.com.online.Utils.AppRepository;
 import talabaty.swever.com.online.Utils.AppToastUtil;
 import talabaty.swever.com.online.Utils.StringUtil;
@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         mCursor = mLoginDatabase.ShowData();
         while (mCursor.moveToNext()) {
             if (!mCursor.getString(0).equals("") && mCursor.getString(4).equals("1")) {
-                Intent intent = new Intent(LoginActivity.this, SwitchNav.class);
+                Intent intent = new Intent(LoginActivity.this, SwitchNavActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                                 AppToastUtil.LENGTH_LONG, LoginActivity.this);
 
                         mPasswordEditText.setText("");
-                    } else if (!response.equals(StringUtil.ERROR_NOTIFY_STRING)) {
+                    } else if (!response.equals(StringUtil.DISMISS_PROGRESS_DIALOG)) {
                         try {
                             JSONObject object = new JSONObject(response);
                             String id = object.getInt("Id") + "";
@@ -106,12 +106,12 @@ public class LoginActivity extends AppCompatActivity {
                                     id,
                                     phone,
                                     "1",
-                                    APIParamsUtil.IMAGE_BASE_URL + photo,
+                                    APIURLUtil.IMAGE_BASE_URL + photo,
                                     AccountType,
                                     email
                             );
 
-                            Intent intent = new Intent(LoginActivity.this, SwitchNav.class);
+                            Intent intent = new Intent(LoginActivity.this, SwitchNavActivity.class);
                             startActivity(intent);
                             finish();
                         } catch (JSONException e) {

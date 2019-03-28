@@ -5,20 +5,57 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 
-public class APIParamsUtil {
-//    private static final String BASE_URL = "http://onlineapi.rivile.com/";
-    private static final String BASE_URL = "http://192.168.0.106/OnlineAPI/";
+import static talabaty.swever.com.online.Utils.StringUtil.*;
 
-    public static final String IMAGE_BASE_URL = "http://selltlbaty.rivile.com/";
-    public static final String API_TOKEN = "?za[ZbGNz2B}MXYZ";
-    public static final String LOGIN_URL = BASE_URL + "/LoginActivity/LoginActivity";
+public class APIParamsUtil {
+    private static final String API_TOKEN = "?za[ZbGNz2B}MXYZ";
 
     @NonNull
     public static Map<String, String> createLoginParams(String userName, String password){
         Map<String, String> params = new HashMap<>();
-        params.put("Name", userName);
-        params.put("Password", password);
-        params.put("token", APIParamsUtil.API_TOKEN);
+        params.put(PARAM_NAME_USER_NAME, userName);
+        params.put(PARAM_NAME_PASSWORD, password);
+        params.put(PARAM_NAME_TOKEN, API_TOKEN);
+        return params;
+    }
+
+    @NonNull
+    public static Map<String, String> createUploadImageParams(String image, String name){
+        Map<String, String> params = new HashMap<>();
+        params.put(PARAM_NAME_IMAGE, image);
+        params.put(PARAM_NAME_NAME, name);
+        return params;
+    }
+
+    @NonNull
+    public static Map<String, String> createAddUserParams(String user){
+        Map<String, String> params = new HashMap<>();
+        params.put(PARAM_NAME_USER, user);
+        params.put(PARAM_NAME_TOKEN, API_TOKEN);
+        return params;
+    }
+
+    @NonNull
+    public static Map<String, String> createListProductsParams(int count){
+        Map<String, String> params = new HashMap<>();
+        params.put(PARAM_NAME_COUNT, String.valueOf(count));
+        params.put(PARAM_NAME_TOKEN, API_TOKEN);
+        return params;
+    }
+
+    @NonNull
+    public static Map<String, String> createListOffersParams(int count){
+        Map<String, String> params = new HashMap<>();
+        params.put(PARAM_NAME_COUNT, String.valueOf(count));
+        params.put(PARAM_NAME_TOKEN, API_TOKEN);
+        return params;
+    }
+
+    @NonNull
+    public static Map<String, String> createListShopsParams(int count){
+        Map<String, String> params = new HashMap<>();
+        params.put(PARAM_NAME_COUNT, String.valueOf(count));
+        params.put(PARAM_NAME_TOKEN, API_TOKEN);
         return params;
     }
 }

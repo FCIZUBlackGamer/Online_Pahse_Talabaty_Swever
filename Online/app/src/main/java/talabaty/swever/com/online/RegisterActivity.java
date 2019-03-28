@@ -1,7 +1,6 @@
 package talabaty.swever.com.online;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -31,20 +30,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.fourhcode.forhutils.FUtilsValidation;
 import com.google.gson.Gson;
 
@@ -55,12 +45,12 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import talabaty.swever.com.online.Utils.AppRepository;
 import talabaty.swever.com.online.Utils.AppToastUtil;
+import talabaty.swever.com.online.Utils.StringUtil;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -75,7 +65,6 @@ public class RegisterActivity extends AppCompatActivity {
     List<ImageSource> Gallary;
     String baseUrl = "http://selltlbaty.rivile.com/";
     private String UPLOAD_URL = baseUrl + "Uploads/UploadAndro";
-    private String UPLOAD_LINK = "http://onlineapi.rivile.com/LoginActivity/AddUser";
 
     private String KEY_IMAGE = "base64imageString";
     private String KEY_NAME = "name";
@@ -97,6 +86,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     int im = 0;
 
+    private AppRepository mRepository;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
         phone = findViewById(R.id.phone);
         imageStrings = new ArrayList<>();
 
+        mRepository = AppRepository.getInstance(getApplication());
     }
 
     @Override
@@ -122,202 +114,132 @@ public class RegisterActivity extends AppCompatActivity {
         super.onStart();
         userModel = new UserModel();
         appear.setVisibility(View.GONE);
-        date_of_birth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar cal = Calendar.getInstance();
-                int year = cal.get(Calendar.YEAR);
-                int month = cal.get(Calendar.MONTH);
-                int day = cal.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dialog = new DatePickerDialog(
-                        RegisterActivity.this,
-                        android.R.style.Theme_Holo_Light_Dialog_MinWidth
-                        , DatePicker1
-                        , year, month, day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
+        date_of_birth.setOnClickListener(v -> {
+            Calendar cal = Calendar.getInstance();
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH);
+            int day = cal.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog dialog = new DatePickerDialog(
+                    RegisterActivity.this,
+                    android.R.style.Theme_Holo_Light_Dialog_MinWidth
+                    , DatePicker1
+                    , year, month, day);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
         });
 
-        DatePicker1 = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month + 1;
-                date_of_birth.setText(year + "/" + month + "/" + dayOfMonth);
-            }
+        DatePicker1 = (view, year, month, dayOfMonth) -> {
+            month = month + 1;
+            date_of_birth.setText(year + "/" + month + "/" + dayOfMonth);
         };
 
         requestStoragePermission();
-        image.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onClick(View v) {
+        image.setOnClickListener(v -> {
 
-                final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                Camera_view = inflater.inflate(R.layout.camera_view, null);
+            Camera_view = inflater.inflate(R.layout.camera_view, null);
 
-                close = Camera_view.findViewById(R.id.close);
-                minimize = Camera_view.findViewById(R.id.minimize);
-                cam = Camera_view.findViewById(R.id.cam);
-                gal = Camera_view.findViewById(R.id.gal);
+            close = Camera_view.findViewById(R.id.close);
+            minimize = Camera_view.findViewById(R.id.minimize);
+            cam = Camera_view.findViewById(R.id.cam);
+            gal = Camera_view.findViewById(R.id.gal);
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                builder.setCancelable(false)
-                        .setView(Camera_view);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+            builder.setCancelable(false)
+                    .setView(Camera_view);
 
-                final AlertDialog dialog = builder.create();
-                dialog.show();
+            final AlertDialog dialog = builder.create();
+            dialog.show();
 
-                gal.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        openGalary();
-                        dialog.dismiss();
-                    }
-                });
+            gal.setOnClickListener(v12 -> {
+                openGalary();
+                dialog.dismiss();
+            });
 
-                cam.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        openCamera();
-                        dialog.dismiss();
-                    }
-                });
+            cam.setOnClickListener(v1 -> {
+                openCamera();
+                dialog.dismiss();
+            });
 
-                close.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        close_type = 0;
-                        dialog.dismiss();
-                        runOnUiThread(new Runnable() {
+            close.setOnClickListener(v13 -> {
+                close_type = 0;
+                dialog.dismiss();
+                runOnUiThread(() -> appear.setVisibility(View.GONE));
 
-                            @Override
-                            public void run() {
-                                appear.setVisibility(View.GONE);
-                            }
-                        });
+            });
 
-                    }
-                });
+            minimize.setOnClickListener(v14 -> {
+                close_type = 1;
+                dialog.dismiss();
+                runOnUiThread(() -> appear.setVisibility(View.VISIBLE));
 
-                minimize.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        close_type = 1;
-                        dialog.dismiss();
-                        runOnUiThread(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                appear.setVisibility(View.VISIBLE);
-                            }
-                        });
-
-                    }
-                });
-            }
+            });
         });
 
 /** in case user pressed minimize button */
-        appear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        appear.setOnClickListener(v -> {
 
-                final LayoutInflater inflater = (LayoutInflater) RegisterActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final LayoutInflater inflater = (LayoutInflater) RegisterActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                Camera_view = inflater.inflate(R.layout.camera_view, null);
+            Camera_view = inflater.inflate(R.layout.camera_view, null);
 
-                close = Camera_view.findViewById(R.id.close);
-                minimize = Camera_view.findViewById(R.id.minimize);
-                cam = Camera_view.findViewById(R.id.cam);
-                gal = Camera_view.findViewById(R.id.gal);
+            close = Camera_view.findViewById(R.id.close);
+            minimize = Camera_view.findViewById(R.id.minimize);
+            cam = Camera_view.findViewById(R.id.cam);
+            gal = Camera_view.findViewById(R.id.gal);
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                builder.setCancelable(false)
-                        .setView(Camera_view);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+            builder.setCancelable(false)
+                    .setView(Camera_view);
 
-                final AlertDialog dialog = builder.create();
-                dialog.show();
+            final AlertDialog dialog = builder.create();
+            dialog.show();
 
-                gal.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        openGalary();
-                        dialog.dismiss();
-                    }
-                });
+            gal.setOnClickListener(v15 -> {
+                openGalary();
+                dialog.dismiss();
+            });
 
-                cam.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        openCamera();
-                        dialog.dismiss();
-                    }
-                });
+            cam.setOnClickListener(v16 -> {
+                openCamera();
+                dialog.dismiss();
+            });
 
-                close.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        close_type = 0;
-                        dialog.dismiss();
-                        runOnUiThread(new Runnable() {
+            close.setOnClickListener(v17 -> {
+                close_type = 0;
+                dialog.dismiss();
+                runOnUiThread(() -> appear.setVisibility(View.GONE));
+            });
 
-                            @Override
-                            public void run() {
-                                appear.setVisibility(View.GONE);
-                            }
-                        });
-                    }
-                });
-
-                minimize.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        close_type = 1;
-                        dialog.dismiss();
-                        runOnUiThread(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                appear.setVisibility(View.VISIBLE);
-                            }
-                        });
-                    }
-                });
-            }
+            minimize.setOnClickListener(v18 -> {
+                close_type = 1;
+                dialog.dismiss();
+                runOnUiThread(() -> appear.setVisibility(View.VISIBLE));
+            });
         });
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-            }
-        });
+        login.setOnClickListener(v -> startActivity(new Intent(RegisterActivity.this, LoginActivity.class)));
 
-        signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Todo: Validate Inputs #Done
+        signup.setOnClickListener(v -> {
+            //Todo: Validate Inputs #Done
 
 
-                if (FUtilsValidation.isPhone(phone.getText().toString()) &&
-                        FUtilsValidation.isValidEmail(email, "صيغه بريد الكترونى خاطئه") &&
-                        !FUtilsValidation.isEmpty(fname, "ادخل اسم صحيح") &&
-                        !FUtilsValidation.isEmpty(lname, "ادخل اسم صحيح") &&
-                        !FUtilsValidation.isPasswordEqual(pass, repass, "ادخل اسم صحيح") &&
-                        !FUtilsValidation.isDateValid(date_of_birth.getText().toString(), "yyyy/mm/dd") &&
-                        !FUtilsValidation.isEmpty(fname, "ادخل اسم صحيح") &&
-                        im == 1) {
-                    userModel.setCountryId(1);
-                    userModel.setFirstName(fname.getText().toString());
-                    userModel.setLastName(lname.getText().toString());
-                    userModel.setDateOfBirth(date_of_birth.getText().toString());
-                    userModel.setPassword(pass.getText().toString());
-                    userModel.setMail(email.getText().toString());
-                    userModel.setPhone(phone.getText().toString());
-                    uploadImage();
-                }
+            if (FUtilsValidation.isPhone(phone.getText().toString()) &&
+                    FUtilsValidation.isValidEmail(email, "صيغه بريد الكترونى خاطئه") &&
+                    !FUtilsValidation.isEmpty(fname, "ادخل اسم صحيح") &&
+                    !FUtilsValidation.isEmpty(lname, "ادخل اسم صحيح") &&
+                    FUtilsValidation.isPasswordEqual(pass, repass, "كلمة المرور غير متطابقة") &&
+                    FUtilsValidation.isDateValid(date_of_birth.getText().toString(), "yyyy/mm/dd") &&
+                    im == 1) {
+                userModel.setCountryId(1);
+                userModel.setFirstName(fname.getText().toString());
+                userModel.setLastName(lname.getText().toString());
+                userModel.setDateOfBirth(date_of_birth.getText().toString());
+                userModel.setPassword(pass.getText().toString());
+                userModel.setMail(email.getText().toString());
+                userModel.setPhone(phone.getText().toString());
+                uploadImage();
             }
         });
     }
@@ -359,7 +281,7 @@ public class RegisterActivity extends AppCompatActivity {
 //            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //
 //            View layout = inflater.inflate(R.layout.toast_error,null);
-//
+//T
 //            TextView text = (TextView) layout.findViewById(R.id.txt);
 //
 //            text.setText("يرجى ارفاق صوره الشخصيه");
@@ -383,69 +305,31 @@ public class RegisterActivity extends AppCompatActivity {
         Log.e("Start: ", allImages);
         //Showing the progress dialog
         progressDialog = ProgressDialog.show(this, "Uploading...", "Please wait...", false, false);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, UPLOAD_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String s) {
-                        //Disimissing the progress dialog
-                        progressDialog.dismiss();
-                        Log.e("Path: ", s);
-                        try {
 
-                            JSONObject object = new JSONObject(s);
-                            JSONArray array = object.getJSONArray("Images");
-                            for (int x = 0; x < array.length(); x++) {
-                                String object1 = array.getString(x);
-                                userModel.setPhoto(object1);
-                            }
+        mRepository.uploadImage(allImages, "Mohamed").observe(this, response -> {
+            if (response != null) {
+                progressDialog.dismiss();
 
-                            final String jsonInString = gson.toJson(userModel);
-//                            Log.e("Data", jsonInString);
-//                            Log.e("Gallary", gson.toJson(Gallary));
-                            /** upload all data after upload images */
-                            uploadMontage(jsonInString);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                if (!response.equals(StringUtil.DISMISS_PROGRESS_DIALOG)) {
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        JSONArray array = object.getJSONArray("Images");
+                        for (int x = 0; x < array.length(); x++) {
+                            String object1 = array.getString(x);
+                            userModel.setPhoto(object1);
                         }
 
+                        final String jsonInString = gson.toJson(userModel);
+//                            Log.e("Data", jsonInString);
+//                            Log.e("Gallary", gson.toJson(Gallary));
+                        /** upload all data after upload images */
+                        uploadMontage(jsonInString);
+                    } catch (JSONException e) {
+                        Log.e(StringUtil.EXCEPTION_TAG, e.getMessage());
                     }
-                },
-                error -> {
-                    //Dismissing the progress dialog
-                    progressDialog.dismiss();
-
-                    String WarningMessage = null;
-                    if (error instanceof ServerError)
-                        WarningMessage = "خطأ فى الاتصال بالخادم";
-                    else if (error instanceof TimeoutError)
-                        WarningMessage = "خطأ فى مدة الاتصال";
-                    else if (error instanceof NetworkError)
-                        WarningMessage = "شبكه الانترنت ضعيفه حاليا";
-
-                    if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
-                            AppToastUtil.LENGTH_LONG, RegisterActivity.this);
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-
-                //Creating parameters
-                Map<String, String> params = new Hashtable<String, String>();
-
-                //Adding parameters
-                params.put(KEY_IMAGE, allImages);
-
-                params.put(KEY_NAME, "Mohamed");
-
-                //returning parameters
-                return params;
+                }
             }
-        };
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                2,  // maxNumRetries = 2 means no retry
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(this).add(stringRequest);
+        });
     }
 
     private void openGalary() {
@@ -539,66 +423,30 @@ public class RegisterActivity extends AppCompatActivity {
         Log.e("Connection UploadMontag", "Here");
         Log.e("Full Model", jsonInString);
         progressDialog2 = ProgressDialog.show(this, "Uploading...", "Please wait...", false, false);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, UPLOAD_LINK,
-                s -> {
-                    //Disimissing the progress dialog
-                    progressDialog2.dismiss();
-                    Log.e("Data: ", s);
+
+        mRepository.addUser(jsonInString).observe(this, response -> {
+            if (response != null) {
+                progressDialog2.dismiss();
+
+                if (!response.equals(StringUtil.DISMISS_PROGRESS_DIALOG)) {
+                    Log.e("Data: ", response);
                     String infoMessage;
-                    switch (s) {
-                        case "\"duplicate\"":
+                    switch (response) {
+                        case StringUtil.RESPONSE_DUPLICATE:
                             infoMessage = " البريد الالكتروني او رقم التليفون مكرر  .. يرجي إعاده المحاوله";
                             break;
-                        case "\"fail\"":
-                           infoMessage = "عذرا حدث خطأ أثناء اجراء العملية  .. يرجي المحاوله لاحقا";
+                        case StringUtil.RESPONSE_FAIL:
+                            infoMessage = "عذرا حدث خطأ أثناء اجراء العملية  .. يرجي المحاوله لاحقا";
                             break;
                         default:
-                            infoMessage = "اسم المستخدم هو " + s;
+                            infoMessage = "اسم المستخدم هو " + response;
                             break;
                     }
                     AppToastUtil.showInfoToast(infoMessage,
                             AppToastUtil.LENGTH_LONG, RegisterActivity.this);
-                },
-                error -> {
-                    //Dismissing the progress dialog
-                    progressDialog2.dismiss();
-
-                    String WarningMessage = null;
-                    if (error instanceof ServerError)
-                        WarningMessage = "خطأ فى الاتصال بالخادم";
-                    else if (error instanceof TimeoutError)
-                        WarningMessage = "خطأ فى مدة الاتصال";
-                    else if (error instanceof NetworkError)
-                        WarningMessage = "شبكه الانترنت ضعيفه حاليا";
-
-                    if (WarningMessage != null) AppToastUtil.showWarningToast(WarningMessage,
-                            AppToastUtil.LENGTH_LONG, RegisterActivity.this);
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                //Converting Bitmap to String
-//                for (int x= 0; x<imageSources.size(); x++) {
-//                    String image = getStringImage(bitmap);
-//                }
-
-                //Creating parameters
-                Map<String, String> params = new Hashtable<String, String>();
-
-                //Adding parameters
-                params.put("user", jsonInString);
-
-                params.put("token", "?za[ZbGNz2B}MXYZ");
-
-                //returning parameters
-                return params;
+                }
             }
-        };
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                2,  // maxNumRetries = 2 means no retry
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(this).add(stringRequest);
+        });
     }
 
     @Override

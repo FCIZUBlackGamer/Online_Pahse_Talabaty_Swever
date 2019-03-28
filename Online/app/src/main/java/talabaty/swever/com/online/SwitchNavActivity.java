@@ -53,7 +53,7 @@ import talabaty.swever.com.online.NearestContacts.ContactInfo;
 import talabaty.swever.com.online.Utils.AppToastUtil;
 import talabaty.swever.com.online.WorkWithUs.FragmentWorkWithUs;
 
-public class SwitchNav extends AppCompatActivity
+public class SwitchNavActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FragmentManager fragmentManager;
@@ -101,7 +101,7 @@ public class SwitchNav extends AppCompatActivity
 
 //                fragmentManager.beginTransaction()
 //                        .replace(R.id.frame_home,new HomeCartActivity()).addToBackStack("HomeCartActivity").commit();
-                startActivity(new Intent(SwitchNav.this, HomeCartActivity.class));
+                startActivity(new Intent(SwitchNavActivity.this, HomeCartActivity.class));
 
             }
         });
@@ -263,11 +263,11 @@ public class SwitchNav extends AppCompatActivity
         } else if (id == R.id.nav_car_shop) {
 //            fragmentManager.beginTransaction()
 //                    .replace(R.id.frame_home,new HomeCartActivity()).addToBackStack("HomeCartActivity").commit();
-            startActivity(new Intent(SwitchNav.this, HomeCartActivity.class));
+            startActivity(new Intent(SwitchNavActivity.this, HomeCartActivity.class));
         } else if (id == R.id.nav_logout) {
             //Todo: Action Logout
             loginDatabase.UpdateData("1", "c", "c", "c", "0", "", "0", "0");
-            startActivity(new Intent(SwitchNav.this, LoginActivity.class));
+            startActivity(new Intent(SwitchNavActivity.this, LoginActivity.class));
         }
 //        else {
 //            String cat_name = item.getTitle().toString();
@@ -296,7 +296,7 @@ public class SwitchNav extends AppCompatActivity
 //        runOnUiThread(new Runnable() {
 //            @Override
 //            public void run() {
-//                progressDialog = new ProgressDialog(SwitchNav.this);
+//                progressDialog = new ProgressDialog(SwitchNavActivity.this);
 //                progressDialog.setMessage("جارى تحميل البيانات ...");
 //                progressDialog.setCancelable(false);
 //                progressDialog.show();
@@ -345,7 +345,7 @@ public class SwitchNav extends AppCompatActivity
 //                        else if (error instanceof NetworkError)
 //                            text.setText("شبكه الانترنت ضعيفه حاليا");
 //
-//                        AppToastUtil toast = new AppToastUtil(SwitchNav.this);
+//                        AppToastUtil toast = new AppToastUtil(SwitchNavActivity.this);
 //                        toast.setGravity(Gravity.BOTTOM, 0, 0);
 //                        toast.setDuration(AppToastUtil.LENGTH_LONG);
 //                        toast.setView(layout);
@@ -364,7 +364,7 @@ public class SwitchNav extends AppCompatActivity
 //                        DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
 //                        3,  // maxNumRetries = 2 means no retry
 //                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-//                Volley.newRequestQueue(SwitchNav.this).add(stringRequest);
+//                Volley.newRequestQueue(SwitchNavActivity.this).add(stringRequest);
 //            }
 //        });
 //
@@ -380,7 +380,7 @@ public class SwitchNav extends AppCompatActivity
 
     //Todo: For The Nearest Contacts To My Current Location
     private void loadContacts() {
-        final ProgressDialog progressDialog = new ProgressDialog(SwitchNav.this);
+        final ProgressDialog progressDialog = new ProgressDialog(SwitchNavActivity.this);
         progressDialog.setMessage("جارى تحميل جهات العمل الأقرب ...");
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -431,7 +431,7 @@ public class SwitchNav extends AppCompatActivity
                         errorMessage = "خطأ فى مده الانتظار";
 
                     if (errorMessage != null) AppToastUtil.showErrorToast(
-                            errorMessage, AppToastUtil.LENGTH_LONG, SwitchNav.this);
+                            errorMessage, AppToastUtil.LENGTH_LONG, SwitchNavActivity.this);
                 }) {
             @Override
             protected Map<String, String> getParams() {
@@ -449,6 +449,6 @@ public class SwitchNav extends AppCompatActivity
                 DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 2,  // maxNumRetries = 2 means no retry
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        Volley.newRequestQueue(SwitchNav.this).add(stringRequest);
+        Volley.newRequestQueue(SwitchNavActivity.this).add(stringRequest);
     }
 }
